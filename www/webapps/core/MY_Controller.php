@@ -13,6 +13,7 @@ class MY_Controller extends CI_Controller
 
     function _template($template, $data=array())
     {
+	$data['media_root'] = site_url('static');
 	$this->load->view($template, $data);
     }
 }
