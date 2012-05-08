@@ -29,7 +29,7 @@ class Auth
 	$this->CI->db->select('access');
 	$this->CI->db->where('id', $admin['id']);
 	$this->CI->db->limit(1);
-	$result = $this->CI->db->get('admin_users');
+	$result = $this->CI->db->get('manager_users');
 	$result	= $result->row();
 
 	//result should be an object I was getting odd errors in relation to the object.
