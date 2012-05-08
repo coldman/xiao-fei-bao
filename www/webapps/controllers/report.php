@@ -6,5 +6,10 @@ class Report extends MY_Controller {
     {
 	$this->load->view('dashboard');
     }
+
+    function test()
+    {
+	echo 'aaa';
+    }
 }
 
