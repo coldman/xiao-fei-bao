@@ -15,11 +15,11 @@
     <link href="<?php echo $media_root.'css/login.css'; ?>" rel="stylesheet" type="text/css" />
    
     <script type="text/javascript">
-        var FromUrl = getQueryStringByName("FromUrl");
+        /* var FromUrl = getQueryStringByName("FromUrl");
         if (!FromUrl)
         {
             FromUrl = encodeURIComponent("index.aspx");
-        }
+        } */
         $(function ()
         {
             $(".login-text").focus(function ()
@@ -112,15 +112,18 @@
                         <tbody>
                          <tr>
                             <td align="left" colspan="2"> 
-                             <h3>请使用LigerUI 权限管理系统账号登陆</h3>
+                             <h3>业务员系统账号登陆</h3>
 
                             </td>
                             </tr> 
                             <tr>
-                            <td align="right">账号：</td><td align="left"><input type="text" name="loginusername" id="txtUsername" class="login-text" value="test1" /></td>
+                            <td align="right">账号：</td><td align="left"><input type="text" name="username" id="username" class="login-text" value="test1" /></td>
                             </tr>
                             <tr>
-                            <td align="right">密码：</td><td align="left"><input type="password" name="loginpassword" id="txtPassword" class="login-text" value="1" /></td>
+                            <td align="right">密码：</td><td align="left"><input type="password" name="password" id="password" class="login-text" value="1" /></td>
+                            </tr> 
+                            <tr>
+                            <td align="right">验证码：</td><td align="left"><text type="check" name="captcha" id="captacha" class="login-text" value="1" /></td>
                             </tr> 
                             <tr>
 
