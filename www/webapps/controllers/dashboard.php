@@ -1,6 +1,13 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Report extends MY_Controller {
+class Dashboard extends MY_Controller 
+{
+    function __construct()
+    {
+	parent::__construct();
+
+	$this->auth->is_logged_in(uri_string());
+    }
 
     public function index()
     {
