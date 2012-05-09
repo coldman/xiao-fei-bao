@@ -14,22 +14,22 @@ class Login extends MY_Controller
 
     function index()
     {
-	$data['redirect']   = $this->session->flashdata('redirect');
-	$submitted	    = $this->input->post('submitted');
-	if ($submitted)
-	{
-	    $username	    = $this->input->post('username');
-	    $password	    = $this->input->post('password');
-	    $captcha	    = $this->input->post('captcha');
-	    $remember	    = $this->input->post('remember');
-	}
-	
-	$this->_template('login', $data);
+        $data['redirect']   = $this->session->flashdata('redirect');
+        $submitted	    = $this->input->post('submitted');
+        if ($submitted)
+        {
+            $username	    = $this->input->post('username');
+            $password	    = $this->input->post('password');
+            $captcha	    = $this->input->post('captcha');
+            $remember	    = $this->input->post('remember');
+        }
+        
+        $this->_template('login', $data);
     }
 
     function logout()
     {
-	//
+        //
     }
 }
 

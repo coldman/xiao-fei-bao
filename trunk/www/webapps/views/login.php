@@ -13,7 +13,6 @@
     <script src="<?php echo $media_root.'js/common.js'; ?>" type="text/javascript"></script>
     <script src="<?php echo $media_root.'js/LG.js'; ?>" type="text/javascript"></script>
     <link href="<?php echo $media_root.'css/login.css'; ?>" rel="stylesheet" type="text/css" />
-   
     <script type="text/javascript">
         /* var FromUrl = getQueryStringByName("FromUrl");
         if (!FromUrl)
@@ -123,7 +122,7 @@
                             <td align="right">密码：</td><td align="left"><input type="password" name="password" id="password" class="login-text" value="1" /></td>
                             </tr> 
                             <tr>
-                            <td align="right">验证码：</td><td align="left"><text type="check" name="captcha" id="captacha" class="login-text" value="1" /></td>
+                            <td align="right">验证码：</td><td align="left"><text type="check" name="captcha" id="captacha" class="login-text" value="ABCDEF" /></td>
                             </tr> 
                             <tr>
 
@@ -145,7 +144,7 @@
             <div class="panel-f"></div>
         </div>
 
-         <div id="logincopyright">Copyright ? 2012 LigerUI </div>
+         <div id="logincopyright">Copyright ? 2012 91XiaoFeiBao </div>
     </div>
 </body>
 </html>
