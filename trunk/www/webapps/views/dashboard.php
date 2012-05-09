@@ -29,7 +29,7 @@
             [<a href="javascript:f_changepassword()">修改密码</a>] &nbsp; 
 
              [<a href="javascript:f_login()">切换用户</a>]
-            [<a href="login.htm?Action=out">退出</a>] 
+		 [<a href="<?php echo site_url('login/logout');?>">退出</a>] 
         </div> 
         
     </div> 
