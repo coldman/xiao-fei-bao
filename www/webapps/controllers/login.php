@@ -22,6 +22,20 @@ class Login extends MY_Controller
             $password	    = $this->input->post('password');
             //$captcha	    = $this->input->post('captcha');
             //$remember	    = $this->input->post('remember');
+	    
+	    $login	    = $this->auth->login($username, $password);
+	    if ($login)
+	    {
+		$redirect   = 'dashboard';
+		redirect($redirect);
+	    }
+	    else 
+	    {
+		$this->session->set_flashdata('redirect', $redirect);
+		$this->session->set_flashdata('msg', 'µÇÂ¼ÈÏÖ¤Ê§°Ü');
+		return;
+		redirect('login');
+	    }
         }
         
         $this->_template('login', $data);
