@@ -20,8 +20,8 @@ class Login extends MY_Controller
         {
             $username	    = $this->input->post('username');
             $password	    = $this->input->post('password');
-            $captcha	    = $this->input->post('captcha');
-            $remember	    = $this->input->post('remember');
+            //$captcha	    = $this->input->post('captcha');
+            //$remember	    = $this->input->post('remember');
         }
         
         $this->_template('login', $data);

@@ -129,13 +129,14 @@ class Auth
 	    return true;
 	}
     }
-	/*
-	this function does the logging in.
-	 */
-    function login_admin($email, $password, $remember=false)
+
+    /**
+     * Do login 
+     */
+    function login($username, $password, $remember=false)
     {
 	$this->CI->db->select('*');
-	$this->CI->db->where('email', $email);
+	$this->CI->db->where('username', $username);
 	$this->CI->db->where('password',  sha1($password));
 	$this->CI->db->limit(1);
 	$result = $this->CI->db->get('admin_users');
