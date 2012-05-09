@@ -4,7 +4,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="Keywords" content="" />
     <meta name="Descprition" content="" />
-    <title></title>
+    <title>91消费宝业务员系统 - 登录</title>
     <script src="<?php echo $media_root.'js/jquery-1.7.2.min.js'; ?>" type="text/javascript"></script>
     <link href="<?php echo $media_root.'css/ligerui-dialog.css'; ?>" rel="stylesheet" type="text/css" />
     <link href="<?php echo $media_root.'css/dialog.css'; ?>" rel="stylesheet" type="text/css" />
@@ -106,7 +106,7 @@
             <div class="panel-h"></div>
             <div class="panel-c">
                 <div class="panel-c-l">
-                   
+                   <form id="login_form" name="login_form" action="" method="post">
                     <table cellpadding="0" cellspacing="0">
                         <tbody>
                          <tr>
@@ -116,22 +116,23 @@
                             </td>
                             </tr> 
                             <tr>
-                            <td align="right">账号：</td><td align="left"><input type="text" name="username" id="username" class="login-text" value="test1" /></td>
+                            <td align="right">账号：</td><td align="left"><input type="text" name="username" id="username" class="login-text" value="" /></td>
                             </tr>
                             <tr>
-                            <td align="right">密码：</td><td align="left"><input type="password" name="password" id="password" class="login-text" value="1" /></td>
+                            <td align="right">密码：</td><td align="left"><input type="password" name="password" id="password" class="login-text" value="" /></td>
                             </tr> 
-                            <tr>
+                            <!--<tr>
                             <td align="right">验证码：</td><td align="left"><text type="check" name="captcha" id="captacha" class="login-text" value="ABCDEF" /></td>
-                            </tr> 
+                            </tr> -->
                             <tr>
-
-                            <td align="center" colspan="2">
+			    <td align="center" colspan="2">
+				<input type="hidden" name="submitted" value="submitted" />
                                 <input type="submit" id="btnLogin" value="登陆" class="login-btn" />
                             </td>
                             </tr> 
                         </tbody>
                     </table>
+		    </form>
                 </div>
                 <div class="panel-c-r">
                 <p>请从左侧输入登录账号和密码登录</p>
