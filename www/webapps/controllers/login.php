@@ -43,7 +43,9 @@ class Login extends MY_Controller
 
     function logout()
     {
-        //
+	$this->auth->logout();
+	$this->session->set_flashdata('msg', 'ÄúÒÑ¾­µÇ³ö.');
+	redirect('login');
     }
 }
 
