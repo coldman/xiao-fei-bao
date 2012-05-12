@@ -1,0 +1,50 @@
+/**
+ * Base style for 91 business dashboard page.
+ */
+
+body {
+    margin:0; 
+    padding:0;
+}
+
+a {
+    text-decoration: none;
+    cursor:pointer;
+}
+
+.icon {background:url(../img/icons/dot.gif) no-repeat scroll left center transparent; width:16px; height:16px; padding-left:16px;}
+
+#viewport {
+    width:99.8%;
+}
+
+#header {
+    background:url(../img/head_bg.jpg) repeat-x scroll left top transparent;
+    height:66px;
+}
+
+#header .title {
+    color:#FFFFFF;
+    font-size:24px;
+    height:66px;
+    line-height:60px;
+    margin-left:10px;
+    float:left;
+}
+
+#header .console {
+    float:right;
+    height:66px;
+    padding:24px 10px;
+    color:#FFFFFF;
+}
+
+#header .console a {
+    color:#FFFFFF;
+}
+
+.l-accordion-content ul {
+    padding:4px 0 4px 10px;
+}
+
+.l-accordion-content ul li {height:22px; line-height:18px; cursor:pointer;}
