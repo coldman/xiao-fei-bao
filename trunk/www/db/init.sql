@@ -11,3 +11,6 @@ create table `kvke_manage_users` (
     `role_type` tinyint(2) not null default 0, 
     primary key (`id`)
 );
+
+
+-- alter 
