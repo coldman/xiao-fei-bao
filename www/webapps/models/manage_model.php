@@ -146,7 +146,7 @@ class manage_model extends MY_Model
     /*
     * 获取代理营业额
     */
-    public function get_agent_amt($agentid, $begin_time=0, $end_time=200000000000000000)
+    public function get_agent_amt($agentid, $begin_time=FALSE, $end_time=FALSE)
     {
         /*
         SELECT SUM(`goods_amount`) AS goods_am2ount FROM (`kvke_order_info`) LEFT JOIN 
@@ -184,43 +184,67 @@ class manage_model extends MY_Model
 	}
     
     /*
-    * 获取已代理的省
+    * 获取未代理的省
     */
-    public function get_marker_province()
+    public function get_unmarked_province()
 	{
 		
         $sql = "SELECT * FROM kvke_region WHERE region_type=? AND 
-                region_id in (SELECT province FROM kvke_users)";
-
+                region_id not in (SELECT province FROM kvke_users)";
         return $this->db->query($sql, array(1))->result();
         
+    }
+    
+    /*
+    * 获取未代理的市
+    */
+    public function get_unmarked_city($parent_id=FALSE)
+	{
+		if ($parent_id==FALSE)
+        {
+            $sql = "SELECT * FROM kvke_region WHERE region_type=? AND
+                    region_id not in (SELECT city FROM kvke_users)";
+            return $this->db->query($sql, array(2))->result();
+        }   
+        else
+        {    
+            $sql = "SELECT * FROM kvke_region WHERE region_type=? AND  parent_id=? AND
+                region_id not in (SELECT city FROM kvke_users where province=?)";
+            return $this->db->query($sql, array(2, $parent_id, $parent_id))->result();
+        }
 	}
     
     /*
-    * 获取已代理的市
+    * 获取未代理的区
     */
-    public function get_marker_city($parent_id)
+    public function get_unmarked_district($parent_id=FALSE)
+	{
+		if ($parent_id==FALSE)
+        {
+            $sql = "SELECT * FROM kvke_region WHERE region_type=? AND
+                    region_id not in (SELECT district FROM kvke_users)";
+            return $this->db->query($sql, array(3))->result();
+        }
+        else
+        {    
+            $sql = "SELECT * FROM kvke_region WHERE region_type=? AND  parent_id=? AND
+                    region_id not in (SELECT district FROM kvke_users where city=?)";
+            return $this->db->query($sql, array(3, $parent_id, $parent_id))->result();
+        }
+	}
+    /*
+    * 获取商户出单数量
+    */
+    public function get_trader_orders($tradeid,$begin_time=FALSE,$end_time=FALSE)
 	{
 		
-        $sql = "SELECT * FROM kvke_region WHERE region_type=? AND  parent_id=? AND
-                region_id in (SELECT city FROM kvke_users where province=?)";
+        $sql = "SELECT count(*) FROM kvke_order_info WHERE user_id=? AND pay_time 
+                between ? AND ?";
 
-        return $this->db->query($sql, array(2, $parent_id, $parent_id))->result();
+        return $this->db->query($sql, array($tradeid, $begin_time, $end_time))->result();
         
 	}
     
-    /*
-    * 获取已代理的区
-    */
-    public function get_marker_district($parent_id)
-	{
-		
-        $sql = "SELECT * FROM kvke_region WHERE region_type=? AND  parent_id=? AND
-                region_id in (SELECT district FROM kvke_users where city=?)";
-
-        return $this->db->query($sql, array(3, $parent_id, $parent_id))->result();
-        
-	}
 
 }
 ?>
