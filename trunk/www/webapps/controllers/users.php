@@ -29,9 +29,11 @@ class Users extends MY_Controller
     function test()
     {
         $this->load->model("manage_model");
-        #$result = $this->manage_model->get_agent_amt(21417,1124106441,1424106441);
+        #$result = $this->manage_model->get_agent_list(10000);
         #result = $this->manage_model->get_agent_amt(14011);
-        $result = $this->manage_model->get_marker_district(393);
+        #$result = $this->manage_model->get_trader_orders(13952,0,2000000000000000);
+        
+        $result = $this->manage_model->get_unmarked_city();
         // foreach ($result as $item)
         // {
             // print_r($item);
