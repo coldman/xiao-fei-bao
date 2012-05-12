@@ -11,7 +11,8 @@ class Dashboard extends MY_Controller
 
     public function index()
     {
-	$this->load->view('dashboard');
+	$data['manager'] = $this->session->userdata('manage');
+	$this->_template('dashboard', $data);
     }
 
     function test()
