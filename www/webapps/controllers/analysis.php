@@ -23,6 +23,16 @@ class Analysis extends MY_Controller
 	print_r($data);
     }
 
+    function agent()
+    {
+	echo '代理商列表';
+    }
+
+    function trader()
+    {
+	echo '商家数据';
+    }
+
 }
 
 ?>

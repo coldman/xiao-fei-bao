@@ -27,8 +27,8 @@
 	<div position="left" title="导航菜单" id="navigation">
 	    <div title="业务员中心">
 		<div class="node">
-		    <a class="l-link" id="agent_list" href="http://www.baidu.com">代理商列表</a>
-		    <a class="l-link" id="trader_data" href="http://www.newqiji.com">商家数据</a>
+		    <a class="l-link" id="agent_list" href="<?php echo site_url('analysis/agent');?>">代理商列表</a>
+		    <a class="l-link" id="trader_data" href="<?php echo site_url('analysis/trader');?>">商家数据</a>
 		</div>
 	    </div>
 	    <div title="系统设置">
