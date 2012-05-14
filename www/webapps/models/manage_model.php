@@ -94,11 +94,11 @@ class manage_model extends MY_Model
     /*
     * 获取某个业务员名下的代理
     */
-    public function get_users_by_managerid($managerid, $limit = 10, $offset = 0)
+    public function get_users_by_manager_id($manager_id, $limit = 10, $offset = 0)
     {
         
         $this->db->from('users');
-        $array = array('belong_manage' => $managerid);
+        $array = array('belong_manage' => $manager_id);
         $this->db->where($array);
         if($limit != 'ALL')
             $this->db->limit($limit, $offset);
@@ -110,13 +110,13 @@ class manage_model extends MY_Model
     /*
     * 获取代理营业额
     */
-    public function get_agent_amt($agentid, $begin_time=FALSE, $end_time=FALSE)
+    public function get_agent_amt($agent_id, $begin_time=FALSE, $end_time=FALSE)
     {
         $this->db->select_sum('goods_amount');
         $this->db->from('order_info');
         $this->db->join('users', 'users.user_id = order_info.app_user_id', 'left');
         
-        $array = array('app_user_id'=>$agentid, 'add_time >=' => $begin_time, 
+        $array = array('app_user_id'=>$agent_id, 'add_time >=' => $begin_time, 
                        'add_time <' => $end_time);
         $this->db->where($array);
         return $this->db->get()->result();

@@ -14,3 +14,4 @@ create table `kvke_manage_users` (
 
 
 -- alter 
+alter table kvke_users add manager_id int(11) unsigned not null default 0;
