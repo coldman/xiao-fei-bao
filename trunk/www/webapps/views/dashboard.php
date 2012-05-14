@@ -56,7 +56,7 @@
 	    </div>
 	</div>
 	<div position="center" title="内容">center</div>
-	<div position="right">right</div>
+	<!--<div position="right">right</div>-->
 	<div position="bottom">bottom</div>
     </div>
 </body>
