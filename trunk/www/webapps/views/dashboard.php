@@ -26,33 +26,25 @@
     <div id="viewport">
 	<div position="left" title="导航菜单" id="navigation">
 	    <div title="业务员中心">
-		<ul>
-		    <li class="icon">aaaa</li>
-		    <li class="icon">aaaa</li>
-		    <li class="icon">aaaa</li>
-		    <li class="icon">aaaa</li>
-		    <li class="icon">aaaa</li>
-		    <li class="icon">aaaa</li>
-		</ul>
+		<div class="node">
+		    <a class="l-link" href="http://www.baidu.com">代理商列表</a>
+		    <a class="l-link">商家数据</a>
+		</div>
 	    </div>
 	    <div title="系统设置">
-		<ul>
-		    <li class="icon">bbbb</li>
-		    <li class="icon">bbbb</li>
-		    <li class="icon">bbbb</li>
-		    <li class="icon">bbbb</li>
-		    <li class="icon">bbbb</li>
-		    <li class="icon">bbbb</li>
-		</ul>
+		<div class="node">
+		    <a class="l-link">个人信息</a>
+		    <a class="l-link">修改密码</a>
+		</div>
 	    </div>
 	</div>
 	<div position="center" id="framecenter">
-	    <div tabid="home" title="我的主页" style="height:300px;">
+	    <div tabid="home" title="首页" style="height:300px;">
 		ABCDEFG
 	    </div>
 	</div>
 	<!--<div position="right">right</div>-->
-	<div position="bottom">bottom</div>
     </div>
+    <div id="footer">Copyright &copy;2012~2020  91消费宝  All right reversed.</div>
 </body>
 </html>

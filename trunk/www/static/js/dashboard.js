@@ -9,12 +9,10 @@ var tab = null;
 var accordion = null;
 var tree = null;
 
-/*
 function addTab(tabid, text, url)
 {
-    tab.addTabItem(tabid: tabid, text: text, url: url);
+    //tab.addTabItem(tabid: tabid, text: text, url: url);
 }
-*/
 
 function heightChanged(options)
 {
@@ -31,18 +29,10 @@ $(function(){
 	leftWidth: 200, 
 	height: '100%', 
 	space: 4, 
+	heightDiff: -30, 
 	onHeightChanged: heightChanged
     });
     var height = $('.l-layout-center').height();
     $('#navigation').ligerAccordion({height:height - 24, speed:null});
     $('#framecenter').ligerTab({height: height});
-    /*
-    $('#navigation').ligerLayout({leftWidth:200, height:'100%', heightDiff:-34, space:4, onHeightChanged: });
-    
-    var height = $('.l-layout-center').height();
-
-    $('#framecenter').ligerTab({height: heightChanged});
-
-    $('#navigation').ligerAccordion({height: height -24, speed: null});
-    */
 });
