@@ -8,7 +8,7 @@
  */
  
  
-class Users extends MY_Controller 
+class User extends MY_Controller 
 {
     function __construct()
     {
@@ -16,14 +16,14 @@ class Users extends MY_Controller
 
     }
 
-    public function report($username)
+    function change_pwd()
     {
-        $this->load->model("manage_model");
-        $result = $this->manage_model->get_user_by_username($username);
-        print_r($result);
-        
-        //$data["result"] = $result;  //add to gloab var
-        //$this->_template('login', $data);
+	echo '修改密码';
+    }
+
+    function info()
+    {
+	echo '个人信息';
     }
 
     function test()

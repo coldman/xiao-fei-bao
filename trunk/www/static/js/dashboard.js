@@ -11,7 +11,7 @@ var tree = null;
 
 function addTab(tabid, text, url)
 {
-    //tab.addTabItem(tabid: tabid, text: text, url: url);
+    tab.addTabItem({tabid: tabid, text: text, url: url});
 }
 
 function heightChanged(options)
@@ -35,4 +35,13 @@ $(function(){
     var height = $('.l-layout-center').height();
     $('#navigation').ligerAccordion({height:height - 24, speed:null});
     $('#framecenter').ligerTab({height: height});
+    tab = $('#framecenter').ligerGetTabManager();
+
+    $('.l-link').click(function(){
+	var tabid = $(this).attr('id');
+	var text  = $(this).html();
+	var url	  = $(this).attr('href');
+	addTab(tabid, text, url);
+	return false;
+    });
 });

@@ -27,14 +27,14 @@
 	<div position="left" title="导航菜单" id="navigation">
 	    <div title="业务员中心">
 		<div class="node">
-		    <a class="l-link" href="http://www.baidu.com">代理商列表</a>
-		    <a class="l-link">商家数据</a>
+		    <a class="l-link" id="agent_list" href="http://www.baidu.com">代理商列表</a>
+		    <a class="l-link" id="trader_data" href="http://www.newqiji.com">商家数据</a>
 		</div>
 	    </div>
 	    <div title="系统设置">
 		<div class="node">
-		    <a class="l-link">个人信息</a>
-		    <a class="l-link">修改密码</a>
+		    <a class="l-link" id="user_info" href="<?php echo site_url('user/info');?>">个人信息</a>
+		    <a class="l-link" id="change_pwd" href="<?php echo site_url('user/change_pwd');?>">修改密码</a>
 		</div>
 	    </div>
 	</div>
