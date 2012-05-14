@@ -9,6 +9,7 @@ class MY_Controller extends CI_Controller
     function __construct()
     {
 	parent::__construct();
+	$this->load->model(array('manage_model'));
     }
 
     function _template($template, $data=array())

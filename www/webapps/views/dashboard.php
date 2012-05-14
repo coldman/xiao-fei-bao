@@ -12,17 +12,8 @@
     <script type="text/javascript" src="<?php echo $media_root.'js/ligerui/ligerUI/js/plugins/ligerLayout.js';?>" ></script>
     <script type="text/javascript" src="<?php echo $media_root.'js/ligerui/ligerUI/js/plugins/ligerTree.js';?>"></script>
     <script type="text/javascript" src="<?php echo $media_root.'js/ligerui/ligerUI/js/plugins/ligerAccordion.js';?>"></script>
-    <script type="text/javascript">
-    var accordion;
-    // init
-    var bodyHeight =  $(".l-layout-center:first").height();
-    $(function(){
-	$('#viewport').ligerLayout({
-	    leftWidth: 200
-	});
-	$('#navigation').ligerAccordion({height:bodyHeight});
-    });
-    </script>
+    <script type="text/javascript" src="<?php echo $media_root.'js/ligerui/ligerUI/js/plugins/ligerTab.js';?>"></script>
+    <script type="text/javascript" src="<?php echo $media_root.'js/dashboard.js';?>"></script>
 </head>
 <body>
     <div id="header">
@@ -55,7 +46,11 @@
 		</ul>
 	    </div>
 	</div>
-	<div position="center" title="内容">center</div>
+	<div position="center" id="framecenter">
+	    <div tabid="home" title="我的主页" style="height:300px;">
+		ABCDEFG
+	    </div>
+	</div>
 	<!--<div position="right">right</div>-->
 	<div position="bottom">bottom</div>
     </div>
