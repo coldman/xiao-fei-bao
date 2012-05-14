@@ -31,9 +31,7 @@ class Login extends MY_Controller
 	    }
 	    else 
 	    {
-		$this->session->set_flashdata('redirect', $redirect);
 		$this->session->set_flashdata('msg', 'µÇÂ¼ÈÏÖ¤Ê§°Ü');
-		return;
 		redirect('login');
 	    }
         }
