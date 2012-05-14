@@ -201,5 +201,6 @@ class manage_model extends MY_Model
         return TRUE;
     }
     
+}
     
 ?>
