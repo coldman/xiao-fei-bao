@@ -145,7 +145,7 @@
             <div class="panel-f"></div>
         </div>
 
-         <div id="logincopyright">Copyright ? 2012 91XiaoFeiBao </div>
+         <div id="logincopyright">Copyright &copy;2012 ~ 2020 91消费宝 </div>
     </div>
 </body>
 </html>
