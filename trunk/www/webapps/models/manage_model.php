@@ -114,19 +114,11 @@ class manage_model extends MY_Model
     /*
     * 获取某个业务员名下的所有代理
     */
-    public function get_agents_by_manager_id($manager_id, $limit = 20, $offset = 0)
+    public function get_agents_by_manager_id($manager_id, $limit = 20, $offset = 0,
+                                             $sortname="user_name", $sortorder="desc")
     {
-        if (!$limit) $limit=20;
-        if (!$offset) $offset=0;
-        
-        
+       
         $result = array("total"=>0,"rows"=>array());
-        
-        $this->db->where(array('manage_id' => $manager_id));
-        $this->db->limit($limit, $offset);
-        $this->db->order_by('user_name desc');
-        $query = $this->db->get("users");
-        $rows = $query->result();
 
         $sql = "select count(*) as total FROM kvke_users WHERE manage_id=?";
         $total =  $this->db->query($sql, array($manager_id))->result();
@@ -137,7 +129,7 @@ class manage_model extends MY_Model
             
             $this->db->where(array('manage_id' => $manager_id));
             $this->db->limit($limit, $offset);
-            $this->db->order_by('user_name desc');
+            $this->db->order_by("$sortname $sortorder");
             $result["rows"] = $this->db->get("users")->result();
         }
         

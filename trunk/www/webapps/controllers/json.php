@@ -35,14 +35,22 @@ class Json extends MY_Controller
             return false;
         }
         
-        $limit = $this->input->get("limit");
-        if (!$limit){
-            $limit = $this->input->post("limit");
-            $offset = $this->input->post("offset");
-        }
-        $offset = $this->input->get("offset");
+        $limit = $this->input->get("pagesize");
         
-        $result = $this->manage_model->get_agents_by_manager_id($manage_id["id"],$limit,$offset);
+        if (!$limit){
+            $data = $this->input->post();
+            $limit = isset($data["pagesize"])?$data["pagesize"]:20;
+            $page = isset($data["page"])?$data["page"]:1;
+            $sortname = isset($data["sortname"])?$data["sortname"]:"user_name";
+            $sortorder = isset($data["sortorder"])?$data["sortorder"]:"desc";
+            $offset = $limit*($page-1);
+        }
+        $page = isset($data["page"])?$data["page"]:1;
+        $sortname = isset($data["sortname"])?$data["sortname"]:"user_name";
+        $offset = $limit*($page-1);
+        
+        
+        $result = $this->manage_model->get_agents_by_manager_id($manage_id["id"],$limit,$offset,$sortname,$sortorder);
         
         echo json_encode($result);
     }
