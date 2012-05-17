@@ -26,8 +26,8 @@ create table `kvke_assess_agent` (
 );
 
 --kvke_assess_agent_his
-drop table if exists `kvke_assess_agent_his`;
-create table `kvke_assess_agent_his`(
+drop table if exists `kvke_agent_assess`;
+create table `kvke_agent_assess`(
     `id` int(11) unsigned not null auto_increment,
     `agent_id` int(11) unsigned not null,
     `begin_time` int(11) not null default 0,
