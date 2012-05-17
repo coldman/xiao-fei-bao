@@ -18,12 +18,12 @@ class User extends MY_Controller
 
     function change_pwd()
     {
-	echo '修改密码';
+	$this->_template('pwd');
     }
 
     function info()
     {
-	echo '个人信息';
+	$this->_template('info');
     }
 
     function test()
