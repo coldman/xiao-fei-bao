@@ -10,10 +10,7 @@
 class manage_model extends MY_Model
 {
     /**
-	 * construct user model
-	 * 
-	 * @access public
-	 * @return void
+	 
 	 */    
     public function __construct()
     {
@@ -21,12 +18,8 @@ class manage_model extends MY_Model
     }
 
     /**
-	 * aquire user info by username
-	 * 
-	 * @access public
-	 * @param $username
-	 * @return array
-	 */
+     * aquire user info by username
+     */
 
     public function get_user_by_username($username)
     {
@@ -39,13 +32,8 @@ class manage_model extends MY_Model
     }
     
     /**
-	 * aquire all managers
-	 *
-	 * @access public
-	 * @param $num integer items per page
-	 * @param $offset integer pages offset
-	 * @return object
-	 */
+     * aquire all managers
+     */
 	public function get_users_list($limit = 10, $offset = 0)
 	{
 		$this->db->from('manage_users');
@@ -124,22 +112,36 @@ class manage_model extends MY_Model
 	}
     
     /*
-    * 获取某个业务员名下的代理
+    * 获取某个业务员名下的所有代理
     */
-    public function get_users_by_manager_id($manager_id, $limit = 10, $offset = 0)
+    public function get_agents_by_manager_id($manager_id, $limit = 20, $offset = 0)
     {
+        if (!$limit) $limit=20;
+        if (!$offset) $offset=0;
         
-        $this->db->from('users');
         
-        $array = array('manage_id' => $manager_id);
-        $this->db->where($array);
+        $result = array("total"=>0,"rows"=>array());
         
-		if($limit != 'ALL')
-			$this->db->limit($limit, $offset);
-		$this->db->order_by('user_name desc');
-	 	$query = $this->db->get();
-	 	
-	 	return $query->result();
+        $this->db->where(array('manage_id' => $manager_id));
+        $this->db->limit($limit, $offset);
+        $this->db->order_by('user_name desc');
+        $query = $this->db->get("users");
+        $rows = $query->result();
+
+        $sql = "select count(*) as total FROM kvke_users WHERE manage_id=?";
+        $total =  $this->db->query($sql, array($manager_id))->result();
+        
+        $result["total"] = 0;
+        if (isset($total)){
+            $result["total"] = $total[0]->total;
+            
+            $this->db->where(array('manage_id' => $manager_id));
+            $this->db->limit($limit, $offset);
+            $this->db->order_by('user_name desc');
+            $result["rows"] = $this->db->get("users")->result();
+        }
+        
+        return $result ;
         
     }
     
@@ -244,6 +246,11 @@ class manage_model extends MY_Model
         return $this->db->query($sql, array($tradeid, $begin_time, $end_time))->result();
         
 	}
+    
+    /*
+    * 插入考核表
+    */
+    //public function insert_assess_his
     
 
 }
