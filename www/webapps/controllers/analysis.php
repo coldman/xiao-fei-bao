@@ -25,12 +25,12 @@ class Analysis extends MY_Controller
 
     function agent()
     {
-	echo '代理商列表';
+	$this->_template('agent_list');
     }
 
     function trader()
     {
-	echo '商家数据';
+	$this->_template('trader_list');
     }
 
 }
