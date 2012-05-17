@@ -118,19 +118,21 @@ class manage_model extends MY_Model
                                              $sortname="user_name", $sortorder="desc")
     {
        
-        $result = array("total"=>0,"rows"=>array());
+        $result = array("Total"=>0,"Rows"=>array());
 
-        $sql = "select count(*) as total FROM kvke_users WHERE manage_id=?";
-        $total =  $this->db->query($sql, array($manager_id))->result();
+        //$sql = "select count(*) as total FROM kvke_users WHERE manage_id=?";
+        //$total =  $this->db->query($sql, array($manager_id))->result();
+        $this->db->where(array('manage_id' => $manager_id));
+        $total = $this->db->count_all_results("users");
         
-        $result["total"] = 0;
-        if (isset($total)){
-            $result["total"] = $total[0]->total;
+        if ($total){
+            $result["Total"] = $total;
             
+            $this->db->select("user_name,real_name,email,sex,qq,msn,comp_phone,comp_name");
             $this->db->where(array('manage_id' => $manager_id));
             $this->db->limit($limit, $offset);
             $this->db->order_by("$sortname $sortorder");
-            $result["rows"] = $this->db->get("users")->result();
+            $result["Rows"] = $this->db->get("users")->result();
         }
         
         return $result ;
