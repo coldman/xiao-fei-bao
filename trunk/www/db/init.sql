@@ -25,6 +25,18 @@ create table `kvke_assess_agent` (
     primary key (`id`)
 );
 
+--kvke_assess_agent_his
+drop table if exists `kvke_assess_agent_his`;
+create table `kvke_assess_agent_his`(
+    `id` int(11) unsigned not null auto_increment,
+    `agent_id` int(11) unsigned not null,
+    `begin_time` int(11) not null default 0,
+    `end_time`   int(11) not null default 0,
+    `insert_time` timestamp not null default current_timestamp,
+    `status`  tinyint(2) not null default 0,    -- 0:no pass   1:passed
+    primary key (`id`)
+);
+
 
 -- alter 
 alter table kvke_users add manager_id int(11) unsigned not null default 0;
