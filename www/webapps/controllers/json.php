@@ -42,7 +42,7 @@ class Json extends MY_Controller
         }
         $offset = $this->input->get("offset");
         
-        $result = $this->manage_model->get_agents_by_manager_id($manage_id["id"], 
+        $result = $this->manage_model->get_agents_by_manager_id($manage_id["id"],$limit,$offset);
         
         echo json_encode($result);
     }
