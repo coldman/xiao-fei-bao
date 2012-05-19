@@ -54,6 +54,13 @@ class Json extends MY_Controller
         
         echo json_encode($result);
     }
+
+    function managers()
+    {
+	$params = $this->_params();
+	$result = $this->manage_model->get_manage_grid_data($params);
+	echo json_encode($result);
+    }
 }
     
 

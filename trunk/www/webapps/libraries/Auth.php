@@ -85,7 +85,7 @@ class Auth
 	    $manage['manage']['username']   = $result['username'];
 	    $manage['manage']['phone']	    = $result['phone'];
 	    $manage['manage']['email']	    = $result['email'];
-	    $manage['manage']['role']	    = $result['role'];
+	    $manage['manage']['role_type']  = $result['role_type'];
 
 	    if(!$remember)
 	    {

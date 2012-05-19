@@ -33,6 +33,9 @@
 	    </div>
 	    <div title="系统设置">
 		<div class="node">
+		<?php if ($manager['role_type'] == 1):?>
+		    <a class="l-link" id="manager_list" href="<?php echo site_url('user/managers');?>">业务员列表</a>
+		<?php endif;?>
 		    <a class="l-link" id="user_info" href="<?php echo site_url('user/info');?>">个人信息</a>
 		    <a class="l-link" id="change_pwd" href="<?php echo site_url('user/change_pwd');?>">修改密码</a>
 		</div>

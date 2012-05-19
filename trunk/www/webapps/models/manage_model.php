@@ -32,6 +32,27 @@ class manage_model extends MY_Model
     }
     
     /**
+     * Get manage grid data
+     */
+    function get_manage_grid_data($params=array())
+    {
+	$result = array(
+	    'Total'=>0, 
+	    'Rows'=>array()
+	);
+	$tb_name = 'manage_users';
+	$result['Total'] = $this->db->count_all_results($tb_name);
+	if (array_key_exists('limit', $params))
+	{
+	    $offset = isset($params['offset'])?$params['offset']:0;
+	    $this->db->limit($params['limit'], $offset);
+	}
+	$result['Rows'] = $this->db->get($tb_name)->result();
+
+	return $result;
+    }
+    
+    /**
      * aquire all managers
      */
 	public function get_users_list($limit = 10, $offset = 0)
@@ -245,7 +266,7 @@ class manage_model extends MY_Model
     * 插入考核表
     */
     //public function insert_assess_his
-    
+
 
 }
 ?>

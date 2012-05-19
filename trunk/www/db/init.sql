@@ -25,7 +25,7 @@ create table `kvke_assess_agent` (
     primary key (`id`)
 );
 
---kvke_assess_agent_his
+--kvke_agent_aeesee
 drop table if exists `kvke_agent_assess`;
 create table `kvke_agent_assess`(
     `id` int(11) unsigned not null auto_increment,
