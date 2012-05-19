@@ -4,7 +4,7 @@ body{ text-align:center; background:#4974A4;}
 #loginlogo{ width:700px; height:100px; overflow:hidden; background:url('../img/logo.jpg') no-repeat; margin-top:50px;   }
 #loginpanel{ width:729px; position:relative;height:300px;}
 .panel-h{ width:729px; height:20px; background:url('../img/panel-h.gif') no-repeat; position:absolute; top:0px; left:0px; z-index:3;}
-.panel-f{ width:729px; height:13px; background:url('../img/panel-f.gif') no-repeat; position:absolute; bottom:0px; left:0px; z-index:3;}
+.panel-f{ width:729px; height:13px; background:url('../img/panel-f.gif') no-repeat; position:absolute; bottom:0px; left:0px; z-index:3; overflow:hidden;}
 .panel-c{ z-index:2;background:url('../img/panel-c.gif') repeat-y;width:729px; height:300px;}
 .panel-c-l{ position:absolute; left:60px; top:40px;}
 .panel-c-r{ position:absolute; right:20px; top:50px; width:222px; line-height:200%; text-align:left;}

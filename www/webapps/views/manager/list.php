@@ -1,8 +1,16 @@
-<?php include('header.php');?>
+<?php $this->load->view('header');?>
+
+<link type="text/css" rel="stylesheet" href="<?php echo $media_root.'js/ligerui/ligerUI/skins/ligerui-icons.css';?>" />
+<script type="text/javascript" src="<?php echo $media_root.'js/ligerui/ligerUI/js/plugins/ligerToolBar.js';?>"></script>
 
 <script type="text/javascript">
 var grid = null;
 $(function(){
+    $('#toolbar').ligerToolBar({items:[
+	{text:'增加', icon:'add', click:function(){
+	    window.parent.addTab('add-manager', '添加业务员', "<?php echo site_url('user/add_manager');?>");
+	}}	
+    ]});
     grid = $('#datagrid').ligerGrid({
 	checkbox: true, 
 	columns: [
@@ -33,7 +41,7 @@ $(function(){
 </script>
 </head>
 <body>
-
+<div id="toolbar"></div>
 <div id="datagrid" style="margin:0; padding:0; border:0 none;"></div>
 
-<?php include('footer.php');?>
+<?php $this->load->view('footer');?>
