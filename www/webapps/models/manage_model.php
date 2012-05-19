@@ -168,33 +168,37 @@ class manage_model extends MY_Model
     /*
     * 获取某个业务员名下的所有代理
     */
-    public function get_agents_by_manager_id($manager_id, $limit = 20, $offset = 0,
-                                             $sortname="user_name", $sortorder="desc")
+    function get_agent_grid_data($params)
     {
-       
-        $result = array("Total"=>0,"Rows"=>array());
-
-        //$sql = "select count(*) as total FROM kvke_users WHERE manage_id=?";
-        //$total =  $this->db->query($sql, array($manager_id))->result();
-        $this->db->where(array('manage_id' => $manager_id));
-        $total = $this->db->count_all_results("users");
-        
-        if ($total){
-            $result["Total"] = $total;
-            
-            $this->db->select("user_name,real_name,email,sex,qq,msn,comp_phone,comp_name");
-            $this->db->where(array('manage_id' => $manager_id));
-            if ($limit > 0){
-                $this->db->limit($limit, $offset);
-            }
-            $this->db->order_by("$sortname $sortorder");
-            $result["Rows"] = $this->db->get("users")->result();
-        }
-        
-        return $result ;
-        
+	$result = array(
+	    'Total'=>0, 
+	    'Rows'=>array()
+	);
+	$tb_name = 'users';
+        $this->db->select("user_name,real_name,email,sex,qq,msn,comp_phone,comp_name");
+	if (array_key_exists('manage_id', $params))
+	{
+	    $this->db->where('manage_id', $params['manage_id']);
+	}
+	$result['Total'] = $this->db->count_all_results($tb_name);
+	if (array_key_exists('manage_id', $params))
+	{
+	    $this->db->where('manage_id', $params['manage_id']);
+	}
+	if (array_key_exists('limit', $params))
+	{
+	    $offset = isset($params['offset'])?$params['offset']:0;
+	    $this->db->limit($params['limit'], $offset);
+	}
+	if (array_key_exists('sortname', $params))
+	{
+	    $sortorder = isset($params['sortorder'])?$params['sortorder']:'desc';
+	    $this->db->order_by($params['sortname'], $params['sortorder']);
+	}
+	$result['Rows'] = $this->db->get($tb_name)->result();
+	return $result;
     }
-    
+
     /*
     * 获取代理营业额
     */
