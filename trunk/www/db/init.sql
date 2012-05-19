@@ -4,6 +4,7 @@ create table `kvke_manage_users` (
     `id` int(11) unsigned not null auto_increment, 
     `username` varchar(40) unique not null, 
     `password` varchar(40) not null, 
+    `realname` varchar(40),
     `email` varchar(64) not null, 
     `phone` varchar(15), 
     `add_time` timestamp not null default current_timestamp, 

@@ -41,7 +41,9 @@ class manage_model extends MY_Model
 	    'Rows'=>array()
 	);
 	$tb_name = 'manage_users';
+	$this->db->where('role_type', 0);
 	$result['Total'] = $this->db->count_all_results($tb_name);
+	$this->db->where('role_type', 0);
 	if (array_key_exists('limit', $params))
 	{
 	    $offset = isset($params['offset'])?$params['offset']:0;
