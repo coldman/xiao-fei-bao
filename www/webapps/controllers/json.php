@@ -26,44 +26,33 @@ class Json extends MY_Controller
 	echo '个人信息';
     }
 
-    function agents()
+    function g_agent()
     {
-	$params  = $this->_params();
+        $params  = $this->_params();
         $manager = $this->session->userdata("manage");
         if (!isset($manager)) {
-	    echo json_encode(array());
+            echo json_encode(array());
             return false;
         }
-        
-	/*
-        $limit = $this->input->get("pagesize");
-        
-        if (!$limit){
-            $data = $this->input->post();
-            $limit = isset($data["pagesize"])?$data["pagesize"]:20;
-            $page = isset($data["page"])?$data["page"]:1;
-            $sortname = isset($data["sortname"])?$data["sortname"]:"user_name";
-            $sortorder = isset($data["sortorder"])?$data["sortorder"]:"desc";
-            $offset = $limit*($page-1);
-        }
-        $page = isset($data["page"])?$data["page"]:1;
-        $sortname = isset($data["sortname"])?$data["sortname"]:"user_name";
-        $offset = $limit*($page-1);
-	*/
-	$params['manage_id'] = $manager['id'];
-	$params['sortname']  = 'user_name';
-	$result = $this->manage_model->get_agent_grid_data($params);
-        
-        //$result = $this->manage_model->get_agents_by_manager_id($manage_id["id"],$limit,$offset,$sortname,$sortorder);
-        
+        $params['manage_id'] = $manager['id'];
+        $params['sortname']  = 'user_name';
+        $result = $this->manage_model->get_agent_grid_data($params);
+        echo json_encode($result);
+    }
+    
+    function agents()
+    {
+        $params  = $this->_params();
+        $params['sortname']  = 'user_name';
+        $result = $this->manage_model->get_agent_grid_data($params);
         echo json_encode($result);
     }
 
     function managers()
     {
-	$params = $this->_params();
-	$result = $this->manage_model->get_manage_grid_data($params);
-	echo json_encode($result);
+        $params = $this->_params();
+        $result = $this->manage_model->get_manage_grid_data($params);
+        echo json_encode($result);
     }
     
     

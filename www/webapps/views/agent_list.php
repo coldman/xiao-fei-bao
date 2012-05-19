@@ -27,7 +27,7 @@ $(function(){
 	], 
 	dataAction:'server', 
 	pageSize:20, 
-	url: '<?php echo site_url("json/agents");?>', 
+	url: '<?php echo site_url("json/g_agent");?>', 
 	sortName: 'user_id', 
 	width:'100%', 
 	height:'99.8%'

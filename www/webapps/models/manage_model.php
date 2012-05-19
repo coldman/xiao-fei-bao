@@ -288,7 +288,6 @@ class manage_model extends MY_Model
     /*
     * 获取某代理商下所有商家数据
     */
-    
     public function get_traders_grid_data($params=array())
     {
         $result = array(
@@ -296,16 +295,13 @@ class manage_model extends MY_Model
             'Rows'=>array()
         );
        
-        
-        
-        if (!array_key_exists('manage_id')){
+        if (!array_key_exists('manage_id', $params)){
             return $result;
         }
         
-        
         $sql = "SELECT user_id,user_name,district 
                 WHERE district IN (SELECT district FROM kvke_users WHERE manage_id=?) ";
-        if (array_key_exists('limit')){
+        if (array_key_exists('limit', $params)){
             $sql = $sql." and limit=".$params['limit'];
         }
         
@@ -314,33 +310,7 @@ class manage_model extends MY_Model
         return $result;
     }
     
-    /*
-    * 获取代理列表
-    */
-    public function get_agent_list_grid_data($params=array())
-    {
-        $tb_name = 'users';
-        $result = array('Total'=>0,
-                        'Rows'=>array()
-                        );
-                        
-        
-        $this->db->where('is_agent', 1);
-        $result['Total'] = $this->db->count_all_results($tb_name);
-        
-        $this->db->select('user_id,user_name,real_name,country,province,city,district');
-        
-        if (array_key_exists('limit',$params) and $params['limit'] > 0){
-            $offset = isset($params['offset'])?$params['offset']:0;
-            $this->db->limit($params['limit'], $offset);
-        }
-     
-
-        $this->db->order_by('user_name desc');
-        $result['Rows'] = $this->db->get($tb_name)->result();
-        
-        return $result;
-    }
+   
     
 
 }
