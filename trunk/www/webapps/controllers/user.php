@@ -56,7 +56,12 @@ class User extends MY_Controller
 
     function managers()
     {
-	$this->_template('manager_list');
+	$this->_template('manager/list');
+    }
+
+    function add_manager()
+    {
+	echo 'good';
     }
 
     function test()

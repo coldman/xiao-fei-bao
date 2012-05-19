@@ -21,6 +21,7 @@ a {
 #header {
     background:url(../img/head_bg.jpg) repeat-x scroll left top transparent;
     height:66px;
+    overflow:hidden;
 }
 
 #header .title {
