@@ -170,6 +170,7 @@ class manage_model extends MY_Model
     */
     function get_agent_grid_data($params)
     {
+    
 	$result = array(
 	    'Total'=>0, 
 	    'Rows'=>array()
@@ -180,10 +181,20 @@ class manage_model extends MY_Model
 	{
 	    $this->db->where('manage_id', $params['manage_id']);
 	}
+    if (array_key_exists('is_agent', $params))
+	{
+	    $this->db->where('is_agent', $params['is_agent']);
+	}
 	$result['Total'] = $this->db->count_all_results($tb_name);
+    
+    
 	if (array_key_exists('manage_id', $params))
 	{
 	    $this->db->where('manage_id', $params['manage_id']);
+	}
+    if (array_key_exists('is_agent', $params))
+	{
+	    $this->db->where('is_agent', $params['is_agent']);
 	}
 	if (array_key_exists('limit', $params))
 	{
@@ -195,6 +206,7 @@ class manage_model extends MY_Model
 	    $sortorder = isset($params['sortorder'])?$params['sortorder']:'desc';
 	    $this->db->order_by($params['sortname'], $params['sortorder']);
 	}
+   
 	$result['Rows'] = $this->db->get($tb_name)->result();
 	return $result;
     }

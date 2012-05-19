@@ -44,6 +44,8 @@ class Json extends MY_Controller
     {
         $params  = $this->_params();
         $params['sortname']  = 'user_name';
+        $params['is_agent']  = 1;
+        unset($params['limit']);
         $result = $this->manage_model->get_agent_grid_data($params);
         echo json_encode($result);
     }
