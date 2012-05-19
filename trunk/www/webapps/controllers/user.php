@@ -25,13 +25,22 @@ class User extends MY_Controller
 	{
 	    $old_pwd = $this->input->post('old_pwd');
 	    $new_pwd = $this->input->post('new_pwd');
-	    if ($old_pwd != $manager['password']) 
+	    $cfm_pwd = $this->input->post('cfm_pwd');
+	    if (sha1($old_pwd) != $manager['password']) 
 	    {
 		$this->session->set_flashdata('error', '原密码不正确，请重新输入！');
 	    }
 	    else
 	    {
-		$this->manage_model->save_manage(array('id'=>$manager['id'], 'password'=>md5($new_pwd)));
+		if ($new_pwd != $cfm_pwd)
+		{
+		    $this->session->set_flashdata('error', '确认密码不匹配，请重新输入！');
+		}
+		else
+		{
+		    $this->manage_model->save_manage(array('id'=>$manager['id'], 'password'=>sha1($new_pwd)));
+		    $this->session->set_flashdata('msg', '密码修改成功！');
+		}
 	    }
 	    redirect('user/change_pwd');
 	}
