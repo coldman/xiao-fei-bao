@@ -17,6 +17,18 @@ class MY_Controller extends CI_Controller
 	$data['media_root'] = site_url('static').'/';
 	$this->load->view($template, $data);
     }
+
+    function _params()
+    {
+	$params = array();
+	$data	= $this->input->post();
+	$page   = isset($data['page'])?$data['page']:1;
+	$params['limit']    = isset($data['pagesize'])?$data['pagesize']:20;
+	$params['offset']   = ($page-1) * $params['limit'];
+	$params['sortname'] = isset($data['sortname'])?$data['sortname']:'id';
+	$params['sortorder']= isset($data['sortorder'])?$data['sortorder']:'desc';
+	return $params;
+    }
 }
 
 ?>
