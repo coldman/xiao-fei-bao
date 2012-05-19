@@ -10,8 +10,8 @@
 class manage_model extends MY_Model
 {
     /**
-	 
-	 */    
+     
+     */    
     public function __construct()
     {
         parent::__construct();
@@ -24,11 +24,11 @@ class manage_model extends MY_Model
     public function get_user_by_username($username)
     {
         $query = $this->db->get_where('manage_users', array('user_name' => $username), 1);
-		
-		if($query->num_rows() == 1)
-			return $query->row_array();
-		
-		return FALSE;
+        
+        if($query->num_rows() == 1)
+            return $query->row_array();
+        
+        return FALSE;
     }
 
     /**
@@ -36,10 +36,10 @@ class manage_model extends MY_Model
      */
     function get_manage_by_id($id)
     {
-	$tb_name = 'manage_users';
-	$this->db->where('id', $id);
-	$result = $this->db->get($tb_name)->row_array();
-	return $result;
+    $tb_name = 'manage_users';
+    $this->db->where('id', $id);
+    $result = $this->db->get($tb_name)->row_array();
+    return $result;
     }
     
     /**
@@ -47,22 +47,22 @@ class manage_model extends MY_Model
      */
     function get_manage_grid_data($params=array())
     {
-	$result = array(
-	    'Total'=>0, 
-	    'Rows'=>array()
-	);
-	$tb_name = 'manage_users';
-	$this->db->where('role_type', 0);
-	$result['Total'] = $this->db->count_all_results($tb_name);
-	$this->db->where('role_type', 0);
-	if (array_key_exists('limit', $params) and $params['limit']>0)
-	{
-	    $offset = isset($params['offset'])?$params['offset']:0;
-	    $this->db->limit($params['limit'], $offset);
-	}
-	$result['Rows'] = $this->db->get($tb_name)->result();
+    $result = array(
+        'Total'=>0, 
+        'Rows'=>array()
+    );
+    $tb_name = 'manage_users';
+    $this->db->where('role_type', 0);
+    $result['Total'] = $this->db->count_all_results($tb_name);
+    $this->db->where('role_type', 0);
+    if (array_key_exists('limit', $params) and $params['limit']>0)
+    {
+        $offset = isset($params['offset'])?$params['offset']:0;
+        $this->db->limit($params['limit'], $offset);
+    }
+    $result['Rows'] = $this->db->get($tb_name)->result();
 
-	return $result;
+    return $result;
     }
 
     /**
@@ -70,145 +70,145 @@ class manage_model extends MY_Model
      */
     function save_manage($data)
     {
-	$tb_name = 'manage_users';
-	if (array_key_exists('id', $data)) 
-	{
-	    $this->db->where('id', $data['id']);
-	    $this->db->update($tb_name, $data);
-	    $id = $data['id'];
-	}
-	else 
-	{
-	    $this->db->insert($tb_name, $data);
-	    $id = $this->db->insert_id();
-	}
-	return $id;
+    $tb_name = 'manage_users';
+    if (array_key_exists('id', $data)) 
+    {
+        $this->db->where('id', $data['id']);
+        $this->db->update($tb_name, $data);
+        $id = $data['id'];
+    }
+    else 
+    {
+        $this->db->insert($tb_name, $data);
+        $id = $this->db->insert_id();
+    }
+    return $id;
     }
     
     /**
      * aquire all managers
      */
-	public function get_users_list($limit = 10, $offset = 0)
-	{
-		$this->db->from('manage_users');
-		if($limit > 0)
-			$this->db->limit($limit, $offset);
-		$this->db->order_by('username desc');
-	 	$query = $this->db->get();
-	 	
-	 	return $query->result();
-	}
+    public function get_users_list($limit = 10, $offset = 0)
+    {
+        $this->db->from('manage_users');
+        if($limit > 0)
+            $this->db->limit($limit, $offset);
+        $this->db->order_by('username desc');
+         $query = $this->db->get();
+         
+         return $query->result();
+    }
     
     public function get_users_by_addtime($begin_time, $end_time, $limit = 10, $offset = 0)
-	{
-		$this->db->from('manage_users');
+    {
+        $this->db->from('manage_users');
         
         $array = array('add_time >=' => $begin_time, 'add_time <=' => $end_time);
         $this->db->where($array);
         
-		if($limit > 0)
-			$this->db->limit($limit, $offset);
-		$this->db->order_by('username desc');
-	 	$query = $this->db->get();
-	 	
-	 	return $query->result();
-	}
+        if($limit > 0)
+            $this->db->limit($limit, $offset);
+        $this->db->order_by('username desc');
+         $query = $this->db->get();
+         
+         return $query->result();
+    }
     
     /**
-	 * add a manager
-	 * 
-	 * @access public
-	 * @param array - $manager manager info
-	 * @return boolean
-	 */
-	public function add_user($manager)
-	{
-		$this->db->insert('manage_users', $manager);
-		
-		return ($this->db->affected_rows() > 0) ? TRUE : FALSE;
-	}
+     * add a manager
+     * 
+     * @access public
+     * @param array - $manager manager info
+     * @return boolean
+     */
+    public function add_user($manager)
+    {
+        $this->db->insert('manage_users', $manager);
+        
+        return ($this->db->affected_rows() > 0) ? TRUE : FALSE;
+    }
     
     /**
-	 * modify manager info
-	 * 
-	 * @access public
-	 * @param int - $uid manager id
-	 * @param array - $username manager'name info
-	 * @return boolean
-	 */
-	public function update_user($uid, $username)
-	{
-		$this->db->where('user_id', $uid);
-		$this->db->update('user_name', $username);
-		
-		return ($this->db->affected_rows() > 0) ? TRUE : FALSE;
-	}
+     * modify manager info
+     * 
+     * @access public
+     * @param int - $uid manager id
+     * @param array - $username manager'name info
+     * @return boolean
+     */
+    public function update_user($uid, $username)
+    {
+        $this->db->where('user_id', $uid);
+        $this->db->update('user_name', $username);
+        
+        return ($this->db->affected_rows() > 0) ? TRUE : FALSE;
+    }
     
     /**
-	 * validate username and password is match
-	 * 
-	 * @access public
-	 * @param string - $username
-	 * @param string - $password
-	 * @return boolean
-	 */
-	public function validate_user($username, $password)
-	{
-		$query = $this->db->get_where('manage_users', array('user_name' => $username));
-		
-		if($query->num_rows() == 1)
-		{
-			$user = $query->row_array();
-			return ($password == $user['password']) ? $user : FALSE;
-		}
-		
-		return FALSE;
-	}
+     * validate username and password is match
+     * 
+     * @access public
+     * @param string - $username
+     * @param string - $password
+     * @return boolean
+     */
+    public function validate_user($username, $password)
+    {
+        $query = $this->db->get_where('manage_users', array('user_name' => $username));
+        
+        if($query->num_rows() == 1)
+        {
+            $user = $query->row_array();
+            return ($password == $user['password']) ? $user : FALSE;
+        }
+        
+        return FALSE;
+    }
     
     /*
     * 获取某个业务员名下的所有代理
     */
     function get_agent_grid_data($params)
     {
-	$result = array(
-	    'Total'=>0, 
-	    'Rows'=>array()
-	);
-	$tb_name = 'users';
-	if (array_key_exists('manage_id', $params))
-	{
-	    $this->db->where('manage_id', $params['manage_id']);
-	}
+    $result = array(
+        'Total'=>0, 
+        'Rows'=>array()
+    );
+    $tb_name = 'users';
+    if (array_key_exists('manage_id', $params))
+    {
+        $this->db->where('manage_id', $params['manage_id']);
+    }
     if (array_key_exists('is_agent', $params))
-	{
-	    $this->db->where('is_agent', $params['is_agent']);
-	}
-	$result['Total'] = $this->db->count_all_results($tb_name);
+    {
+        $this->db->where('is_agent', $params['is_agent']);
+    }
+    $result['Total'] = $this->db->count_all_results($tb_name);
     
     if (array_key_exists('select', $params))
     {
         $this->db->select($params['select']);
     }
-	if (array_key_exists('manage_id', $params))
-	{
-	    $this->db->where('manage_id', $params['manage_id']);
-	}
+    if (array_key_exists('manage_id', $params))
+    {
+        $this->db->where('manage_id', $params['manage_id']);
+    }
     if (array_key_exists('is_agent', $params))
-	{
-	    $this->db->where('is_agent', $params['is_agent']);
-	}
-	if (array_key_exists('limit', $params))
-	{
-	    $offset = isset($params['offset'])?$params['offset']:0;
-	    $this->db->limit($params['limit'], $offset);
-	}
-	if (array_key_exists('sortname', $params))
-	{
-	    $sortorder = isset($params['sortorder'])?$params['sortorder']:'desc';
-	    $this->db->order_by($params['sortname'], $params['sortname']);
-	}
-	$result['Rows'] = $this->db->get($tb_name)->result();
-	return $result;
+    {
+        $this->db->where('is_agent', $params['is_agent']);
+    }
+    if (array_key_exists('limit', $params))
+    {
+        $offset = isset($params['offset'])?$params['offset']:0;
+        $this->db->limit($params['limit'], $offset);
+    }
+    if (array_key_exists('sortname', $params))
+    {
+        $sortorder = isset($params['sortorder'])?$params['sortorder']:'desc';
+        $this->db->order_by($params['sortname'], $params['sortname']);
+    }
+    $result['Rows'] = $this->db->get($tb_name)->result();
+    return $result;
     }
 
     /*
@@ -239,8 +239,8 @@ class manage_model extends MY_Model
     * 获取未代理的省
     */
     public function get_unmarked_province()
-	{
-		
+    {
+        
         $sql = "SELECT * FROM kvke_region WHERE region_type=? AND 
                 region_id not in (SELECT province FROM kvke_users)";
         return $this->db->query($sql, array(1))->result();
@@ -251,8 +251,8 @@ class manage_model extends MY_Model
     * 获取未代理的市
     */
     public function get_unmarked_city($parent_id=FALSE)
-	{
-		if ($parent_id==FALSE)
+    {
+        if ($parent_id==FALSE)
         {
             $sql = "SELECT * FROM kvke_region WHERE region_type=? AND
                     region_id not in (SELECT city FROM kvke_users)";
@@ -264,14 +264,14 @@ class manage_model extends MY_Model
                 region_id not in (SELECT city FROM kvke_users where province=?)";
             return $this->db->query($sql, array(2, $parent_id, $parent_id))->result();
         }
-	}
+    }
     
     /*
     * 获取未代理的区
     */
     public function get_unmarked_district($parent_id=FALSE)
-	{
-		if ($parent_id==FALSE)
+    {
+        if ($parent_id==FALSE)
         {
             $sql = "SELECT * FROM kvke_region WHERE region_type=? AND
                     region_id not in (SELECT district FROM kvke_users)";
@@ -283,19 +283,19 @@ class manage_model extends MY_Model
                     region_id not in (SELECT district FROM kvke_users where city=?)";
             return $this->db->query($sql, array(3, $parent_id, $parent_id))->result();
         }
-	}
+    }
     /*
     * 获取商户出单数量
     */
     public function get_trader_orders($tradeid,$begin_time=FALSE,$end_time=FALSE)
-	{
-		
+    {
+        
         $sql = "SELECT count(*) FROM kvke_order_info WHERE user_id=? AND pay_time 
                 between ? AND ?";
 
         return $this->db->query($sql, array($tradeid, $begin_time, $end_time))->result();
         
-	}
+    }
     
     /*
     * 获取某代理商下所有商家数据
