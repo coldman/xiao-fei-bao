@@ -18,12 +18,12 @@ class Json extends MY_Controller
 
     function change_pwd()
     {
-	echo '修改密码';
+        echo '修改密码';
     }
 
     function info()
     {
-	echo '个人信息';
+        echo '个人信息';
     }
 
     function g_agent()
@@ -36,6 +36,7 @@ class Json extends MY_Controller
         }
         $params['manage_id'] = $manager['id'];
         $params['sortname']  = 'user_name';
+        $params['select'] = "user_name,real_name,email,sex,qq,msn,comp_phone,comp_name";
         $result = $this->manage_model->get_agent_grid_data($params);
         echo json_encode($result);
     }
@@ -44,6 +45,7 @@ class Json extends MY_Controller
     {
         $params  = $this->_params();
         $params['sortname']  = 'user_name';
+        $params['select'] = "user_name,real_name,email,sex,qq,msn,comp_phone,comp_name";
         $params['is_agent']  = 1;
         unset($params['limit']);
         $result = $this->manage_model->get_agent_grid_data($params);
