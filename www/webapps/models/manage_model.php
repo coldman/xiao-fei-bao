@@ -55,7 +55,7 @@ class manage_model extends MY_Model
 	$this->db->where('role_type', 0);
 	$result['Total'] = $this->db->count_all_results($tb_name);
 	$this->db->where('role_type', 0);
-	if (array_key_exists('limit', $params))
+	if (array_key_exists('limit', $params) and $params['limit']>0)
 	{
 	    $offset = isset($params['offset'])?$params['offset']:0;
 	    $this->db->limit($params['limit'], $offset);
@@ -91,7 +91,7 @@ class manage_model extends MY_Model
 	public function get_users_list($limit = 10, $offset = 0)
 	{
 		$this->db->from('manage_users');
-		if($limit != 'ALL')
+		if($limit > 0)
 			$this->db->limit($limit, $offset);
 		$this->db->order_by('username desc');
 	 	$query = $this->db->get();
@@ -106,7 +106,7 @@ class manage_model extends MY_Model
         $array = array('add_time >=' => $begin_time, 'add_time <=' => $end_time);
         $this->db->where($array);
         
-		if($limit != 'ALL')
+		if($limit > 0)
 			$this->db->limit($limit, $offset);
 		$this->db->order_by('username desc');
 	 	$query = $this->db->get();
@@ -184,7 +184,9 @@ class manage_model extends MY_Model
             
             $this->db->select("user_name,real_name,email,sex,qq,msn,comp_phone,comp_name");
             $this->db->where(array('manage_id' => $manager_id));
-            $this->db->limit($limit, $offset);
+            if ($limit > 0){
+                $this->db->limit($limit, $offset);
+            }
             $this->db->order_by("$sortname $sortorder");
             $result["Rows"] = $this->db->get("users")->result();
         }
@@ -216,22 +218,6 @@ class manage_model extends MY_Model
         return $this->db->get()->result();
     }
     
-    /*
-    * 获取代理列表
-    */
-    public function get_agent_list($limit = 10, $offset = 0)
-	{
-		
-        $this->db->select('user_id','user_name','is_agent','');
-        $array = array('is_agent'=>1);
-        $this->db->where($array);
-		if($limit != 'ALL')
-			$this->db->limit($limit, $offset);
-		$this->db->order_by('user_name desc');
-	 	$query = $this->db->get('users');
-	 	
-	 	return $query->result();
-	}
     
     /*
     * 获取未代理的省
@@ -296,10 +282,62 @@ class manage_model extends MY_Model
 	}
     
     /*
-    * 插入考核表
+    * 获取某代理商下所有商家数据
     */
-    //public function insert_assess_his
+    
+    public function get_traders_grid_data($params=array())
+    {
+        $result = array(
+            'Total'=>0, 
+            'Rows'=>array()
+        );
+       
+        
+        
+        if (!array_key_exists('manage_id')){
+            return $result;
+        }
+        
+        
+        $sql = "SELECT user_id,user_name,district 
+                WHERE district IN (SELECT district FROM kvke_users WHERE manage_id=?) ";
+        if (array_key_exists('limit')){
+            $sql = $sql." and limit=".$params['limit'];
+        }
+        
+        $result['Rows'] = $this->db->query($sql, array($manage_id))->result();
+        
+        return $result;
+    }
+    
+    /*
+    * 获取代理列表
+    */
+    public function get_agent_list_grid_data($params=array())
+    {
+        $tb_name = 'users';
+        $result = array('Total'=>0,
+                        'Rows'=>array()
+                        );
+                        
+        
+        $this->db->where('is_agent', 1);
+        $result['Total'] = $this->db->count_all_results($tb_name);
+        
+        $this->db->select('user_id,user_name,real_name,country,province,city,district');
+        
+        if (array_key_exists('limit',$params) and $params['limit'] > 0){
+            $offset = isset($params['offset'])?$params['offset']:0;
+            $this->db->limit($params['limit'], $offset);
+        }
+     
 
+        $this->db->order_by('user_name desc');
+        $result['Rows'] = $this->db->get($tb_name)->result();
+        
+        return $result;
+    }
+    
 
 }
 ?>
