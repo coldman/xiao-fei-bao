@@ -26,6 +26,11 @@ class User extends MY_Controller
 	$this->_template('info');
     }
 
+    function managers()
+    {
+	$this->_template('manager_list');
+    }
+
     function test()
     {
         $this->load->model("manage_model");
