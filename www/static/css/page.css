@@ -30,3 +30,7 @@ table.info td {
     padding:6px 2px 4px;
     border-bottom:1px dashed #DDDDDD;
 }
+
+.l-table-edit-td {
+    padding: 4px;
+}
