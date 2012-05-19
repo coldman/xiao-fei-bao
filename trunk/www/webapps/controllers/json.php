@@ -28,13 +28,14 @@ class Json extends MY_Controller
 
     function agents()
     {
-        
-        $manage_id = $this->session->userdata("manage");
-        if (!isset($manage_id)) {
-            echo("no login!");
+	$params  = $this->_params();
+        $manager = $this->session->userdata("manage");
+        if (!isset($manager)) {
+	    echo json_encode(array());
             return false;
         }
         
+	/*
         $limit = $this->input->get("pagesize");
         
         if (!$limit){
@@ -48,9 +49,12 @@ class Json extends MY_Controller
         $page = isset($data["page"])?$data["page"]:1;
         $sortname = isset($data["sortname"])?$data["sortname"]:"user_name";
         $offset = $limit*($page-1);
+	*/
+	$params['manage_id'] = $manager['id'];
+	$params['sortname']  = 'user_name';
+	$result = $this->manage_model->get_agent_grid_data($params);
         
-        
-        $result = $this->manage_model->get_agents_by_manager_id($manage_id["id"],$limit,$offset,$sortname,$sortorder);
+        //$result = $this->manage_model->get_agents_by_manager_id($manage_id["id"],$limit,$offset,$sortname,$sortorder);
         
         echo json_encode($result);
     }
