@@ -7,6 +7,7 @@ create table `kvke_manage_users` (
     `realname` varchar(40),
     `email` varchar(64) not null, 
     `phone` varchar(15), 
+    `sex` tinyint(1) not null default 0, 
     `add_time` timestamp not null default current_timestamp, 
     `last_login` timestamp, 
     `role_type` tinyint(2) not null default 0, 

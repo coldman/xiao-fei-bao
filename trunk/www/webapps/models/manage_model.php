@@ -30,6 +30,17 @@ class manage_model extends MY_Model
 		
 		return FALSE;
     }
+
+    /**
+     * Get manage by id
+     */
+    function get_manage_by_id($id)
+    {
+	$tb_name = 'manage_users';
+	$this->db->where('id', $id);
+	$result = $this->db->get($tb_name)->row_array();
+	return $result;
+    }
     
     /**
      * Get manage grid data
@@ -52,6 +63,26 @@ class manage_model extends MY_Model
 	$result['Rows'] = $this->db->get($tb_name)->result();
 
 	return $result;
+    }
+
+    /**
+     * Insert or update manager's info
+     */
+    function save_manage($data)
+    {
+	$tb_name = 'manage_users';
+	if (array_key_exists('id', $data)) 
+	{
+	    $this->db->where('id', $data['id']);
+	    $this->db->update($tb_name, $data);
+	    $id = $data['id'];
+	}
+	else 
+	{
+	    $this->db->insert($tb_name, $data);
+	    $id = $this->db->insert_id();
+	}
+	return $id;
     }
     
     /**
