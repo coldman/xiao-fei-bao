@@ -61,7 +61,12 @@ class User extends MY_Controller
 
     function add_manager()
     {
-	echo 'good';
+	$submitted = $this->input->post('submitted');
+	if ($submitted) 
+	{
+	    redirect('user/managers');
+	}
+	$this->_template('manager/add');
     }
 
     function test()
