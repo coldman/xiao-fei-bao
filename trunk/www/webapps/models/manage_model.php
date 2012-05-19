@@ -185,7 +185,10 @@ class manage_model extends MY_Model
 	}
 	$result['Total'] = $this->db->count_all_results($tb_name);
     
-    $this->db->select("user_name,real_name,email,sex,qq,msn,comp_phone,comp_name");
+    if (array_key_exists('select', $params))
+    {
+        $this->db->select($params['select']);
+    }
 	if (array_key_exists('manage_id', $params))
 	{
 	    $this->db->where('manage_id', $params['manage_id']);
@@ -310,7 +313,7 @@ class manage_model extends MY_Model
         
         $sql = "SELECT user_id,user_name,district 
                 WHERE district IN (SELECT district FROM kvke_users WHERE manage_id=?) ";
-        if (array_key_exists('limit', $params)){
+        if (array_key_exists('limit', $params) ){
             $sql = $sql." and limit=".$params['limit'];
         }
         
