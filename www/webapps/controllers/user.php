@@ -18,12 +18,31 @@ class User extends MY_Controller
 
     function change_pwd()
     {
+	$info	    = $this->session->userdata('manage');
+	$manager    = $this->manage_model->get_manage_by_id($info['id']);
+	$submitted  = $this->input->post('submitted');
+	if ($submitted) 
+	{
+	    $old_pwd = $this->input->post('old_pwd');
+	    $new_pwd = $this->input->post('new_pwd');
+	    if ($old_pwd != $manager['password']) 
+	    {
+		$this->session->set_flashdata('error', '原密码不正确，请重新输入！');
+	    }
+	    else
+	    {
+		$this->manage_model->save_manage(array('id'=>$manager['id'], 'password'=>md5($new_pwd)));
+	    }
+	    redirect('user/change_pwd');
+	}
 	$this->_template('pwd');
     }
 
     function info()
     {
-	$this->_template('info');
+	$manager = $this->session->userdata('manage');
+	$data['manager'] = $this->manage_model->get_manage_by_id($manager['id']);
+	$this->_template('info', $data);
     }
 
     function managers()

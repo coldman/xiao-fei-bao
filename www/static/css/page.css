@@ -1,11 +1,32 @@
 /**
- * Styles for manager system's pages.
- *
+ * Base styles for manage's pages.
+ * 
  * @Author	RobinHuang
  * @Version	1.0
+ * @Date	2012-05-19
  */
 
-body {
+body, div, ul, li, p, span, h1, h2, h3, h4, h5, h6, ol, img, a {
     margin:0; 
     padding:0;
+    border:0 none;
+}
+body {
+    font-size:12px; 
+    font-weight:normal; 
+    color:#333333;
+    font-family:宋体, Arial;
+}
+
+a {
+    cursor:pointer;
+}
+
+table.info {
+    width:100%;
+}
+
+table.info td {
+    padding:6px 2px 4px;
+    border-bottom:1px dashed #DDDDDD;
 }
