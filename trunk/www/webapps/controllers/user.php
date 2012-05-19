@@ -72,18 +72,13 @@ class User extends MY_Controller
     function test()
     {
         $this->load->model("manage_model");
+        #$this->load->model("trader_model");
         #$result = $this->manage_model->get_agent_list(10000);
         #result = $this->manage_model->get_agent_amt(14011);
         #$result = $this->manage_model->get_trader_orders(13952,0,2000000000000000);
         
-        $result = $this->manage_model->get_agents_by_manager_id(1);
-        // foreach ($result as $item)
-        // {
-            // print_r($item);
-            // #echo $item;
-        // }
-        //echo $result;
-        //print_r($result);
+        $result = $this->manage_model->get_agent_list(array('limit'=>2));
+        print_r($result);
     }
 }
     
