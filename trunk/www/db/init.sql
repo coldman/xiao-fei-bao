@@ -28,17 +28,31 @@ create table `kvke_assess_agent` (
 );
 
 
---kvke_agent
+--kvke_agents  自动执行统计表
 drop table if exists `kvke_agents`;
 create table `kvke_agents`(
     `id` int(11) unsigned not null auto_increment,
-    `cur_time` varchar2(6) not null default '000000',
     `agent_id` int(11) unsigned not null,
+    `cur_month` char(6) not null default '000000',
     `step1`   int(11) not null default 0,
     `step2`   int(11) not null default 0,
     `step3`   int(11) not null default 0,
     `step4`   int(11) not null default 0,
     `amount`  int(11) not null default 0,
+    `update_time` timestamp not null default current_timestamp, 
+    primary key (`id`)
+);
+
+--kvke_agents_plan  额度表
+drop table if exists `kvke_agents_plan`;
+create table `kvke_agents_plan`(
+    `id` int(11) unsigned not null auto_increment,
+    `agent_id` int(11) unsigned not null,
+    `step1`   int(11) not null default 0,
+    `step2`   int(11) not null default 0,
+    `step3`   int(11) not null default 0,
+    `step4`   int(11) not null default 0,
+    `update_time` timestamp not null default current_timestamp, 
     primary key (`id`)
 );
 

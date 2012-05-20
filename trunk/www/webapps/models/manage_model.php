@@ -23,7 +23,7 @@
  *15.bind_agents_to_manager     - Bind agents to manager
  *16.get_user_by_id             - 取某个用户(包括代理商)详细信息
  *17.get_trader_total_orders    - 获取商户出单数
- *
+ *18.get_agents_plan            - 获取代理商计划额度
  *
 
  
@@ -190,6 +190,17 @@ class manage_model extends MY_Model
                 limit $limit offset $offset";
         
        
+       $rows_array = $this->db->query($sql, array())->result();
+       
+       
+       foreach ($rows_array as $row)
+       {
+          $array_plan = $this->get_agents_plan($row->user_id);
+          $row->step1_plan = $array_plan['step1'];
+          $row->step3_plan = $array_plan['step2'];
+          $row->step3_plan = $array_plan['step3'];
+          $row->step4_plan = $array_plan['step4'];
+       } 
        $result['Rows'] = $this->db->query($sql, array())->result();
        return $result;
     }
@@ -402,6 +413,7 @@ class manage_model extends MY_Model
         //增加出单数
         $total_orders = $this->get_trader_total_orders($record->user_id);
         $record->total_orders = $total_orders['total_orders'];
+        
 	}
 	$result['Rows'] = $records;
             return $result;
@@ -451,6 +463,15 @@ class manage_model extends MY_Model
         
     }
     
+    
+    /*
+    * 获取代理商计划额度
+    */
+    function get_agents_plan($id)
+    {
+        $sql = "select step1, step2, step3, step4 from kvke_agents_plan where agent_id=$id";
+        return $this->db->query($sql)->row_array();
+    }
     
     
 
