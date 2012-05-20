@@ -6,6 +6,24 @@ function view_agent(id) {
     window.parent.addTab('view-agent', '查看代理商', "<?php echo site_url('analysis/view_agent');?>/"+id);
 }
 
+function show_result(a, p) {
+    var amount = 0;
+    var plan   = 0;
+    var style  = '';
+    if (a) {
+	var amount = a;
+    }
+    if (p) {
+	var plan = p;
+    }
+    if (amount < plan) {
+	style = 'color:#FF0000';
+    }
+    var s = '<span style="'+style+'">'+amount+'</span> | <span>'+plan+'</span>';
+    return s;
+	
+}
+
 $(function(){
     grid = $('#datagrid').ligerGrid({
 	checkbox: true, 
@@ -17,10 +35,22 @@ $(function(){
 		return s;
 	    }},
 	    {display:'公司', name:'comp_name', align:'left', width:'120' },
-	    {display:'1号-7号', name:'step1', align:'right', width:'100' },
-	    {display:'8号-14号', name:'step2', align:'right', width:'100' },
-	    {display:'15号-21号', name:'step3', align:'right', width:'100' },
-	    {display:'22号-月末', name:'step4', align:'right', width:'100' },
+	    {display:'1号-7号', name:'step1', align:'right', width:'100', render:function(value,index){
+		var s = show_result(value.step1, value.step1_plan);
+		return s;
+	    }},
+	    {display:'8号-14号', name:'step2', align:'right', width:'100', render:function(value,index){
+		var s = show_result(value.step2, value.step2_plan);
+		return s;
+	    }},
+	    {display:'15号-21号', name:'step3', align:'right', width:'100', render:function(value,index){
+		var s = show_result(value.step3, value.step3_plan);
+		return s;
+	    }},
+	    {display:'22号-月末', name:'step4', align:'right', width:'100', render:function(value,index){
+		var s = show_result(value.step4, value.step4_plan);
+		return s;
+	    }},
 	    {display:'当月营业额', name:'amount', align:'right', width:'80' },
 	    {display:'操作', name:'opt', align:'center', width:'100', render:function(value, index){
 		var v = '<span class="icon icon-view" onclick="view_agent('+value.user_id+');"></span>';
