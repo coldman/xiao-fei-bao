@@ -26,7 +26,7 @@ class Json extends MY_Controller
         echo '个人信息';
     }
 
-    function g_agent()
+    function g_agents()
     {
         $params  = $this->_params();
         $manager = $this->session->userdata("manage");

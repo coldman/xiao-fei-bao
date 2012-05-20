@@ -170,7 +170,7 @@ class manage_model extends MY_Model
             $sortorder = $params['sortorder'];
         }
        
-        $sql = "select T.user_name,T.real_name,T.province_name,T.city_name,T.district_name,T.comp_name,M.step1,M.step2,M.step3,M.step4,M.amount FROM
+        $sql = "select T.user_id, T.user_name,T.real_name,T.province_name,T.city_name,T.district_name,T.comp_name,M.step1,M.step2,M.step3,M.step4,M.amount FROM
                 (
                     select A.*,B.region_name as district_name FROM 
                     (select A.*,B.region_name as city_name FROM 
