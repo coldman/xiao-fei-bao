@@ -353,13 +353,11 @@ class manage_model extends MY_Model
             'Rows'=>array()
         );
        
-        if (!array_key_exists('manage_id', $params)){
-            return $result;
-        }
-        $manage_id = $params['manage_id'];
-        
 	$this->db->select('district');
-	$this->db->where('manage_id', $manage_id);
+	if (array_key_exists('manage_id', $params))
+	{
+	    $this->db->where('manage_id', $manage_id);
+	}    
 	$districts = $this->db->get($tb_name)->result_array();
 	$dis_list  = array();
 	foreach ($districts as $district)
