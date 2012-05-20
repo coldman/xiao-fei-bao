@@ -6,19 +6,8 @@
     <meta name="Descprition" content="" />
     <title>91消费宝业务员系统 - 登录</title>
     <script src="<?php echo $media_root.'js/jquery-1.7.2.min.js'; ?>" type="text/javascript"></script>
-    <link href="<?php echo $media_root.'css/ligerui-dialog.css'; ?>" rel="stylesheet" type="text/css" />
-    <link href="<?php echo $media_root.'css/dialog.css'; ?>" rel="stylesheet" type="text/css" />
-    <script src="<?php echo $media_root.'js/base.js'; ?>" type="text/javascript"></script>
-    <script src="<?php echo $media_root.'ligerDialog.js'; ?>" type="text/javascript"></script>
-    <script src="<?php echo $media_root.'js/common.js'; ?>" type="text/javascript"></script>
-    <script src="<?php echo $media_root.'js/LG.js'; ?>" type="text/javascript"></script>
     <link href="<?php echo $media_root.'css/login.css'; ?>" rel="stylesheet" type="text/css" />
     <script type="text/javascript">
-        /* var FromUrl = getQueryStringByName("FromUrl");
-        if (!FromUrl)
-        {
-            FromUrl = encodeURIComponent("index.aspx");
-        } */
         $(function ()
         {
             $(".login-text").focus(function ()
@@ -34,66 +23,36 @@
                 if (e.keyCode == 13)
                 {
                     dologin();
+		    return false;
                 }
             });
 
             $("#btnLogin").click(function ()
             {
                 dologin();
+		return false;
             });
 
 
             function dologin()
             {
-                var username = $("#txtUsername").val();
-                var password = $("#txtPassword").val();
+		$('.msg1').html('');
+		$('.msg2').html('');
+		var username = $('#username').val();
+		var password = $('#password').val();
                 if (username == "")
                 {
-                    alert('账号不能为空!');
-                    $("#txtUsername").focus();
-                    return;
+		    $('.msg1').html('帐号不能为空！').css('color', '#FF0000');
+                    $("#username").focus();
+                    return false;
                 }
                 if (password == "")
                 {
-                    alert('密码不能为空!');
-                    $("#txtPassword").focus();
-                    return;
+                    $('.msg2').html('密码不能为空！').css('color', '#FF0000');
+                    $("#password").focus();
+                    return false;
                 }
-                $.ajax({
-                    type: 'post', cache: false, dataType: 'json',
-                    url: 'handler/validate.ashx',
-                    data: [
-                    { name: 'Action', value: 'Login' },
-                    { name: 'username', value: username },
-                    { name: 'password', value: password }
-                    ],
-                    success: function (result)
-                    {
-                        if (!result)
-                        {
-                            alert('登陆失败,账号或密码有误!');
-                            $("#txtUsername").focus();
-                            return;
-                        } else
-                        {
-                            location.href = decodeURIComponent(FromUrl);
-                        }
-                    },
-                    error: function ()
-                    {
-                        alert('发送系统错误,请与系统管理员联系!');
-                    },
-                    beforeSend: function ()
-                    {
-                        $.ligerDialog.waitting("正在登陆中,请稍后...");
-                        $("#btnLogin").attr("disabled", true);
-                    },
-                    complete: function ()
-                    {
-                        $.ligerDialog.closeWaitting();
-                        $("#btnLogin").attr("disabled", false);
-                    }
-                });
+		$('#login_form').submit();
             }
         });
     </script>
@@ -108,18 +67,21 @@
                 <div class="panel-c-l">
                    <form id="login_form" name="login_form" action="" method="post">
                     <table cellpadding="0" cellspacing="0">
-                        <tbody>
-                         <tr>
-                            <td align="left" colspan="2"> 
-                             <h3>业务员系统账号登陆</h3>
-
-                            </td>
-                            </tr> 
+			<tbody>
+			    <tr>
+				<td align="left" colspan="3"> 
+				    <h3>业务员系统账号登陆</h3>
+				</td>
+			    </tr> 
                             <tr>
-                            <td align="right">账号：</td><td align="left"><input type="text" name="username" id="username" class="login-text" value="" /></td>
+				<td align="right">账号：</td>
+				<td align="left"><input type="text" name="username" id="username" class="login-text" value="" /></td>
+				<td align="left"><div class="msg1"></div></td>
                             </tr>
                             <tr>
-                            <td align="right">密码：</td><td align="left"><input type="password" name="password" id="password" class="login-text" value="" /></td>
+				<td align="right">密码：</td>
+				<td align="left"><input type="password" name="password" id="password" class="login-text" value="" /></td>
+				<td align="left"><div class="msg2"></div></td>
                             </tr> 
                             <!--<tr>
                             <td align="right">验证码：</td><td align="left"><text type="check" name="captcha" id="captacha" class="login-text" value="ABCDEF" /></td>
