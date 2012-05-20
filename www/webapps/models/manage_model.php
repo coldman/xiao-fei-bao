@@ -206,7 +206,7 @@ class manage_model extends MY_Model
           $row->step3 = $row->step3/100.00;
           $row->step4 = $row->step4/100.00;
        } 
-       $result['Rows'] = $this->db->query($sql, array())->result();
+       $result['Rows'] = $rows_array;
        return $result;
     }
     
