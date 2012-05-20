@@ -379,7 +379,7 @@ class manage_model extends MY_Model
 	$this->db->where('is_agent = 0');
 	$result['Total'] = $this->db->count_all_results($tb_name);
 
-	$this->db->select('user_id, user_name, real_name, province, city, district');
+	$this->db->select('user_id, user_name, real_name, province, city, district,comp_name');
 	$this->db->where_in('district', $dis_list);
 	$this->db->where('is_agent', 0);
 	if (array_key_exists('limit', $params) and $params['limit'] > 0)
