@@ -243,23 +243,11 @@ class manage_model extends MY_Model
     /**
      * 获取某个代理
      */
-    function get_agent_by_id($params=array())
+    function get_agent_by_id($id)
     {
-        $result = array(
-        'Total'=>0, 
-        'Rows'=>array()
-        );
         $tb_name = 'users';
-        if (!array_key_exists('agent_id', $params))
-        {
-            return $result;
-        }
-        $this->db->where('user_id', $params['agent_id']);
-        $result['Total'] = $this->db->count_all_results($tb_name);
-        
-        $this->db->where('user_id', $params['agent_id']);
-        $result['Rows'] = $this->db->get($tb_name)->result();
-
+        $this->db->where('user_id', $id);
+        $result = $this->db->get($tb_name)->row();
         return $result;
     }
 
