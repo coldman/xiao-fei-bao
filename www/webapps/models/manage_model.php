@@ -184,8 +184,8 @@ class manage_model extends MY_Model
                      from kvke_users a left join kvke_region b on a.province=b.region_id 
                      where $where) A LEFT JOIN kvke_region B on A.city=B.region_id
                 ) A LEFT JOIN kvke_region B on A.district=B.region_id
-                ) T, kvke_agents M
-                where T.user_id=M.agent_id
+                ) T
+                LEFT JOIN kvke_agents M ON T.user_id=M.agent_id
                 order by T.$sortname $sortorder
                 limit $limit offset $offset";
         
