@@ -38,7 +38,12 @@ class Analysis extends MY_Controller
     {
 	$this->_template('trader/list');
     }
-
+    
+    function view_trader($id)
+    {
+	$data['trader']	= $this->manage_model->get_user_by_id($id);
+	$this->_template('trader/view', $data);
+    }
 }
 
 ?>
