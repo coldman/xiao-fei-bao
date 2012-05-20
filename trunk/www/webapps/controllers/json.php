@@ -60,6 +60,21 @@ class Json extends MY_Controller
         echo json_encode($result);
     }
     
+    function g_traders()
+    {
+        $params = $this->_params();
+        
+        $manager = $this->session->userdata("manage");
+        if (!isset($manager)) {
+            echo json_encode(array());
+            return false;
+        }
+        $params['manage_id'] = $manager['id'];
+        
+        $result = $this->manage_model->get_traders_grid_data($params);
+        echo json_encode($result);
+    }
+    
     
 }
     
