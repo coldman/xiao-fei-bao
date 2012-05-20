@@ -42,6 +42,12 @@ $(function(){
 		    </td>
 		</tr>
 		<tr>
+		    <td align="right" class="l-table-edit-td">区域代理人</td>
+		    <td align="left" class="l-table-edit-td">
+			sss
+		    </td>
+		</tr>
+		<tr>
 		    <td></td>
 		    <td style="padding:8px 4px;">
 			<input type="hidden" name="submitted" value="pwd" />
