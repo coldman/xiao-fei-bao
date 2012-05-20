@@ -29,9 +29,10 @@ create table `kvke_assess_agent` (
 
 
 --kvke_agent
-drop table if exists `kvke_agent`;
-create table `kvke_agent`(
+drop table if exists `kvke_agents`;
+create table `kvke_agents`(
     `id` int(11) unsigned not null auto_increment,
+    `cur_time` varchar2(6) not null default '000000',
     `agent_id` int(11) unsigned not null,
     `step1`   int(11) not null default 0,
     `step2`   int(11) not null default 0,
@@ -42,7 +43,7 @@ create table `kvke_agent`(
 );
 
 -- init kvke_agent table
---insert into kvke_agent (agent_id) values (select user_id from kvke_users where is_agent=1);
+insert into kvke_agent (agent_id) values select user_id from kvke_users where is_agent=1;
 
 
 
