@@ -196,10 +196,15 @@ class manage_model extends MY_Model
        foreach ($rows_array as $row)
        {
           $array_plan = $this->get_agents_plan($row->user_id);
-          $row->step1_plan = $array_plan['step1'];
-          $row->step3_plan = $array_plan['step2'];
-          $row->step3_plan = $array_plan['step3'];
-          $row->step4_plan = $array_plan['step4'];
+          $row->step1_plan = $array_plan['step1']/100.0;
+          $row->step3_plan = $array_plan['step2']/100.0;
+          $row->step3_plan = $array_plan['step3']/100.0;
+          $row->step4_plan = $array_plan['step4']/100.0;
+          
+          $row->step1 = $row->step1/100.00;
+          $row->step2 = $row->step2/100.00;
+          $row->step3 = $row->step3/100.00;
+          $row->step4 = $row->step4/100.00;
        } 
        $result['Rows'] = $this->db->query($sql, array())->result();
        return $result;
