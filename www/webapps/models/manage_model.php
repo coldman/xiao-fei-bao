@@ -197,7 +197,7 @@ class manage_model extends MY_Model
        {
           $array_plan = $this->get_agents_plan($row->user_id);
           $row->step1_plan = $array_plan['step1']/100.0;
-          $row->step3_plan = $array_plan['step2']/100.0;
+          $row->step2_plan = $array_plan['step2']/100.0;
           $row->step3_plan = $array_plan['step3']/100.0;
           $row->step4_plan = $array_plan['step4']/100.0;
           
