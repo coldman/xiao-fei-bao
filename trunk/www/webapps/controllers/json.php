@@ -34,7 +34,10 @@ class Json extends MY_Controller
             echo json_encode(array());
             return false;
         }
-        $params['manage_id'] = $manager['id'];
+	if ($manager['role_type'] == 0)
+	{
+	    $params['manage_id'] = $manager['id'];  
+	}
         $params['sortname']  = 'user_name';
         
         $result = $this->manage_model->get_agent_grid_data($params);
