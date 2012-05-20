@@ -37,6 +37,7 @@ create table `kvke_agent`(
     `step2`   int(11) not null default 0,
     `step3`   int(11) not null default 0,
     `step4`   int(11) not null default 0,
+    `amount`  int(11) not null default 0,
     primary key (`id`)
 );
 
