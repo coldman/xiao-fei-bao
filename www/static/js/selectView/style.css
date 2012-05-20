@@ -6,47 +6,6 @@
  *********** 声明结束 ***********
  *
  */
-body{
-	margin: 4px;
-	padding: 0;
-	font-size: 12px;
-	font-family: tahoma, arial;
-	background: #fff;
-}
-
-a, a:link, a:visited{
-	color: #03c;
-	text-decoration: none;
-}
-
-a:hover{
-	color: #c00;
-}
-
-p{
-	margin: 10px 0;
-	padding: 0;
-}
-
-pre{
-	padding: 4px;
-	border: 1px solid #99c;
-	background: #eee;
-}
-
-h1{
-	margin: 18px 12px;
-	font-size: 25px;
-}
-
-table{
-	border-collapse: collapse;
-}
-th, td{
-	padding: 3px;
-	border: 1px solid #999;
-}
-
 .textbox{
 	padding: 1px;
 	border: 1px solid #bbb;
@@ -220,7 +179,8 @@ th, td{
 }
 .SelectorView .selector_table .src,
 .SelectorView .selector_table .dst{
-	width: 50%;
+	width: 400px; 
+	padding-right:10px;
 }
 .TableView a, .TableView a:link, .TableView a:visited{
 	color: #36f;

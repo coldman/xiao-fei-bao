@@ -366,22 +366,50 @@ class manage_model extends MY_Model
         }
         $manage_id = $params['manage_id'];
         
-        
-        $limit = 10;
-        $offset = 0;
-        if (array_key_exists('limit', $params) and $limit > 0 ){
-            $limit = (int)$params['limit'];
-            $offset = isset($params['offset'])?(int)$params['offset']:0;
-        } 
-        
-        $result['Rows'] = $this->db->get($tb_name)->result();
-        
-        $sql = "SELECT user_id,user_name,real_name,province,city,district FROM kvke_users
-                WHERE district IN (SELECT district FROM kvke_users WHERE manage_id=$manage_id) 
-                limit $limit offset $offset";
-        
-        $result['Rows'] = $this->db->query($sql, array($manage_id))->result();
-        $result['Total'] = $this->db->count_all_results($tb_name);
+	$this->db->select('district');
+	$this->db->where('manage_id', $manage_id);
+	$districts = $this->db->get($tb_name)->result_array();
+	$dis_list  = array();
+	foreach ($districts as $district)
+	{
+	    array_push($dis_list, $district['district']);
+	}
+
+	$this->db->where_in('district', $dis_list);
+	$this->db->where('is_agent = 0');
+	$result['Total'] = $this->db->count_all_results($tb_name);
+
+	$this->db->select('user_id, user_name, real_name, province, city, district');
+	$this->db->where_in('district', $dis_list);
+	$this->db->where('is_agent', 0);
+	if (array_key_exists('limit', $params) and $params['limit'] > 0)
+	{
+	    $offset = isset($params['offset'])?$params['offset']:0;
+	    $this->db->limit($params['limit'], $offset);
+	}
+	$records = $this->db->get($tb_name)->result();
+	$region_ids = array();
+	foreach ($records as $record)
+	{
+	    array_push($region_ids, $record->province);
+	    array_push($region_ids, $record->city);
+	    array_push($region_ids, $record->district);
+	}
+	$this->db->select('region_id, region_name');
+	$this->db->where_in('region_id', $region_ids);
+	$regions = $this->db->get('region')->result();
+	$region_dict = array('0'=>'');
+	foreach ($regions as $region)
+	{
+	    $region_dict[$region->region_id] = $region->region_name;
+	}
+	foreach ($records as $record)
+	{
+	    $record->province = $region_dict[$record->province];
+	    $record->city     = $region_dict[$record->city];
+	    $record->district = $region_dict[$record->district];
+	}
+	$result['Rows'] = $records;
         
         return $result;
     }

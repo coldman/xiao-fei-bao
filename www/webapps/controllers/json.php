@@ -72,7 +72,7 @@ class Json extends MY_Controller
         $params['manage_id'] = $manager['id'];
         
         $result = $this->manage_model->get_traders_grid_data($params);
-        echo json_encode($result);
+	echo json_encode($result);
     }
     
     
