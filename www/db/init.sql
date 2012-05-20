@@ -27,18 +27,21 @@ create table `kvke_assess_agent` (
     primary key (`id`)
 );
 
---kvke_agent_aeesee
-drop table if exists `kvke_agent_assess`;
-create table `kvke_agent_assess`(
+
+--kvke_agent
+drop table if exists `kvke_agent`;
+create table `kvke_agent`(
     `id` int(11) unsigned not null auto_increment,
     `agent_id` int(11) unsigned not null,
-    `assess_month` varchar2 default null,
     `step1`   int(11) not null default 0,
-    `insert_time` timestamp not null default current_timestamp,
-    `status`  tinyint(2) not null default 0,    -- 0:no pass   1:passed
+    `step2`   int(11) not null default 0,
+    `step3`   int(11) not null default 0,
+    `step4`   int(11) not null default 0,
     primary key (`id`)
 );
 
+-- init kvke_agent table
+--insert into kvke_agent (agent_id) values (select user_id from kvke_users where is_agent=1);
 
 
 
