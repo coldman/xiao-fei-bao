@@ -45,7 +45,7 @@ $(function(){
 		</tr>
 		<tr>
 		    <td align="right" class="l-table-edit-td">密码</td>
-		    <td align="left" class="l-table-edit-td"><input type="text" name="realname" id="realname" value="" ltype="password" /></td>
+		    <td align="left" class="l-table-edit-td"><input type="password" name="password" id="realname" value="" ltype="password" /></td>
 		</tr>
 		<tr>
 		    <td align="right" class="l-table-edit-td">确认密码</td>
@@ -66,6 +66,12 @@ $(function(){
 		    </td>
 		</tr>
 		<tr>
+		    <td align="right" class="l-table-edit-td">手机</td>
+		    <td align="left" class="l-table-edit-td">
+			<input type="text" name="phone" id="phone" value="" ltype="text" />
+		    </td>
+		</tr>
+		<tr style="display:none;">
 		    <td align="right" class="l-table-edit-td">区域代理人</td>
 		    <td align="left" class="l-table-edit-td">
 			<div id="sel_view"></div>
