@@ -251,7 +251,7 @@ class manage_model extends MY_Model
     {
         $tb_name = 'users';
         $this->db->where('user_id', $id);
-        $result = $this->db->get($tb_name)->row();
+        $result = $this->db->get($tb_name)->row_array();
         return $result;
     }
 

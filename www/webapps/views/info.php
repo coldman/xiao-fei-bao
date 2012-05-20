@@ -17,7 +17,7 @@
 	    </tr>
 	    <tr>
 		<td>性别</td>
-		<td><?php if (isset($manager['sex'])){if ($manager['sex']==1){echo 'male';}elseif ($manager['sex']==2){echo 'female';}}?></td>
+		<td><?php if (isset($manager['sex'])){if ($manager['sex']==1){echo '男';}elseif ($manager['sex']==2){echo '女';}}?></td>
 	    </tr>
 	    <tr>
 		<td>创建日期</td>
