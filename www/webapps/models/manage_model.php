@@ -21,8 +21,8 @@
  *13.get_trader_orders          - 获取商户出单数量
  *14.get_traders_grid_data      - 获取某代理商下所有商家数据
  *15.bind_agents_to_manager     - Bind agents to manager
- *16.get_user_by_id             -取某个用户(包括代理商)详细信息
- *
+ *16.get_user_by_id             - 取某个用户(包括代理商)详细信息
+ *17.get_trader_total_orders    - 获取商户出单数
  *
  *
 
@@ -400,10 +400,13 @@ class manage_model extends MY_Model
 	    $record->province = $region_dict[$record->province];
 	    $record->city     = $region_dict[$record->city];
 	    $record->district = $region_dict[$record->district];
+        
+        //增加出单数
+        $total_orders = $this->get_trader_total_orders($record->user_id);
+        $record->total_orders = $total_orders['total_orders'];
 	}
 	$result['Rows'] = $records;
-        
-        return $result;
+            return $result;
     }
     
     /**
@@ -437,6 +440,20 @@ class manage_model extends MY_Model
         $result = $this->db->get($tb_name)->row_array();
         return $result;
     }
+    
+    /*
+    * 获取商户出单数
+    */
+    function get_trader_total_orders($id, $begin_time=0, $end_time=200000000000)
+    {
+        
+        $sql = "select count(*) as total_orders from kvke_order_info 
+                where user_id=$id and pay_time between $begin_time and $end_time";
+        return $this->db->query($sql)->row_array();
+        
+    }
+    
+    
     
 
 }
