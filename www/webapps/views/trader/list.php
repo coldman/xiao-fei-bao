@@ -1,7 +1,11 @@
-<?php include('header.php');?>
+<?php $this->load->view('header');?>
 
 <script type="text/javascript">
 var grid = null;
+function view_trader(id) {
+    window.parent.addTab('view-trader', '查看商家', "<?php echo site_url('analysis/view_trader');?>/"+id);
+}
+
 $(function(){
     grid = $('#datagrid').ligerGrid({
 	checkbox: true, 
@@ -9,10 +13,15 @@ $(function(){
 	    {display:'用户名', name:'user_name', align:'left', width:'100'}, 
 	    {display:'真实姓名', name:'real_name', align:'left', width:'100'}, 
 	    {display:'区域', name:'area', align:'left', width:'150', render:function(value,index){
-            var s = value.province + '-' + value.city + '-' + value.district;
-            return s;
-        }},
-        {display:'公司', name:'comp_name', align:'left', width:'100' },
+		var s = value.province + '-' + value.city + '-' + value.district;
+		return s;
+	    }},
+	    {display:'公司', name:'comp_name', align:'left', width:'100' },
+	    {display:'出单数', name:'total_orders', align:'left', width:'100'}, 
+	    {display:'操作', name:'opt', align:'center', width:'100', render:function(value, index){
+		var v = '<span class="icon icon-view" onclick="view_trader('+value.user_id+');"></span>';
+		return v;
+	    }}
 	], 
 	dataAction:'server', 
 	pageSize:20, 
@@ -29,4 +38,4 @@ $(function(){
 
 <div id="datagrid" style="margin:0; padding:0; border:0 none;"></div>
 
-<?php include('footer.php');?>
+<?php $this->load->view('footer');?>
