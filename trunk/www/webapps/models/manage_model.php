@@ -4,7 +4,29 @@
  *
  *
  * @author  zhangxk <zxk0610@gmail.com>
- * @link 
+ * @link
+ *
+ *1.get_manage_by_id            - 获取某个业务员
+ *2.get_manage_grid_data        - Get manage grid data
+ *3.save_manage                 - Insert or update manager's info
+ *4.add_user                    - add a manager
+ *5.update_user                 - modify manager info
+ *6.validate_user               - validate username and password is match
+ *7.get_agent_grid_data         - 获取某个业务员名下的所有代理
+ *8.get_agent_by_id             - 取某个业务员名下的所有代理
+ *9.get_agent_amt               - 获取代理营业额
+ *10.get_unmarked_province      - 获取未代理的省
+ *11.get_unmarked_city          - 获取未代理的市
+ *12.get_unmarked_district      - 获获取未代理的区
+ *13.get_trader_orders          - 获取商户出单数量
+ *14.get_traders_grid_data      - 获取某代理商下所有商家数据
+ *15.bind_agents_to_manager     - Bind agents to manager
+ *
+ *
+ *
+ *
+
+ 
  */
 
 class manage_model extends MY_Model
@@ -16,30 +38,17 @@ class manage_model extends MY_Model
     {
         parent::__construct();
     }
+    
 
     /**
-     * aquire user info by username
-     */
-
-    public function get_user_by_username($username)
-    {
-        $query = $this->db->get_where('manage_users', array('user_name' => $username), 1);
-        
-        if($query->num_rows() == 1)
-            return $query->row_array();
-        
-        return FALSE;
-    }
-
-    /**
-     * Get manage by id
+     * 获取某个业务员
      */
     function get_manage_by_id($id)
     {
-    $tb_name = 'manage_users';
-    $this->db->where('id', $id);
-    $result = $this->db->get($tb_name)->row_array();
-    return $result;
+        $tb_name = 'manage_users';
+        $this->db->where('id', $id);
+        $result = $this->db->get($tb_name)->row_array();
+        return $result;
     }
     
     /**
@@ -85,41 +94,9 @@ class manage_model extends MY_Model
     return $id;
     }
     
-    /**
-     * aquire all managers
-     */
-    public function get_users_list($limit = 10, $offset = 0)
-    {
-        $this->db->from('manage_users');
-        if($limit > 0)
-            $this->db->limit($limit, $offset);
-        $this->db->order_by('username desc');
-         $query = $this->db->get();
-         
-         return $query->result();
-    }
-    
-    public function get_users_by_addtime($begin_time, $end_time, $limit = 10, $offset = 0)
-    {
-        $this->db->from('manage_users');
-        
-        $array = array('add_time >=' => $begin_time, 'add_time <=' => $end_time);
-        $this->db->where($array);
-        
-        if($limit > 0)
-            $this->db->limit($limit, $offset);
-        $this->db->order_by('username desc');
-         $query = $this->db->get();
-         
-         return $query->result();
-    }
     
     /**
      * add a manager
-     * 
-     * @access public
-     * @param array - $manager manager info
-     * @return boolean
      */
     public function add_user($manager)
     {
@@ -130,11 +107,6 @@ class manage_model extends MY_Model
     
     /**
      * modify manager info
-     * 
-     * @access public
-     * @param int - $uid manager id
-     * @param array - $username manager'name info
-     * @return boolean
      */
     public function update_user($uid, $username)
     {
@@ -146,11 +118,6 @@ class manage_model extends MY_Model
     
     /**
      * validate username and password is match
-     * 
-     * @access public
-     * @param string - $username
-     * @param string - $password
-     * @return boolean
      */
     public function validate_user($username, $password)
     {
@@ -170,45 +137,130 @@ class manage_model extends MY_Model
     */
     function get_agent_grid_data($params)
     {
-    $result = array(
+        $result = array(
+            'Total'=>0, 
+            'Rows'=>array()
+        );
+        
+        $manage_id = $params['manage_id'];
+        $tb_name = 'kvke_users';
+        $this->db->where('is_agent',1);
+        $this->db->where('manage_id',$params['manage_id']);
+        
+        
+        $result['Total'] =   $this->db->count_all_results($tb_name);  //代理商个数
+        
+        $limit = 0;
+        $offset = 0;
+        $sortname = 'user_name';
+        $sortorder = 'desc';
+        if (array_key_exists('limit', $params))
+        {
+            $offset = isset($params['offset'])?(int)$params['offset']:0;
+            $limit = (int)$params['limit'];
+        }
+        
+        if (array_key_exists('sortname', $params))
+        {
+            $sortname = $params['sortname'];
+        }
+        
+        if (array_key_exists('sortorder', $params))
+        {
+            $sortorder = $params['sortorder'];
+        }
+       
+        $sql = "select T.user_name,T.real_name,T.province_name,T.city_name,T.district_name,T.comp_name,M.step1,M.step2,M.step3,M.step4,M.amount FROM
+                (
+                    select A.*,B.region_name as district_name FROM 
+                    (select A.*,B.region_name as city_name FROM 
+                    (select a.user_id,a.user_name,a.real_name,a.province,a.city,a.district,
+                     a.comp_name,a.manage_id,b.region_name as province_name 
+                     from kvke_users a left join kvke_region b on a.province=b.region_id 
+                     where a.is_agent=1 and a.manage_id=$manage_id) A LEFT JOIN kvke_region B on A.city=B.region_id
+                ) A LEFT JOIN kvke_region B on A.district=B.region_id
+                ) T, kvke_agents M
+                where T.user_id=M.agent_id
+                order by T.$sortname $sortorder
+                limit $limit offset $offset";
+        
+       
+       $result['Rows'] = $this->db->query($sql, array())->result();
+       return $result;
+    }
+    
+    
+    
+    
+    /*
+    * 获取某个业务员名下的所有代理
+    */
+    /*
+    function get_agent_grid_data($params)
+    {
+        $result = array(
+            'Total'=>0, 
+            'Rows'=>array()
+        );
+        $tb_name = 'users';
+        if (array_key_exists('manage_id', $params))
+        {
+            $this->db->where('manage_id', $params['manage_id']);
+        }
+        if (array_key_exists('is_agent', $params))
+        {
+            $this->db->where('is_agent', $params['is_agent']);
+        }
+        $result['Total'] = $this->db->count_all_results($tb_name);
+        
+        if (array_key_exists('select', $params))
+        {
+            $this->db->select($params['select']);
+        }
+        if (array_key_exists('manage_id', $params))
+        {
+            $this->db->where('manage_id', $params['manage_id']);
+        }
+        if (array_key_exists('is_agent', $params))
+        {
+            $this->db->where('is_agent', $params['is_agent']);
+        }
+        if (array_key_exists('limit', $params))
+        {
+            $offset = isset($params['offset'])?$params['offset']:0;
+            $this->db->limit($params['limit'], $offset);
+        }
+        if (array_key_exists('sortname', $params))
+        {
+            $sortorder = isset($params['sortorder'])?$params['sortorder']:'desc';
+            $this->db->order_by($params['sortname'], $params['sortname']);
+        }
+        $result['Rows'] = $this->db->get($tb_name)->result();
+        return $result;
+    }
+    */
+    
+    /**
+     * 获取某个代理
+     */
+    function get_agent_by_id($params=array())
+    {
+        $result = array(
         'Total'=>0, 
         'Rows'=>array()
-    );
-    $tb_name = 'users';
-    if (array_key_exists('manage_id', $params))
-    {
-        $this->db->where('manage_id', $params['manage_id']);
-    }
-    if (array_key_exists('is_agent', $params))
-    {
-        $this->db->where('is_agent', $params['is_agent']);
-    }
-    $result['Total'] = $this->db->count_all_results($tb_name);
-    
-    if (array_key_exists('select', $params))
-    {
-        $this->db->select($params['select']);
-    }
-    if (array_key_exists('manage_id', $params))
-    {
-        $this->db->where('manage_id', $params['manage_id']);
-    }
-    if (array_key_exists('is_agent', $params))
-    {
-        $this->db->where('is_agent', $params['is_agent']);
-    }
-    if (array_key_exists('limit', $params))
-    {
-        $offset = isset($params['offset'])?$params['offset']:0;
-        $this->db->limit($params['limit'], $offset);
-    }
-    if (array_key_exists('sortname', $params))
-    {
-        $sortorder = isset($params['sortorder'])?$params['sortorder']:'desc';
-        $this->db->order_by($params['sortname'], $params['sortname']);
-    }
-    $result['Rows'] = $this->db->get($tb_name)->result();
-    return $result;
+        );
+        $tb_name = 'users';
+        if (!array_key_exists('agent_id', $params))
+        {
+            return $result;
+        }
+        $this->db->where('user_id', $params['agent_id']);
+        $result['Total'] = $this->db->count_all_results($tb_name);
+        
+        $this->db->where('user_id', $params['agent_id']);
+        $result['Rows'] = $this->db->get($tb_name)->result();
+
+        return $result;
     }
 
     /*
@@ -298,7 +350,7 @@ class manage_model extends MY_Model
     }
     
     /*
-    * 获取某代理商下所有商家数据
+    * 获取某业务员下所有商家数据
     */
     public function get_traders_grid_data($params=array())
     {
@@ -310,12 +362,19 @@ class manage_model extends MY_Model
         if (!array_key_exists('manage_id', $params)){
             return $result;
         }
+        $manage_id = $params['manage_id'];
         
-        $sql = "SELECT user_id,user_name,district 
-                WHERE district IN (SELECT district FROM kvke_users WHERE manage_id=?) ";
-        if (array_key_exists('limit', $params) ){
-            $sql = $sql." and limit=".$params['limit'];
-        }
+        $limit = 10;
+        $offset = 0;
+        if (array_key_exists('limit', $params) and $limit > 0 ){
+            $limit = (int)$params['limit'];
+            $offset = isset($params['offset'])?(int)$params['offset']:0;
+        } 
+        
+        
+        $sql = "SELECT user_id,user_name,real_name,province,city,district FROM kvke_users
+                WHERE district IN (SELECT district FROM kvke_users WHERE manage_id=$manage_id) 
+                limit $limit offset $offset";
         
         $result['Rows'] = $this->db->query($sql, array($manage_id))->result();
         
@@ -327,11 +386,11 @@ class manage_model extends MY_Model
      */
     function bind_agents_to_manager($manager_id, $agents=array())
     {
-	$tb_name = 'users';
-	$this->db->where('is_agent', 1);
-	$this->db->where_in('user_id', $agents);
-	$this->db->update($tb_name, array('manage_id'=>$manager_id));
-	return true;
+        $tb_name = 'users';
+        $this->db->where('is_agent', 1);
+        $this->db->where_in('user_id', $agents);
+        $this->db->update($tb_name, array('manage_id'=>$manager_id));
+        return true;
     }
    
     

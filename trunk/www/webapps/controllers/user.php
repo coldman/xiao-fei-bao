@@ -87,7 +87,7 @@ class User extends MY_Controller
         #result = $this->manage_model->get_agent_amt(14011);
         #$result = $this->manage_model->get_trader_orders(13952,0,2000000000000000);
         
-        $result = $this->manage_model->get_traders_grid_data(array('manage_id'=>3,'limit'=>2));
+        $result = $this->manage_model->get_traders_grid_data(array('manage_id'=>3));
         print_r($result);
     }
 }

@@ -8,22 +8,16 @@ $(function(){
 	columns: [
 	    {display:'用户名', name:'user_name', align:'left', width:'100'}, 
 	    {display:'真实姓名', name:'real_name', align:'left', width:'100'}, 
-	    {display:'Email', name:'email', align:'left', width:'150'}, 
-	    {display:'性别', name:'sex', align:'center', width:'40', render:function(value, index){
-		var s = '';
-		if (value.sex == '1') {
-		    s = '男';  
-		}
-		else if (value.sex == '2') {
-		    s = '女';
-		}
-		return s;
-	    }},
-	    {display:'QQ', name:'qq', align:'left', width:'60'}, 
-	    {display:'MSN', name:'msg', align:'left', width:'60'}, 
-	    {display:'办公电话', name:'office_phone', align:'left', width:'100'}, 
-	    {display:'手机', name:'mobile_phone', align:'left', width:'100'}, 
-	    {display:'公司', name:'comp_name', align:'left', width:'100' }
+        {display:'区域', name:'province_name', align:'left', width:'150', render:function(value,index){
+            var s = value.province_name + '-' + value.city_name + '-' + value.district_name;
+            return s;
+        }},
+        {display:'公司', name:'comp_name', align:'left', width:'100' },
+	    {display:'step1', name:'step1', align:'left', width:'100' },
+	    {display:'step2', name:'step2', align:'left', width:'100' },
+	    {display:'step3', name:'step3', align:'left', width:'100' },
+	    {display:'step4', name:'step4', align:'left', width:'100' },
+	    {display:'当月营业额', name:'amount', align:'left', width:'100' },
 	], 
 	dataAction:'server', 
 	pageSize:20, 
