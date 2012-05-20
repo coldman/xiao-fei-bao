@@ -69,6 +69,16 @@ class User extends MY_Controller
 	$this->_template('manager/add');
     }
 
+    function edit_manager()
+    {
+	$submitted = $this->input->post('submitted');
+	if ($submitted)
+	{
+	    redirect('user/managers');
+	}
+	$this->_template('manager/edit');
+    }
+
     function test()
     {
         $this->load->model("manage_model");

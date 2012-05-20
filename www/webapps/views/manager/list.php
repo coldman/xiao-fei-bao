@@ -1,10 +1,15 @@
 <?php $this->load->view('header');?>
 
 <link type="text/css" rel="stylesheet" href="<?php echo $media_root.'js/ligerui/ligerUI/skins/ligerui-icons.css';?>" />
+<link type="text/css" rel="stylesheet" href="<?php echo $media_root.'css/icons.css';?>" />
 <script type="text/javascript" src="<?php echo $media_root.'js/ligerui/ligerUI/js/plugins/ligerToolBar.js';?>"></script>
 
 <script type="text/javascript">
 var grid = null;
+function edit_manager(id) {
+    window.parent.addTab('edit-manager', '编辑业务员', "<?php echo site_url('user/edit_manager');?>");
+}
+
 $(function(){
     $('#toolbar').ligerToolBar({items:[
 	{text:'增加', icon:'add', click:function(){
@@ -27,7 +32,11 @@ $(function(){
 		}
 		return s;
 	    }},
-	    {display:'手机', name:'phone', align:'left', width:'100'} 
+	    {display:'手机', name:'phone', align:'left', width:'100'}, 
+	    {display:'编辑', name:'opt', align:'center', width:'40', render:function(value, index){
+		var e = '<span class="icon icon-edit" onclick="edit_manager('+value.id+');"></span>';
+		return e;
+	    }}
 	], 
 	dataAction:'server', 
 	pageSize:20, 
