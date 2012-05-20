@@ -142,11 +142,15 @@ class manage_model extends MY_Model
             'Rows'=>array()
         );
         
-        $manage_id = $params['manage_id'];
         $tb_name = 'kvke_users';
         $this->db->where('is_agent',1);
-        $this->db->where('manage_id',$params['manage_id']);
-        
+        $where = "a.is_agent=1";
+        if (array_key_exists('manage_id', $params))    // 经理
+        {
+            $manage_id = $params['manage_id'];
+            $where = "a.is_agent=1 and a.manage_id=$manage_id";
+            $this->db->where('manage_id',$params['manage_id']);
+        } 
         
         $result['Total'] =   $this->db->count_all_results($tb_name);  //代理商个数
         
@@ -169,7 +173,8 @@ class manage_model extends MY_Model
         {
             $sortorder = $params['sortorder'];
         }
-       
+        
+        
         $sql = "select T.user_id, T.user_name,T.real_name,T.province_name,T.city_name,T.district_name,T.comp_name,M.step1,M.step2,M.step3,M.step4,M.amount FROM
                 (
                     select A.*,B.region_name as district_name FROM 
@@ -177,7 +182,7 @@ class manage_model extends MY_Model
                     (select a.user_id,a.user_name,a.real_name,a.province,a.city,a.district,
                      a.comp_name,a.manage_id,b.region_name as province_name 
                      from kvke_users a left join kvke_region b on a.province=b.region_id 
-                     where a.is_agent=1 and a.manage_id=$manage_id) A LEFT JOIN kvke_region B on A.city=B.region_id
+                     where $where) A LEFT JOIN kvke_region B on A.city=B.region_id
                 ) A LEFT JOIN kvke_region B on A.district=B.region_id
                 ) T, kvke_agents M
                 where T.user_id=M.agent_id
@@ -188,7 +193,6 @@ class manage_model extends MY_Model
        $result['Rows'] = $this->db->query($sql, array())->result();
        return $result;
     }
-    
     
     
     
