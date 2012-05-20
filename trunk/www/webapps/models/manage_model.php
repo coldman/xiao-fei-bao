@@ -80,7 +80,7 @@ class manage_model extends MY_Model
     function save_manage($data)
     {
     $tb_name = 'manage_users';
-    if (array_key_exists('id', $data)) 
+    if (array_key_exists('id', $data) && $data['id']) 
     {
         $this->db->where('id', $data['id']);
         $this->db->update($tb_name, $data);

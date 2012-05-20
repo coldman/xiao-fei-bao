@@ -7,7 +7,7 @@
 <script type="text/javascript">
 var grid = null;
 function edit_manager(id) {
-    window.parent.addTab('edit-manager', '编辑业务员', "<?php echo site_url('user/edit_manager');?>");
+    window.parent.addTab('edit-manager', '编辑业务员', "<?php echo site_url('user/edit_manager');?>/"+id);
 }
 
 $(function(){

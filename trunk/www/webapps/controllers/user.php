@@ -64,19 +64,58 @@ class User extends MY_Controller
 	$submitted = $this->input->post('submitted');
 	if ($submitted) 
 	{
-	    redirect('user/managers');
+	    $save = array(
+		'username'  => $this->input->post('username'), 
+		'password'  => sha1($this->input->post('password')),
+		'email'	    => $this->input->post('email'), 
+		'sex'	    => $this->input->post('sex'), 
+		'phone'	    => $this->input->post('phone')
+	    );
+	    if (sha1($this->input->post('cfm_pwd')) != $save['password'])
+	    {
+		$this->session->set_flashdata('error', '确认密码不匹配！');
+	    }
+	    else 
+	    {
+		$this->manage_model->save_manage($save);
+		$this->session->set_flashdata('msg', '业务员添加成功！');
+	    }
+
+	    redirect('user/add_manager');
 	}
 	$this->_template('manager/add');
     }
 
-    function edit_manager()
+    function edit_manager($id)
     {
+	$data['manager'] = $this->manage_model->get_manage_by_id($id);
 	$submitted = $this->input->post('submitted');
 	if ($submitted)
 	{
-	    redirect('user/managers');
+	    $save = array(
+		'id'	    => $this->input->post('id'), 
+		'username'  => $this->input->post('username'), 
+		'email'	    => $this->input->post('email'), 
+		'sex'	    => $this->input->post('sex'), 
+		'phone'	    => $this->input->post('phone')
+	    );
+	    if ($this->input->post('password'))
+	    {
+		if ($this->input->post('password') != $this->input->post('cfm_pwd'))
+		{
+		    $this->session->set_flashdata('error', '确认密码不匹配！');
+		    redirect('user/edit_manager/'.$save['id']);
+		}
+		else 
+		{
+		    $save['password'] = sha1($this->input->post('password'));
+		}
+	    }
+	    $this->manage_model->save_manage($save);
+	    $this->session->set_flashdata('msg', '业务员更新成功！');
+	    redirect('user/edit_manager/'.$save['id']);
 	}
-	$this->_template('manager/edit');
+	$this->_template('manager/edit', $data);
     }
 
     function test()
