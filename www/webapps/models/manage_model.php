@@ -354,6 +354,8 @@ class manage_model extends MY_Model
     */
     public function get_traders_grid_data($params=array())
     {
+        $tb_name = 'users';
+        
         $result = array(
             'Total'=>0, 
             'Rows'=>array()
@@ -364,6 +366,7 @@ class manage_model extends MY_Model
         }
         $manage_id = $params['manage_id'];
         
+        
         $limit = 10;
         $offset = 0;
         if (array_key_exists('limit', $params) and $limit > 0 ){
@@ -371,12 +374,14 @@ class manage_model extends MY_Model
             $offset = isset($params['offset'])?(int)$params['offset']:0;
         } 
         
+        $result['Rows'] = $this->db->get($tb_name)->result();
         
         $sql = "SELECT user_id,user_name,real_name,province,city,district FROM kvke_users
                 WHERE district IN (SELECT district FROM kvke_users WHERE manage_id=$manage_id) 
                 limit $limit offset $offset";
         
         $result['Rows'] = $this->db->query($sql, array($manage_id))->result();
+        $result['Total'] = $this->db->count_all_results($tb_name);
         
         return $result;
     }
@@ -386,6 +391,15 @@ class manage_model extends MY_Model
      */
     function bind_agents_to_manager($manager_id, $agents=array())
     {
+        $result = array(
+            'Total'=>0, 
+            'Rows'=>array()
+        );
+        if (!array_key_exists('manage_id', $params)){
+            return $result;
+        }
+        $manage_id = $params['manage_id'];
+        
         $tb_name = 'users';
         $this->db->where('is_agent', 1);
         $this->db->where_in('user_id', $agents);
