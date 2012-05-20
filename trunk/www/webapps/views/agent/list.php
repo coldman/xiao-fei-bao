@@ -1,27 +1,35 @@
-<?php include('header.php');?>
+<?php $this->load->view('header');?>
 
 <script type="text/javascript">
 var grid = null;
+function view_agent(id) {
+    alert(id);
+}
+
 $(function(){
     grid = $('#datagrid').ligerGrid({
 	checkbox: true, 
 	columns: [
 	    {display:'用户名', name:'user_name', align:'left', width:'100'}, 
-	    {display:'真实姓名', name:'real_name', align:'left', width:'100'}, 
-        {display:'区域', name:'province_name', align:'left', width:'150', render:function(value,index){
-            var s = value.province_name + '-' + value.city_name + '-' + value.district_name;
-            return s;
-        }},
-        {display:'公司', name:'comp_name', align:'left', width:'100' },
+	    {display:'真实姓名', name:'real_name', align:'left', width:'60'}, 
+	    {display:'区域', name:'province_name', align:'left', width:'120', render:function(value,index){
+		var s = value.province_name + '-' + value.city_name + '-' + value.district_name;
+		return s;
+	    }},
+	    {display:'公司', name:'comp_name', align:'left', width:'120' },
 	    {display:'step1', name:'step1', align:'left', width:'100' },
 	    {display:'step2', name:'step2', align:'left', width:'100' },
 	    {display:'step3', name:'step3', align:'left', width:'100' },
 	    {display:'step4', name:'step4', align:'left', width:'100' },
-	    {display:'当月营业额', name:'amount', align:'left', width:'100' },
+	    {display:'当月营业额', name:'amount', align:'left', width:'80' },
+	    {display:'操作', name:'opt', align:'center', width:'100', render:function(value, index){
+		var v = '<span class="icon icon-view" onclick="view_agent('+value.user_id+');"></span>';
+		return v;
+	    }}
 	], 
 	dataAction:'server', 
 	pageSize:20, 
-	url: '<?php echo site_url("json/g_agent");?>', 
+	url: '<?php echo site_url("json/g_agents");?>', 
 	sortName: 'user_id', 
 	width:'100%', 
 	height:'99.8%'
@@ -34,4 +42,4 @@ $(function(){
 
 <div id="datagrid" style="margin:0; padding:0; border:0 none;"></div>
 
-<?php include('footer.php');?>
+<?php $this->load->view('footer');?>
