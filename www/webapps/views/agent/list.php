@@ -17,11 +17,11 @@ $(function(){
 		return s;
 	    }},
 	    {display:'公司', name:'comp_name', align:'left', width:'120' },
-	    {display:'step1', name:'step1', align:'left', width:'100' },
-	    {display:'step2', name:'step2', align:'left', width:'100' },
-	    {display:'step3', name:'step3', align:'left', width:'100' },
-	    {display:'step4', name:'step4', align:'left', width:'100' },
-	    {display:'当月营业额', name:'amount', align:'left', width:'80' },
+	    {display:'1号-7号', name:'step1', align:'right', width:'100' },
+	    {display:'8号-14号', name:'step2', align:'right', width:'100' },
+	    {display:'15号-21号', name:'step3', align:'right', width:'100' },
+	    {display:'22号-月末', name:'step4', align:'right', width:'100' },
+	    {display:'当月营业额', name:'amount', align:'right', width:'80' },
 	    {display:'操作', name:'opt', align:'center', width:'100', render:function(value, index){
 		var v = '<span class="icon icon-view" onclick="view_agent('+value.user_id+');"></span>';
 		return v;
