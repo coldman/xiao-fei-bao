@@ -21,7 +21,7 @@
  *13.get_trader_orders          - 获取商户出单数量
  *14.get_traders_grid_data      - 获取某代理商下所有商家数据
  *15.bind_agents_to_manager     - Bind agents to manager
- *
+ *16.get_user_by_id             -取某个用户(包括代理商)详细信息
  *
  *
  *
@@ -435,6 +435,16 @@ class manage_model extends MY_Model
         return true;
     }
    
+    /**
+     * 获取某个用户(包括代理商)详细信息
+     */
+    function get_user_by_id($id)
+    {
+        $tb_name = 'users';
+        $this->db->where('user_id', $id);
+        $result = $this->db->get($tb_name)->row_array();
+        return $result;
+    }
     
 
 }
