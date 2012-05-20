@@ -28,6 +28,12 @@ class Analysis extends MY_Controller
 	$this->_template('agent/list');
     }
 
+    function view_agent($id)
+    {
+	$data['agent'] = $this->manage_model->get_agent_by_id($id);
+	$this->_template('agent/view');
+    }
+
     function trader()
     {
 	$this->_template('trader/list');

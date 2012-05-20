@@ -3,7 +3,7 @@
 <script type="text/javascript">
 var grid = null;
 function view_agent(id) {
-    alert(id);
+    window.parent.addTab('view-agent', '查看业务员', "<?php echo site_url('analysis/view_agent');?>/"+id);
 }
 
 $(function(){
