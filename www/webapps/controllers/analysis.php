@@ -25,12 +25,12 @@ class Analysis extends MY_Controller
 
     function agent()
     {
-	$this->_template('agent_list');
+	$this->_template('agent/list');
     }
 
     function trader()
     {
-	$this->_template('trader_list');
+	$this->_template('trader/list');
     }
 
 }
