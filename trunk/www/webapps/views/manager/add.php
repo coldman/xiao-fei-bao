@@ -5,8 +5,32 @@
 <script type="text/javascript" src="<?php echo $media_root.'js/ligerui/ligerUI/js/plugins/ligerComboBox.js';?>"></script>
 <script type="text/javascript" src="<?php echo $media_root.'js/ligerui/ligerUI/js/plugins/ligerButton.js';?>"></script>
 <script type="text/javascript" src="<?php echo $media_root.'js/ligerui/ligerUI/js/plugins/ligerDialog.js';?>"></script>
+<script type="text/javascript" src="<?php echo $media_root.'js/ligerui/ligerUI/js/plugins/ligerCheckBox.js';?>"></script>
+<link type="text/css" rel="stylesheet" href="<?php echo $media_root.'js/selectView/style.css';?>" />
+<script type="text/javascript" src="<?php echo $media_root.'js/selectView/scripts/TableView.js';?>"></script>
+<script type="text/javascript" src="<?php echo $media_root.'js/selectView/scripts/SelectorView.js';?>"></script>
 <script type="text/javascript">
 $(function(){
+    var sel = new SelectorView('sel_view');
+    sel.src.header = {
+	id: 'ID', 
+	name: '代理人名称', 
+	region: '代理区域'
+    };
+    sel.dst.header = {
+	id: 'ID', 
+	name: '代理人名称', 
+	region: '代理区域'
+    };
+    sel.src.dataKey = 'id';
+    sel.src.title   = '可选';
+    sel.dst.dataKey = 'id';
+    sel.dst.title   = '已选';
+    sel.render();
+    var input_html = '...';
+    sel.src.add({id: 0, name: 'None', region: '幽灵'});
+    sel.src.add({id: 1, name: 'Tom', region: '汤姆'});
+
     $('#pwd_form').ligerForm();
 });
 </script>
@@ -44,7 +68,7 @@ $(function(){
 		<tr>
 		    <td align="right" class="l-table-edit-td">区域代理人</td>
 		    <td align="left" class="l-table-edit-td">
-			sss
+			<div id="sel_view"></div>
 		    </td>
 		</tr>
 		<tr>

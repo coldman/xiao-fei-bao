@@ -64,7 +64,7 @@ class User extends MY_Controller
 	$submitted = $this->input->post('submitted');
 	if ($submitted) 
 	{
-	    redirect('user/managers');
+	    redirect('user/add_manager');
 	}
 	$this->_template('manager/add');
     }
