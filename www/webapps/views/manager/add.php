@@ -66,6 +66,10 @@ $(function(){
 		    <td align="left" class="l-table-edit-td"><input type="text" name="username" id="username" value="" ltype="text" /></td>
 		</tr>
 		<tr>
+		    <td align="right" class="l-table-edit-td">真实姓名</td>
+		    <td align="left" class="l-table-edit-td"><input type="text" name="realname" id="realname" value="" ltype="text" /></td>
+		</tr>
+		<tr>
 		    <td align="right" class="l-table-edit-td">密码</td>
 		    <td align="left" class="l-table-edit-td"><input type="password" name="password" id="realname" value="" ltype="password" /></td>
 		</tr>
