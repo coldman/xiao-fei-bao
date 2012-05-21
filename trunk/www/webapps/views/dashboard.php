@@ -43,7 +43,7 @@
 	</div>
 	<div position="center" id="framecenter">
 	    <div tabid="home" title="首页" style="height:300px;">
-		ABCDEFG
+		欢迎进入业务员管理系统
 	    </div>
 	</div>
 	<!--<div position="right">right</div>-->
