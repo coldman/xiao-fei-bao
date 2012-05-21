@@ -269,9 +269,52 @@ class manage_model extends MY_Model
      */
     function get_agent_by_id($id)
     {
+       
+         $result = array(
+            'Total'=>0, 
+            'Rows'=>array()
+        );
         $tb_name = 'users';
-        $this->db->where('manage_id', $id);
-        $result = $this->db->get($tb_name)->row_array();
+        
+        $this->db->where(array('is_agent'=>1,'manage_id'=>$id));
+        $result['Total'] = $this->db->count_all_results($tb_name);
+        
+        $this->db->select('user_id,user_name,real_name,province,city,district');
+      
+        $this->db->where(array('is_agent'=>1,'manage_id'=>$id));  //为指派业务员的代理
+        
+        $rows_array = $this->db->get($tb_name)->result();
+        foreach ($rows_array as $row)
+        {
+            $sql = "select region_name as pro_name from kvke_region where region_id=?";
+            $temp = $this->db->query($sql,array($row->province))->row_array();
+            $pro_name = '';
+            if ($temp){
+                $pro_name = $temp['pro_name'];
+            }
+            
+            $sql = "select region_name as city_name from kvke_region where region_id=?";
+            $temp = $this->db->query($sql,array($row->city))->row_array();
+            $city_name = '';
+            if ($temp){
+                $city_name = $temp['city_name'];
+            }
+            
+            $sql = "select region_name as dis_name from kvke_region where region_id=?";
+            $temp = $this->db->query($sql,array($row->city))->row_array();
+            $dis_name = '';
+            if ($temp){
+                $dis_name = $temp['dis_name'];
+            }
+            
+            $row->province = $pro_name;
+            $row->city = $city_name;
+            $row->district = $dis_name;
+            
+            
+        } 
+        $result['Rows'] = $rows_array; 
+        
         return $result;
     }
 
@@ -408,8 +451,17 @@ class manage_model extends MY_Model
     /**
      * Bind agents to manager
      */
-    function bind_agents_to_manager($manager_id=0, $agents=array())
+    function bind_agents_to_manager($manager_id, $agents=array())
     {
+        $result = array(
+            'Total'=>0, 
+            'Rows'=>array()
+        );
+        if (!array_key_exists('manage_id', $params)){
+            return $result;
+        }
+        $manage_id = $params['manage_id'];
+        
         $tb_name = 'users';
         $this->db->where('is_agent', 1);
         $this->db->where_in('user_id', $agents);
