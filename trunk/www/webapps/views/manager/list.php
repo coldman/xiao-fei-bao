@@ -3,11 +3,22 @@
 <link type="text/css" rel="stylesheet" href="<?php echo $media_root.'js/ligerui/ligerUI/skins/ligerui-icons.css';?>" />
 <link type="text/css" rel="stylesheet" href="<?php echo $media_root.'css/icons.css';?>" />
 <script type="text/javascript" src="<?php echo $media_root.'js/ligerui/ligerUI/js/plugins/ligerToolBar.js';?>"></script>
+<script type="text/javascript" src="<?php echo $media_root.'js/ligerui/ligerUI/js/plugins/ligerDialog.js';?>"></script>
 
 <script type="text/javascript">
 var grid = null;
 function edit_manager(id) {
     window.parent.addTab('edit-manager', '编辑业务员', "<?php echo site_url('user/edit_manager');?>/"+id);
+}
+
+function del_manager(id) {
+    var url = "<?php echo site_url('json/del_manager');?>/"+id;
+    $.getJSON(url, {}, function(data){
+	if (data.result) {
+	    $.ligerDialog.success("业务员删除成功！");
+	    window.location.reload();
+	}
+    });
 }
 
 $(function(){
@@ -36,6 +47,10 @@ $(function(){
 	    {display:'编辑', name:'opt', align:'center', width:'40', render:function(value, index){
 		var e = '<span class="icon icon-edit" onclick="edit_manager('+value.id+');"></span>';
 		return e;
+	    }}, 
+	    {display:'删除', name:'opt', align:'center', width:'40', render:function(value, index){
+		var d = '<span class="icon icon-del" onclick="del_manager('+value.id+');"></span>';
+		return d;
 	    }}
 	], 
 	dataAction:'server', 
