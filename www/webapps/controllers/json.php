@@ -87,6 +87,16 @@ class Json extends MY_Controller
         echo json_encode($result);
     }
     
+    function del_agent($id)
+    {
+        if ($this->manage_model->del_agent($id)){
+            echo json_encode(array("result"=>true));
+        }
+        else{
+            echo json_encode(array("result"=>false));
+        }
+    }
+    
     
 }
     
