@@ -468,7 +468,6 @@ class manage_model extends MY_Model
         
     }
     
-    
     /*
     * 获取代理商计划额度
     */
@@ -476,6 +475,16 @@ class manage_model extends MY_Model
     {
         $sql = "select step1, step2, step3, step4 from kvke_agents_plan where agent_id=$id";
         return $this->db->query($sql)->row_array();
+    }
+    
+    /*
+    * 获取未指派业务员的代理商列表
+    */
+    function get_undispatch_agents($params)
+    {
+        $reuslt = array('Total'=>0, 'Rows'=>array());
+        
+        return $reuslt;
     }
     
     
