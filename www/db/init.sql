@@ -56,6 +56,22 @@ create table `kvke_agents_plan`(
     primary key (`id`)
 );
 
+--kvke_agents_log  代理商日志表
+drop table if exists `kvke_agent_log`;
+create table `kvke_agent_log`(
+    `id` int(11) unsigned not null auto_increment,
+    `manage_id` int(11) unsigned not null,
+    `agent_id` int(11) unsigned not null,
+    `step1`   int(11) not null default 0,
+    `step2`   int(11) not null default 0,
+    `step3`   int(11) not null default 0,
+    `step4`   int(11) not null default 0,
+    `description` varchar(500),
+    `update_time` timestamp not null default current_timestamp, 
+    primary key (`id`)
+);
+
+
 -- init kvke_agent table
 insert into kvke_agent (agent_id) values select user_id from kvke_users where is_agent=1;
 
