@@ -105,7 +105,7 @@ class Json extends MY_Controller
         echo json_encode($ret);
     }
     
-    function own_agents($id)
+    function select_agents($id)
     {
         echo json_encode($this->manage_model->get_agent_by_id($id));
     }
