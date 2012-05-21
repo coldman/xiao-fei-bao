@@ -24,7 +24,8 @@
  *16.get_user_by_id             - 取某个用户(包括代理商)详细信息
  *17.get_trader_total_orders    - 获取商户出单数
  *18.get_agents_plan            - 获取代理商计划额度
- *
+ *19.get_undispatch_agents      - 获取未指派业务员的代理商列表
+ *20.set_manage_to_agent        - 指派代理商给业务员
 
  
  */
@@ -480,14 +481,49 @@ class manage_model extends MY_Model
     /*
     * 获取未指派业务员的代理商列表
     */
-    function get_undispatch_agents($params)
+    function get_undispatch_agents($params=array())
     {
-        $reuslt = array('Total'=>0, 'Rows'=>array());
+        $result = array(
+            'Total'=>0, 
+            'Rows'=>array()
+        );
+        $tb_name = 'users';
         
-        return $reuslt;
+        $this->db->where(array('is_agent'=>1,'manage_id'=>0));
+        $result['Total'] = $this->db->count_all_results($tb_name);
+        
+        $this->db->select('user_id','user_name');
+        if (array_key_exists('limit', $params) and $params['limit'] > 0)
+        {
+            $offset = isset($params['offset'])?$params['offset']:0;
+            $this->db->limit($params['limit'], $offset);
+        }
+        
+        $this->db->where(array('is_agent'=>1,'manage_id'=>0));  //为指派业务员的代理
+        $result['Rows'] = $this->db->get($tb_name)->result();
+        
+        return $result;
     }
     
-    
+    /*
+    *指派代理商给业务员
+    * manage_id=0  -  代理商取消业务员管理
+    */
+    function set_manage_to_agent($agent_id, $manage_id=0)
+    {
+        try 
+        { 
+            $data= array('manage_id'=>$manage_id);
+            $this->db->where(array('user_id'=>$agent_id, 'is_agent'=>1)); //保证是代理商
+            $this->db->update('users', $data); 
+            return True;
+        } 
+        catch(Exception $e) 
+        { 
+            return False;
+        }
+    }
+        
 
 }
 ?>
