@@ -89,7 +89,7 @@ class Json extends MY_Controller
     
     function del_manager($id)
     {
-        if ($this->manage_model->del_agent($id)){
+        if ($this->manage_model->del_manager($id)){
             echo json_encode(array("result"=>true));
         }
         else{
