@@ -270,7 +270,7 @@ class manage_model extends MY_Model
     function get_agent_by_id($id)
     {
         $tb_name = 'users';
-        $this->db->where('user_id', $id);
+        $this->db->where('manage_id', $id);
         $result = $this->db->get($tb_name)->row_array();
         return $result;
     }
@@ -300,54 +300,31 @@ class manage_model extends MY_Model
     
     
     /*
-    * 获取未代理的省
+    * 获取地区信息
     */
-    public function get_unmarked_province()
+    
+    
+    public function get_areas($parent_id)
     {
         
-        $sql = "SELECT * FROM kvke_region WHERE region_type=? AND 
-                region_id not in (SELECT province FROM kvke_users)";
-        return $this->db->query($sql, array(1))->result();
+        $sql = "SELECT region_id, region_name FROM kvke_region WHERE parent_id=$parent_id";
+        $pro_objs =  $this->db->query($sql)->result();
+        foreach ($pro_objs as $pro_obj)
+        {
+            $p = $pro_obj->region_id;
+            $this->db->where('province', $p);
+            $this->db->or_where('city', $p);
+            $this->db->or_where('district', $p);
+            
+            $pro_obj->is_agent = 0;
+            if ($this->db->count_all_results('users') > 0)
+                $pro_obj->is_agent = 1;
+        
+        }
+        return $pro_objs;
         
     }
     
-    /*
-    * 获取未代理的市
-    */
-    public function get_unmarked_city($parent_id=FALSE)
-    {
-        if ($parent_id==FALSE)
-        {
-            $sql = "SELECT * FROM kvke_region WHERE region_type=? AND
-                    region_id not in (SELECT city FROM kvke_users)";
-            return $this->db->query($sql, array(2))->result();
-        }   
-        else
-        {    
-            $sql = "SELECT * FROM kvke_region WHERE region_type=? AND  parent_id=? AND
-                region_id not in (SELECT city FROM kvke_users where province=?)";
-            return $this->db->query($sql, array(2, $parent_id, $parent_id))->result();
-        }
-    }
-    
-    /*
-    * 获取未代理的区
-    */
-    public function get_unmarked_district($parent_id=FALSE)
-    {
-        if ($parent_id==FALSE)
-        {
-            $sql = "SELECT * FROM kvke_region WHERE region_type=? AND
-                    region_id not in (SELECT district FROM kvke_users)";
-            return $this->db->query($sql, array(3))->result();
-        }
-        else
-        {    
-            $sql = "SELECT * FROM kvke_region WHERE region_type=? AND  parent_id=? AND
-                    region_id not in (SELECT district FROM kvke_users where city=?)";
-            return $this->db->query($sql, array(3, $parent_id, $parent_id))->result();
-        }
-    }
     /*
     * 获取商户出单数量
     */
@@ -593,6 +570,15 @@ class manage_model extends MY_Model
             return false;
         }
     
+    }
+    
+    /*
+    *自动统计营业额
+    */
+    function auto_count_amount()
+    {
+        //
+        return false;
     }
     
     
