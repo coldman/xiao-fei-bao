@@ -495,11 +495,11 @@ class manage_model extends MY_Model
         $result['Total'] = $this->db->count_all_results($tb_name);
         
         $this->db->select('user_id','user_name');
-        if (array_key_exists('limit', $params) and $params['limit'] > 0)
+        /* if (array_key_exists('limit', $params) and $params['limit'] > 0)
         {
             $offset = isset($params['offset'])?$params['offset']:0;
             $this->db->limit($params['limit'], $offset);
-        }
+        } */
         
         $this->db->where(array('is_agent'=>1,'manage_id'=>0));  //为指派业务员的代理
         $result['Rows'] = $this->db->get($tb_name)->result();
@@ -552,9 +552,6 @@ class manage_model extends MY_Model
     {
         print_r($params);
         try{
-            // if (!array_key_exists('manage_id',$params) or !array_key_exists('users_id',$params) ){
-                // return false;
-            // }
             $this->db->set($params); 
             $this->db->insert('agent_log'); 
             return true;
