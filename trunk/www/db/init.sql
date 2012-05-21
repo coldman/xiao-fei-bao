@@ -71,6 +71,17 @@ create table `kvke_agent_log`(
     primary key (`id`)
 );
 
+--kvke_agent_settle_template  代理商结算
+drop table if exists `kvke_agent_settle_template`;
+create table `kvke_agent_settle_template`(
+    `id` int(11) unsigned not null auto_increment,
+    `manage_id` int(11) unsigned not null,
+    `amount`   int(11) not null default 0,
+    `fee`   decimal(15,2) not null default 0,
+    `insert_time` timestamp not null default current_timestamp, 
+    primary key (`id`)
+);
+
 
 -- init kvke_agent table
 insert into kvke_agent (agent_id) values select user_id from kvke_users where is_agent=1;
