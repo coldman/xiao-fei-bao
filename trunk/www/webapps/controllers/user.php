@@ -71,13 +71,19 @@ class User extends MY_Controller
 		'sex'	    => $this->input->post('sex'), 
 		'phone'	    => $this->input->post('phone')
 	    );
+	    $agents = $this->input->post('agents');
 	    if (sha1($this->input->post('cfm_pwd')) != $save['password'])
 	    {
 		$this->session->set_flashdata('error', '确认密码不匹配！');
 	    }
 	    else 
 	    {
-		$this->manage_model->save_manage($save);
+		$manager_id = $this->manage_model->save_manage($save);
+		if ($agents) 
+		{
+		    $agent_ids = explode(',', $agents);
+		    $this->manage_model->bind_agents_to_manager($manager_id, $agent_ids);
+		}
 		$this->session->set_flashdata('msg', '业务员添加成功！');
 	    }
 
