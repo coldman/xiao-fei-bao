@@ -15,9 +15,9 @@
  *7.get_agent_grid_data         - 获取某个业务员名下的所有代理
  *8.get_agent_by_id             - 取某个业务员名下的所有代理
  *9.get_agent_amt               - 获取代理营业额
- *10.get_unmarked_province      - 获取未代理的省
- *11.get_unmarked_city          - 获取未代理的市
- *12.get_unmarked_district      - 获获取未代理的区
+ *10.get_areas                - 获取未代理的省
+ *11.
+ *12.
  *13.get_trader_orders          - 获取商户出单数量
  *14.get_traders_grid_data      - 获取某代理商下所有商家数据
  *15.bind_agents_to_manager     - Bind agents to manager
@@ -28,7 +28,7 @@
  *20.set_manage_to_agent        - 指派代理商给业务员
  *21.set_agent_plan             - 设置代理商额度
  *22.insert_agent_log           - 记录代理商日志
- *23.del_agent                  - 删除业务员
+ *23.del_manager                  - 删除业务员
 
  
  */
