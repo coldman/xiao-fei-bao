@@ -81,6 +81,12 @@ class Json extends MY_Controller
 	echo json_encode($result);
     }
     
+    function undispatch_agents()
+    {
+        $result = $this->manage_model->get_undispatch_agents();
+        echo json_encode($result);
+    }
+    
     
 }
     
