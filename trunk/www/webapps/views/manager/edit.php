@@ -51,7 +51,7 @@ $(function(){
 	}
 	return r;
     }
-    $('manager_form').submit(function(){
+    $('#manager_form').submit(function(){
 	var ss = get_selected_agents();
 	var agents = ss.join(',');
 	$('#agents').val(agents);
@@ -66,6 +66,10 @@ $(function(){
 		<tr>
 		    <td align="right" class="l-table-edit-td">用户名</td>
 		    <td align="left" class="l-table-edit-td"><input type="text" name="username" id="username" value="<?php echo isset($manager['username'])?$manager['username']:'';?>" ltype="text" /></td>
+		</tr>
+		<tr>
+		    <td align="right" class="l-table-edit-td">真实姓名</td>
+		    <td align="left" class="l-table-edit-td"><input type="text" name="realname" id="realname" value="<?php echo isset($manager['realname'])?$manager['realname']:'';?>" ltype="text" /></td>
 		</tr>
 		<tr>
 		    <td align="right" class="l-table-edit-td">密码</td>

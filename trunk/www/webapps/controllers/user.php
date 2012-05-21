@@ -66,6 +66,7 @@ class User extends MY_Controller
 	{
 	    $save = array(
 		'username'  => $this->input->post('username'), 
+		'realname'  => $this->input->post('realname'),
 		'password'  => sha1($this->input->post('password')),
 		'email'	    => $this->input->post('email'), 
 		'sex'	    => $this->input->post('sex'), 
@@ -101,10 +102,12 @@ class User extends MY_Controller
 	    $save = array(
 		'id'	    => $this->input->post('id'), 
 		'username'  => $this->input->post('username'), 
+		'realname'  => $this->input->post('realname'),
 		'email'	    => $this->input->post('email'), 
 		'sex'	    => $this->input->post('sex'), 
 		'phone'	    => $this->input->post('phone')
 	    );
+	    $agents = $this->input->post('agents');
 	    if ($this->input->post('password'))
 	    {
 		if ($this->input->post('password') != $this->input->post('cfm_pwd'))
@@ -117,25 +120,18 @@ class User extends MY_Controller
 		    $save['password'] = sha1($this->input->post('password'));
 		}
 	    }
-	    $this->manage_model->save_manage($save);
+	    $manager_id = $this->manage_model->save_manage($save);
+	    if ($agents)
+	    {
+		$agent_ids = explode(',', $agents);
+		$this->manage_model->bind_agents_to_manager($manager_id, $agent_id);
+	    }
 	    $this->session->set_flashdata('msg', '业务员更新成功！');
 	    redirect('user/edit_manager/'.$save['id']);
 	}
 	$this->_template('manager/edit', $data);
     }
 
-    function test()
-    {
-        $this->load->model("manage_model");
-        #$this->load->model("trader_model");
-        #$result = $this->manage_model->get_agent_list(10000);
-        #result = $this->manage_model->get_agent_amt(14011);
-        #$result = $this->manage_model->get_trader_orders(13952,0,2000000000000000);
-        
-        #$result = $this->manage_model->get_user_by_id(12840);
-        $result = $this->manage_model->get_agent_grid_data(array());
-        print_r($result);
-    }
 }
     
  
