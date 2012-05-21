@@ -596,7 +596,7 @@ class manage_model extends MY_Model
         try{
             $this->db->where('id', $id);
             $this->db->delete('manage_users'); 
-            return false;
+            return true;
         }
         catch(Exception $e){
             return false;
