@@ -54,8 +54,6 @@ $(function(){
 	var agents = ss.join(',');
 	$('#agents').val(agents);
     });
-    $('#select').click(function(){
-    });
 });
 </script>
 </head>
