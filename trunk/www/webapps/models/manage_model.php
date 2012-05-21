@@ -26,6 +26,8 @@
  *18.get_agents_plan            - 获取代理商计划额度
  *19.get_undispatch_agents      - 获取未指派业务员的代理商列表
  *20.set_manage_to_agent        - 指派代理商给业务员
+ *21.set_agent_plan             - 设置代理商额度
+ *22.insert_agent_log           - 记录代理商日志
 
  
  */
@@ -509,20 +511,62 @@ class manage_model extends MY_Model
     *指派代理商给业务员
     * manage_id=0  -  代理商取消业务员管理
     */
-    function set_manage_to_agent($agent_id, $manage_id=0)
+    function set_manage_to_agent($agent_ids, $manage_id=0)
     {
         try 
         { 
             $data= array('manage_id'=>$manage_id);
-            $this->db->where(array('user_id'=>$agent_id, 'is_agent'=>1)); //保证是代理商
+            $this->db->where('is_agent', 1); //保证是代理商
+            $this->db->where('user_id', $agent_ids);
             $this->db->update('users', $data); 
-            return True;
+            return true;
         } 
         catch(Exception $e) 
         { 
-            return False;
+            return false;
         }
     }
+    
+    /*
+     *设置代理商额度
+     *$params=array('agent_id'=>XXX, data=>array('step1'=>XX, 'step2'=>XX, 'step3'=>XX, 'step4=>XX'))
+    */
+    function set_agent_plan($params=array())
+    {
+        try{
+            $this->db->where('agent_id', $params['agent_id']);
+            $this->db->update('agents_plan',$params['data']);
+            return true;
+        }
+        catch(Exception $e){
+            return false;
+        }
+    }
+    
+    /*
+    *记录代理商日志 - 业务员设置或者更改代理商额度时调用
+    * $params=array('manage_id'=>XX, 'agent_id'=>XX, 'step1'=>XX, 'step2'=>XX, 'step3'=>XX, 'step4'=>XX, 
+    *               'description'=>XX)
+    */
+    function insert_agent_log($params=array())
+    {
+        print_r($params);
+        try{
+            // if (!array_key_exists('manage_id',$params) or !array_key_exists('users_id',$params) ){
+                // return false;
+            // }
+            $this->db->set($params); 
+            $this->db->insert('agent_log'); 
+            return true;
+        }
+        catch(Exception $e){
+            return false;
+        }
+        
+    }
+    
+    
+    
         
 
 }
