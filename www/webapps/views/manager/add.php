@@ -14,12 +14,14 @@ $(function(){
     var sel = new SelectorView('sel_view');
     sel.src.header = {
 	id: 'ID', 
-	name: '代理人名称', 
+	username: '代理人用户名', 
+	realname: '真实姓名', 
 	region: '代理区域'
     };
     sel.dst.header = {
 	id: 'ID', 
-	name: '代理人名称', 
+	username: '代理人用户名', 
+	realname: '真实姓名', 
 	region: '代理区域'
     };
     sel.src.dataKey = 'id';
@@ -28,10 +30,20 @@ $(function(){
     sel.dst.title   = '已选';
     sel.render();
     var input_html = '...';
-    sel.src.add({id: 0, name: 'None', region: '幽灵'});
-    sel.src.add({id: 1, name: 'Tom', region: '汤姆'});
+    var url = "<?php echo site_url('json/undispatch_agents');?>";
+    $.getJSON(url, {random:Math.random()}, function(data){
+	for (var i=0; i<data.Total; i++) {
+	    sel.src.add({id:data.Rows[i].user_id, username:data.Rows[i].user_name, realname:data.Rows[i].real_name, region:(data.Rows[i].province+'-'+data.Rows[i].city+'-'+data.Rows[i].district)});
+	}
+    });
+    //sel.src.add({id: 0, name: 'None', region: '幽灵'});
+    //sel.src.add({id: 1, name: 'Tom', region: '汤姆'});
 
     $('#pwd_form').ligerForm();
+    $('#select').click(function(){
+	var s = sel.dst.getSelected();
+	alert(s);
+    });
 });
 </script>
 </head>
@@ -71,7 +83,7 @@ $(function(){
 			<input type="text" name="phone" id="phone" value="" ltype="text" />
 		    </td>
 		</tr>
-		<tr style="display:none;">
+		<tr>
 		    <td align="right" class="l-table-edit-td">区域代理人</td>
 		    <td align="left" class="l-table-edit-td">
 			<div id="sel_view"></div>
@@ -82,6 +94,7 @@ $(function(){
 		    <td style="padding:8px 4px;">
 			<input type="hidden" name="submitted" value="pwd" />
 			<input type="submit" value="提交" class="l-button l-button-submit" />
+			<input type="button" id="select" value="测试" />
 		    </td>
 		</tr>
 	    </table>
