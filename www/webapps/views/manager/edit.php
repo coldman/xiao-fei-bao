@@ -14,12 +14,14 @@ $(function(){
     var sel = new SelectorView('sel_view');
     sel.src.header = {
 	id: 'ID', 
-	name: '代理人名称', 
+	username: '代理人用户名', 
+	realname: '真实姓名', 
 	region: '代理区域'
     };
     sel.dst.header = {
 	id: 'ID', 
-	name: '代理人名称', 
+	username: '代理人用户名', 
+	realname: '真实姓名', 
 	region: '代理区域'
     };
     sel.src.dataKey = 'id';
@@ -27,17 +29,39 @@ $(function(){
     sel.dst.dataKey = 'id';
     sel.dst.title   = '已选';
     sel.render();
-    var input_html = '...';
-    sel.src.add({id: 0, name: 'None', region: '幽灵'});
-    sel.src.add({id: 1, name: 'Tom', region: '汤姆'});
-
+    var un_selected_url = "<?php echo site_url('json/undispatch_agents');?>";
+    var selected_url = "<?php echo site_url('json/selected_agents/'.$manager['id']);?>";
+    $.getJSON(un_selected_url, {random:Math.random()}, function(data){
+	for (var i=0; i<data.Total; i++) {
+	    sel.src.add({id:data.Rows[i].user_id, username:data.Rows[i].user_name, realname:data.Rows[i].real_name, region:(data.Rows[i].province+'-'+data.Rows[i].city+'-'+data.Rows[i].district)});
+	}
+    });
+    $.getJSON(selected_url, {random:Math.random()}, function(data){
+	for (var i=0; i<data.Total; i++) {
+	    sel.dst.add({id:data.Rows[i].user_id, username:data.Rows[i].user_name, realname:data.Rows[i].real_name, region:(data.Rows[i].province+'-'+data.Rows[i].city+'-'+data.Rows[i].district)});
+	}
+    });
     $('#pwd_form').ligerForm();
+    function get_selected_agents()
+    {
+	var s = sel.getSelected();
+	var r = Array();
+	for (var i=0; i<s.length; i++) {
+	    r.push(s[i].id);
+	}
+	return r;
+    }
+    $('manager_form').submit(function(){
+	var ss = get_selected_agents();
+	var agents = ss.join(',');
+	$('#agents').val(agents);
+    });
 });
 </script>
 </head>
 <body>
-    <div class="userpwd" style="padding:20px;">
-	<form id="pwd_form" name="pwd_form" action="" method="post">
+    <div class="manager" style="padding:20px;">
+	<form id="manager_form" name="manager_form" action="" method="post">
 	    <table cellpadding="0" cellspacing="0" class="l-table-edit">
 		<tr>
 		    <td align="right" class="l-table-edit-td">用户名</td>
@@ -71,7 +95,7 @@ $(function(){
 			<input type="text" name="phone" id="phone" value="<?php echo isset($manager['phone'])?$manager['phone']:'';?>" ltype="text" />
 		    </td>
 		</tr>
-		<tr style="display:none;">
+		<tr>
 		    <td align="right" class="l-table-edit-td">区域代理人</td>
 		    <td align="left" class="l-table-edit-td">
 			<div id="sel_view"></div>
@@ -82,6 +106,7 @@ $(function(){
 		    <td style="padding:8px 4px;">
 			<input type="hidden" name="submitted" value="pwd" />
 			<input type="hidden" name="id" value="<?php echo isset($manager['id'])?$manager['id']:'';?>" />
+			<input type="hidden" id="agents" name="agents" value="" />
 			<input type="submit" value="提交" class="l-button l-button-submit" />
 		    </td>
 		</tr>
