@@ -40,16 +40,28 @@ $(function(){
     //sel.src.add({id: 1, name: 'Tom', region: '汤姆'});
 
     $('#pwd_form').ligerForm();
+    function get_selected_agents()
+    {
+	var s = sel.getSelected();
+	var r = Array();
+	for (var i=0; i<s.length; i++) {
+	    r.push(s[i].id);
+	}
+	return r;
+    }
+    $('#manager_form').submit(function(){
+	var ss = get_selected_agents();
+	var agents = ss.join(',');
+	$('#agents').val(agents);
+    });
     $('#select').click(function(){
-	var s = sel.dst.getSelected();
-	alert(s);
     });
 });
 </script>
 </head>
 <body>
-    <div class="userpwd" style="padding:20px;">
-	<form id="pwd_form" name="pwd_form" action="" method="post">
+    <div class="manageradd" style="padding:20px;">
+	<form id="manager_form" name="manager_form" action="" method="post">
 	    <table cellpadding="0" cellspacing="0" class="l-table-edit">
 		<tr>
 		    <td align="right" class="l-table-edit-td">用户名</td>
@@ -93,8 +105,8 @@ $(function(){
 		    <td></td>
 		    <td style="padding:8px 4px;">
 			<input type="hidden" name="submitted" value="pwd" />
+			<input type="hidden" id="agents" name="agents" value="" />
 			<input type="submit" value="提交" class="l-button l-button-submit" />
-			<input type="button" id="select" value="测试" />
 		    </td>
 		</tr>
 	    </table>

@@ -35,4 +35,8 @@ table.info td {
     padding: 4px;
 }
 
+.TableView .datagrid_div {
+    height: 200px;
+    overflow:auto;
+}
 
