@@ -28,6 +28,7 @@
  *20.set_manage_to_agent        - 指派代理商给业务员
  *21.set_agent_plan             - 设置代理商额度
  *22.insert_agent_log           - 记录代理商日志
+ *23.del_agent                  - 删除业务员
 
  
  */
@@ -522,10 +523,6 @@ class manage_model extends MY_Model
                 $dis_name = $temp['dis_name'];
             }
             
-            //unset($row['province']);
-            //unset($row['city']);
-            //unset($row['district']);
-            
             $row->province = $pro_name;
             $row->city = $city_name;
             $row->district = $dis_name;
@@ -580,7 +577,6 @@ class manage_model extends MY_Model
     */
     function insert_agent_log($params=array())
     {
-        print_r($params);
         try{
             $this->db->set($params); 
             $this->db->insert('agent_log'); 
@@ -591,6 +587,23 @@ class manage_model extends MY_Model
         }
         
     }
+    
+    /*
+    *删除业务员
+    */
+    function del_agent($id)
+    {
+        try{
+            $this->db->where('id', $id);
+            $this->db->delete('manage_users'); 
+            return false;
+        }
+        catch(Exception $e){
+            return false;
+        }
+    
+    }
+    
     
     function dbtest()
     {
