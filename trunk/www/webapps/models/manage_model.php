@@ -494,15 +494,45 @@ class manage_model extends MY_Model
         $this->db->where(array('is_agent'=>1,'manage_id'=>0));
         $result['Total'] = $this->db->count_all_results($tb_name);
         
-        $this->db->select('user_id','user_name');
-        /* if (array_key_exists('limit', $params) and $params['limit'] > 0)
-        {
-            $offset = isset($params['offset'])?$params['offset']:0;
-            $this->db->limit($params['limit'], $offset);
-        } */
-        
+        $this->db->select('user_id,user_name,real_name,province,city,district');
+      
         $this->db->where(array('is_agent'=>1,'manage_id'=>0));  //为指派业务员的代理
-        $result['Rows'] = $this->db->get($tb_name)->result();
+        
+        $rows_array = $this->db->get($tb_name)->result();
+        foreach ($rows_array as $row)
+        {
+            $sql = "select region_name as pro_name from kvke_region where region_id=?";
+            $temp = $this->db->query($sql,array($row->province))->row_array();
+            $pro_name = '';
+            if ($temp){
+                $pro_name = $temp['pro_name'];
+            }
+            
+            $sql = "select region_name as city_name from kvke_region where region_id=?";
+            $temp = $this->db->query($sql,array($row->city))->row_array();
+            $city_name = '';
+            if ($temp){
+                $city_name = $temp['city_name'];
+            }
+            
+            $sql = "select region_name as dis_name from kvke_region where region_id=?";
+            $temp = $this->db->query($sql,array($row->city))->row_array();
+            $dis_name = '';
+            if ($temp){
+                $dis_name = $temp['dis_name'];
+            }
+            
+            //unset($row['province']);
+            //unset($row['city']);
+            //unset($row['district']);
+            
+            $row->province = $pro_name;
+            $row->city = $city_name;
+            $row->district = $dis_name;
+            
+            
+        } 
+        $result['Rows'] = $rows_array; 
         
         return $result;
     }
@@ -560,6 +590,14 @@ class manage_model extends MY_Model
             return false;
         }
         
+    }
+    
+    function dbtest()
+    {
+        $sql = "select region_name from kvke_region where region_id=?";
+        $ret = $this->db->query($sql,array(122222))->row_array();
+        print_r($ret);
+        return false;
     }
     
     
