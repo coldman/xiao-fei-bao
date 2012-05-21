@@ -431,17 +431,8 @@ class manage_model extends MY_Model
     /**
      * Bind agents to manager
      */
-    function bind_agents_to_manager($manager_id, $agents=array())
+    function bind_agents_to_manager($manager_id=0, $agents=array())
     {
-        $result = array(
-            'Total'=>0, 
-            'Rows'=>array()
-        );
-        if (!array_key_exists('manage_id', $params)){
-            return $result;
-        }
-        $manage_id = $params['manage_id'];
-        
         $tb_name = 'users';
         $this->db->where('is_agent', 1);
         $this->db->where_in('user_id', $agents);
