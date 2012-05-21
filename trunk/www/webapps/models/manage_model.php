@@ -591,7 +591,7 @@ class manage_model extends MY_Model
     /*
     *删除业务员
     */
-    function del_agent($id)
+    function del_manager($id)
     {
         try{
             $this->db->where('id', $id);
