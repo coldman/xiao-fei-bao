@@ -48,7 +48,7 @@ class Analysis extends MY_Controller
 
     function region()
     {
-	echo '区域信息查看';
+	$this->_template('region');
     }
 }
 
