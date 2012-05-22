@@ -411,9 +411,9 @@ class manage_model extends MY_Model
             $this->db->or_where('city', $p);
             $this->db->or_where('district', $p);
             
-            $pro_obj->is_agent = 0;
+            $pro_obj->enabled = 0;
             if ($this->db->count_all_results('users') > 0)
-                $pro_obj->is_agent = 1;
+                $pro_obj->enabled = 1;
         
         }
         return $pro_objs;
