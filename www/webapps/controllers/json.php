@@ -101,7 +101,7 @@ class Json extends MY_Controller
     function regions($parent_id=1)
     {
         $ret = $this->manage_model->get_areas($parent_id);
-        echo json_encode($ret);
+	echo json_encode($ret);
     }
     
     function selected_agents($id)
