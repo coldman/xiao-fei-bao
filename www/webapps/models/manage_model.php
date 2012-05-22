@@ -401,6 +401,10 @@ class manage_model extends MY_Model
     
     public function get_areas($parent_id)
     {
+        $result = array("Total"=>0, "Rows"=>array());
+        $this->db->where(array('parent_id'=>$parent_id));
+        $result['Total'] = $this->db->count_all_results('region');
+        
         
         $sql = "SELECT region_id, region_name FROM kvke_region WHERE parent_id=$parent_id";
         $pro_objs =  $this->db->query($sql)->result();
@@ -416,7 +420,9 @@ class manage_model extends MY_Model
                 $pro_obj->enabled = 1;
         
         }
-        return $pro_objs;
+        
+        $result['Rows'] = $pro_objs;
+        return $result;
         
     }
     
