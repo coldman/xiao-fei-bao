@@ -206,7 +206,9 @@ class manage_model extends MY_Model
                     on a.user_id=b.user_id 
                     where a.is_agent=1
                     order by b.user_id desc) A
-                 LEFT JOIN kvke_agents M ON A.user_id=M.agent_id" ;
+                 LEFT JOIN kvke_agents M ON A.user_id=M.agent_id 
+                 order by A.$sortname $sortorder
+                 limit $limit offset $offset" ;
        
        
        
