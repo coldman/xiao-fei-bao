@@ -373,6 +373,15 @@ class manage_model extends MY_Model
         * `add_time` < 1424106441;
 
         */
+        if (!$begin_time){
+            $t = date('Y-m-01',time()); //当月第一天
+            $begin_time = strtotime( $t );
+        }
+        
+        
+        if (!$end_time){
+            $end_time = time();
+        }
         $this->db->select_sum('goods_amount');
         $this->db->from('order_info');
         $this->db->join('users', 'users.user_id = order_info.app_user_id', 'left');
