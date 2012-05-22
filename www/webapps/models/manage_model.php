@@ -399,7 +399,7 @@ class manage_model extends MY_Model
     */
     
     
-    public function get_areas($parent_id)
+    public function get_areas($parent_id=1)
     {
         $result = array("Total"=>0, "Rows"=>array());
         $this->db->where(array('parent_id'=>$parent_id));
