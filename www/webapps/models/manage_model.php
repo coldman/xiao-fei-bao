@@ -64,6 +64,7 @@ class manage_model extends MY_Model
         'Total'=>0, 
         'Rows'=>array()
     );
+    
     $tb_name = 'manage_users';
     $this->db->where('role_type', 0);
     $result['Total'] = $this->db->count_all_results($tb_name);
@@ -74,7 +75,7 @@ class manage_model extends MY_Model
         $this->db->limit($params['limit'], $offset);
     }
     $result['Rows'] = $this->db->get($tb_name)->result();
-
+    
     return $result;
     }
 
@@ -149,12 +150,14 @@ class manage_model extends MY_Model
         $tb_name = 'kvke_users';
         $this->db->where('is_agent',1);
         $where = "a.is_agent=1";
+        /* 普通业务员|经理 都显示全部代理商
         if (array_key_exists('manage_id', $params))    // 经理
         {
             $manage_id = $params['manage_id'];
             $where = "a.is_agent=1 and a.manage_id=$manage_id";
             $this->db->where('manage_id',$params['manage_id']);
         } 
+        */
         
         $result['Total'] =   $this->db->count_all_results($tb_name);  //代理商个数
         
@@ -178,7 +181,7 @@ class manage_model extends MY_Model
             $sortorder = $params['sortorder'];
         }
         
-        
+        /*
         $sql = "select T.user_id, T.user_name,T.real_name,T.province_name,T.city_name,T.district_name,T.comp_name,M.step1,M.step2,M.step3,M.step4,M.amount FROM
                 (
                     select A.*,B.region_name as district_name FROM 
@@ -192,25 +195,65 @@ class manage_model extends MY_Model
                 LEFT JOIN kvke_agents M ON T.user_id=M.agent_id
                 order by T.$sortname $sortorder
                 limit $limit offset $offset";
+        */
+        //前半部分是自己的代理商   manage_id 返回在结果中
         
+        $sql = "select A.*,M.step1,M.step2,M.step3,M.step4,M.amount
+                from 
+                    (select a.user_id,a.user_name,a.real_name,a.province,a.city,a.district,
+                    a.comp_name,a.manage_id from kvke_users a
+                    left join ( select * from kvke_users where is_agent=1 and manage_id=3) b
+                    on a.user_id=b.user_id 
+                    where a.is_agent=1
+                    order by b.user_id desc) A
+                 LEFT JOIN kvke_agents M ON A.user_id=M.agent_id" ;
        
-       $rows_array = $this->db->query($sql, array())->result();
        
        
-       foreach ($rows_array as $row)
-       {
-          $array_plan = $this->get_agents_plan($row->user_id);
-          $row->step1_plan = $array_plan['step1']/100.0;
-          $row->step2_plan = $array_plan['step2']/100.0;
-          $row->step3_plan = $array_plan['step3']/100.0;
-          $row->step4_plan = $array_plan['step4']/100.0;
-          
-          $row->step1 = $row->step1/100.00;
-          $row->step2 = $row->step2/100.00;
-          $row->step3 = $row->step3/100.00;
-          $row->step4 = $row->step4/100.00;
+       $rows_array = $this->db->query($sql)->result();
+       
+        foreach ($rows_array as $row)
+        {
+            $array_plan = $this->get_agents_plan($row->user_id);
+            $row->step1_plan = $array_plan['step1']/100.0;
+            $row->step2_plan = $array_plan['step2']/100.0;
+            $row->step3_plan = $array_plan['step3']/100.0;
+            $row->step4_plan = $array_plan['step4']/100.0;
+
+            $row->step1 = $row->step1/100.00;
+            $row->step2 = $row->step2/100.00;
+            $row->step3 = $row->step3/100.00;
+            $row->step4 = $row->step4/100.00;
+
+            $sql = "select region_name as pro_name from kvke_region where region_id=?";
+            $temp = $this->db->query($sql,array($row->province))->row_array();
+            $pro_name = '';
+            if ($temp){
+                $pro_name = $temp['pro_name'];
+            }
+
+            $sql = "select region_name as city_name from kvke_region where region_id=?";
+            $temp = $this->db->query($sql,array($row->city))->row_array();
+            $city_name = '';
+            if ($temp){
+                $city_name = $temp['city_name'];
+            }
+
+            $sql = "select region_name as dis_name from kvke_region where region_id=?";
+            $temp = $this->db->query($sql,array($row->city))->row_array();
+            $dis_name = '';
+            if ($temp){
+                $dis_name = $temp['dis_name'];
+            }
+
+            $row->province_name = $pro_name;
+            $row->city_name = $city_name;
+            $row->district_name = $dis_name;
+            
        } 
        $result['Rows'] = $rows_array;
+       
+       
        return $result;
     }
     
@@ -629,7 +672,14 @@ class manage_model extends MY_Model
     */
     function auto_count_amount()
     {
-        //
+        /*
+        select user_name,user_id from kvke_users where is_agent=1;
+
+create event IF NOT EXISTS  count_agent_amount
+on schedulea every 1 day
+do 
+
+        */
         return false;
     }
     

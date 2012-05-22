@@ -30,7 +30,7 @@ class Analysis extends MY_Controller
 
     function view_agent($id)
     {
-	$data['agent'] = $this->manage_model->get_agent_by_id($id);
+	$data['agent'] = $this->manage_model->get_user_by_id($id);#get_agent_by_id($id);
 	$this->_template('agent/view', $data);
     }
 
