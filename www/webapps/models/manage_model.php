@@ -406,7 +406,7 @@ class manage_model extends MY_Model
         $result['Total'] = $this->db->count_all_results('region');
         
         
-        $sql = "SELECT region_id, region_name FROM kvke_region WHERE parent_id=$parent_id";
+        $sql = "SELECT region_id, region_name, region_type FROM kvke_region WHERE parent_id=$parent_id";
         $pro_objs =  $this->db->query($sql)->result();
         foreach ($pro_objs as $pro_obj)
         {
@@ -418,6 +418,10 @@ class manage_model extends MY_Model
             $pro_obj->enabled = 0;
             if ($this->db->count_all_results('users') > 0)
                 $pro_obj->enabled = 1;
+            
+            if (($pro_obj->region_type==1) or ($pro_obj->region_type==2)){  //省市都有children
+                $pro_obj->children = '[]';
+            }
         
         }
         
