@@ -28,7 +28,8 @@
 	    <div title="业务员中心">
 		<div class="node">
 		    <a class="l-link" id="agent_list" href="<?php echo site_url('analysis/agent');?>">代理商列表</a>
-		    <a class="l-link" id="trader_data" href="<?php echo site_url('analysis/trader');?>">商家数据</a>
+		    <a class="l-link" id="trader_list" href="<?php echo site_url('analysis/trader');?>">商户列表</a>
+		    <a class="l-link" id="region_data" href="<?php echo site_url('analysis/region');?>">区域信息</a>
 		</div>
 	    </div>
 	    <div title="系统设置">

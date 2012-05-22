@@ -25,7 +25,8 @@ class Analysis extends MY_Controller
 
     function agent()
     {
-	$this->_template('agent/list');
+	$data['manager'] = $this->session->userdata('manage');
+	$this->_template('agent/list', $data);
     }
 
     function view_agent($id)
@@ -43,6 +44,11 @@ class Analysis extends MY_Controller
     {
 	$data['trader']	= $this->manage_model->get_user_by_id($id);
 	$this->_template('trader/view', $data);
+    }
+
+    function region()
+    {
+	echo '区域信息查看';
     }
 }
 

@@ -2,6 +2,7 @@
 
 <script type="text/javascript">
 var grid = null;
+var manage_id = <?php echo isset($manager['id'])?$manager['id']:null;?>;
 function view_agent(id) {
     window.parent.addTab('view-agent', '查看代理商', "<?php echo site_url('analysis/view_agent');?>/"+id);
 }
@@ -53,8 +54,10 @@ $(function(){
 	    }},
 	    {display:'当月营业额', name:'amount', align:'right', width:'80' },
 	    {display:'操作', name:'opt', align:'center', width:'100', render:function(value, index){
-		var v = '<span class="icon icon-view" onclick="view_agent('+value.user_id+');"></span>';
-		return v;
+		if (value.manage_id == manage_id) {
+		    var v = '<span class="icon icon-view" onclick="view_agent('+value.user_id+');"></span>';
+		    return v;
+		}
 	    }}
 	], 
 	dataAction:'server', 
