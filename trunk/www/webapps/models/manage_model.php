@@ -149,17 +149,16 @@ class manage_model extends MY_Model
         
         $tb_name = 'kvke_users';
         $this->db->where('is_agent',1);
-        $where = "a.is_agent=1";
-        /* 普通业务员|经理 都显示全部代理商
-        if (array_key_exists('manage_id', $params))    // 经理
+        $where = "where  is_agent=1 ";
+        if (array_key_exists('manage_id', $params))    // 普通业务员
         {
             $manage_id = $params['manage_id'];
-            $where = "a.is_agent=1 and a.manage_id=$manage_id";
-            $this->db->where('manage_id',$params['manage_id']);
+            $where = "where is_agent=1 and manage_id=$manage_id";
+            //$this->db->where('manage_id',$params['manage_id']);
         } 
-        */
         
-        $result['Total'] =   $this->db->count_all_results($tb_name);  //代理商个数
+        
+        $result['Total'] =   $this->db->count_all_results($tb_name);  //代理商个数(所有)
         
         $limit = 0;
         $offset = 0;
@@ -202,12 +201,11 @@ class manage_model extends MY_Model
                 from 
                     (select a.user_id,a.user_name,a.real_name,a.province,a.city,a.district,
                     a.comp_name,a.manage_id from kvke_users a
-                    left join ( select * from kvke_users where is_agent=1 and manage_id=3) b
+                    left join ( select * from kvke_users $where) b
                     on a.user_id=b.user_id 
                     where a.is_agent=1
                     order by b.user_id desc) A
                  LEFT JOIN kvke_agents M ON A.user_id=M.agent_id 
-                 order by A.$sortname $sortorder
                  limit $limit offset $offset" ;
        
        
