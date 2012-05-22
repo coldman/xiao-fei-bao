@@ -124,7 +124,7 @@ class User extends MY_Controller
 	    if ($agents)
 	    {
 		$agent_ids = explode(',', $agents);
-		$this->manage_model->bind_agents_to_manager($manager_id, $agent_id);
+		$this->manage_model->bind_agents_to_manager($manager_id, $agent_ids);
 	    }
 	    $this->session->set_flashdata('msg', '业务员更新成功！');
 	    redirect('user/edit_manager/'.$save['id']);
