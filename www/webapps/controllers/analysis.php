@@ -37,7 +37,8 @@ class Analysis extends MY_Controller
 
     function assign_amount($id)
     {
-	echo 'good';
+
+	$this->_template('agent/assign_amount');
     }
 
     function trader()
