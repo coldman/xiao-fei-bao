@@ -39,7 +39,7 @@ $(function(){
     //sel.src.add({id: 0, name: 'None', region: '幽灵'});
     //sel.src.add({id: 1, name: 'Tom', region: '汤姆'});
 
-    $('#pwd_form').ligerForm();
+    $('#manager_form').ligerForm();
     function get_selected_agents()
     {
 	var s = sel.getSelected();
@@ -71,7 +71,7 @@ $(function(){
 		</tr>
 		<tr>
 		    <td align="right" class="l-table-edit-td">密码</td>
-		    <td align="left" class="l-table-edit-td"><input type="password" name="password" id="realname" value="" ltype="password" /></td>
+		    <td align="left" class="l-table-edit-td"><input type="password" name="password" id="password" value="" ltype="password" /></td>
 		</tr>
 		<tr>
 		    <td align="right" class="l-table-edit-td">确认密码</td>

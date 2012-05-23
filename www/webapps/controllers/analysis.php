@@ -37,8 +37,9 @@ class Analysis extends MY_Controller
 
     function assign_amount($id)
     {
-
-	$this->_template('agent/assign_amount');
+	$data['agent_plan'] = $this->manage_model->get_agent_plan($id);
+	$data['agent_id']   = $id;
+	$this->_template('agent/assign_amount', $data);
     }
 
     function trader()
