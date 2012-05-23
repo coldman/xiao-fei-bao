@@ -764,6 +764,13 @@ class manage_model extends MY_Model
 	$this->db->delete($tb_name);
 	return true;
     }
+    
+    function get_all_rate_templates()
+    {
+        $tbname = 'agent_rate_template';
+        $this->db->order_by('name');
+        return $this->db->get($tbname)->result();
+    }
 
 }
 ?>
