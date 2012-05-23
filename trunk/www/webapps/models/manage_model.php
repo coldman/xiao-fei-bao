@@ -150,13 +150,13 @@ class manage_model extends MY_Model
         $tb_name = 'kvke_users';
         $this->db->where('is_agent',1);
         $where = "where  is_agent=1 ";
+        
+        
+        $manage_id = 0;
         if (array_key_exists('manage_id', $params))    // 普通业务员
         {
             $manage_id = $params['manage_id'];
-            $where = "where is_agent=1 and manage_id=$manage_id";
-            //$this->db->where('manage_id',$params['manage_id']);
         } 
-        
         
         $result['Total'] =   $this->db->count_all_results($tb_name);  //代理商个数(所有)
         
@@ -180,23 +180,22 @@ class manage_model extends MY_Model
             $sortorder = $params['sortorder'];
         }
         
-        /*
-        $sql = "select T.user_id, T.user_name,T.real_name,T.province_name,T.city_name,T.district_name,T.comp_name,M.step1,M.step2,M.step3,M.step4,M.amount FROM
-                (
-                    select A.*,B.region_name as district_name FROM 
-                    (select A.*,B.region_name as city_name FROM 
-                    (select a.user_id,a.user_name,a.real_name,a.province,a.city,a.district,
-                     a.comp_name,a.manage_id,b.region_name as province_name 
-                     from kvke_users a left join kvke_region b on a.province=b.region_id 
-                     where $where) A LEFT JOIN kvke_region B on A.city=B.region_id
-                ) A LEFT JOIN kvke_region B on A.district=B.region_id
-                ) T
-                LEFT JOIN kvke_agents M ON T.user_id=M.agent_id
-                order by T.$sortname $sortorder
-                limit $limit offset $offset";
-        */
+        
         //前半部分是自己的代理商   manage_id 返回在结果中
         
+        
+        $sql = "select a.user_id,a.comp_name,a.real_name,a.province,a.city,a.district, c.id as manage_id,c.username as manage_name, if(c.role_type=1,c.id, if(a.manage_id=$manage_id, $manage_id, 0)) as m_id,
+                  b.amount, b.step1, b.step2, b.step3, b.step4,
+                  d.step1 as step1_plan,d.step2 as step2_plan,d.step3 as step3_plan,d.step4 as step4_plan 
+                from kvke_users a
+                left join kvke_agents b on a.user_id=b.agent_id
+                left join kvke_manage_users c on a.manage_id=c.id
+                left join kvke_agents_plan d on a.user_id=d.agent_id
+                where a.is_agent=1
+                order by m_id desc";
+        //echo $sql;
+                
+        /*
         $sql = "select A.*,M.step1,M.step2,M.step3,M.step4,M.amount
                 from 
                     (select a.user_id,a.user_name,a.real_name,a.province,a.city,a.district,
@@ -207,7 +206,7 @@ class manage_model extends MY_Model
                     order by b.user_id desc) A
                  LEFT JOIN kvke_agents M ON A.user_id=M.agent_id 
                  limit $limit offset $offset" ;
-       
+        */
        
        
        $rows_array = $this->db->query($sql)->result();
@@ -224,7 +223,7 @@ class manage_model extends MY_Model
             $row->step2 = $row->step2/100.00;
             $row->step3 = $row->step3/100.00;
             $row->step4 = $row->step4/100.00;
-
+            
             $sql = "select region_name as pro_name from kvke_region where region_id=?";
             $temp = $this->db->query($sql,array($row->province))->row_array();
             $pro_name = '';
@@ -679,18 +678,54 @@ class manage_model extends MY_Model
     }
     
     /*
+    * 获取系统代理商额度计划 
+    */
+    function get_all_agents_plan($params=array())
+    {
+        $result = array(
+            'Total'=>0, 
+            'Rows'=>array()
+        );
+        
+        $result['Total'] = $this->db->count_all_results('agents_plan');  //代理商个数(所有)
+        
+        $limit = 0;
+        $offset = 0;
+        $sortname = 'user_name';
+        $sortorder = 'desc';
+        if (array_key_exists('limit', $params))
+        {
+            $offset = isset($params['offset'])?(int)$params['offset']:0;
+            $limit = (int)$params['limit'];
+        }
+        
+        if (array_key_exists('sortname', $params))
+        {
+            $sortname = $params['sortname'];
+        }
+        
+        if (array_key_exists('sortorder', $params))
+        {
+            $sortorder = $params['sortorder'];
+        }
+        
+        $sql = "select a.agent_id, b.user_name, b.real_name, a.step1, a.step2, a.step3, a.step4 from
+                kvke_agents_plan a
+                left join kvke_users b on a.agent_id=b.user_id
+                order by b.$sortname
+                limit $limit offset $limit";
+        $result['Rows'] = $this->db->query($sql)->result();
+        return $result;
+    
+    }
+    
+    
+    /*
     *自动统计营业额
     */
     function auto_count_amount()
     {
-        /*
-        select user_name,user_id from kvke_users where is_agent=1;
-
-create event IF NOT EXISTS  count_agent_amount
-on schedulea every 1 day
-do 
-
-        */
+       
         return false;
     }
     
