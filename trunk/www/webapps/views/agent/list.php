@@ -41,23 +41,24 @@ $(function(){
 		return s;
 	    }},
 	    {display:'公司', name:'comp_name', align:'left', width:'120' },
-	    {display:'1号-7号', name:'step1', align:'right', width:'100', render:function(value,index){
+	    {display:'1号-7号', name:'step1', align:'right', width:'90', render:function(value,index){
 		var s = show_result(value.step1, value.step1_plan);
 		return s;
 	    }},
-	    {display:'8号-14号', name:'step2', align:'right', width:'100', render:function(value,index){
+	    {display:'8号-14号', name:'step2', align:'right', width:'90', render:function(value,index){
 		var s = show_result(value.step2, value.step2_plan);
 		return s;
 	    }},
-	    {display:'15号-21号', name:'step3', align:'right', width:'100', render:function(value,index){
+	    {display:'15号-21号', name:'step3', align:'right', width:'90', render:function(value,index){
 		var s = show_result(value.step3, value.step3_plan);
 		return s;
 	    }},
-	    {display:'22号-月末', name:'step4', align:'right', width:'100', render:function(value,index){
+	    {display:'22号-月末', name:'step4', align:'right', width:'90', render:function(value,index){
 		var s = show_result(value.step4, value.step4_plan);
 		return s;
 	    }},
-	    {display:'当月营业额', name:'amount', align:'right', width:'80' },
+	    {display:'当月营业额', name:'amount', align:'right', width:'90' },
+        {display:'归属业务员', name:'manage_name', align:'left', width:'80' },
 	    {display:'操作', name:'opt', align:'center', width:'100', render:function(value, index){
 		var show = false;
 		if (role_type == 1) {
