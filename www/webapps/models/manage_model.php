@@ -186,7 +186,7 @@ class manage_model extends MY_Model
         
         $sql = "select a.user_id,a.user_name,a.comp_name,a.real_name,a.province,a.city,a.district, c.id as manage_id,c.username as manage_name, if(c.role_type=1,c.id, if(a.manage_id=$manage_id, $manage_id, 0)) as m_id,
                   b.amount, b.step1, b.step2, b.step3, b.step4,
-                  d.step1 as step1_plan,d.step2 as step2_plan,d.step3 as step3_plan,d.step4 as step4_plan 
+                  d.step1 as step1_plan,d.step2 as step2_plan,d.step3 as step3_plan,d.step4 as step4_plan,c.username as manage_name
                 from kvke_users a
                 left join kvke_agents b on a.user_id=b.agent_id
                 left join kvke_manage_users c on a.manage_id=c.id
