@@ -109,6 +109,12 @@ class Json extends MY_Controller
         echo json_encode($this->manage_model->get_agent_by_id($id));
     }
     
+    function agent_rates()
+    {
+	$params = $this->_params();
+	$result = $this->manage_model->get_agent_rates($params);
+	echo json_encode($result);
+    }
     
 }
     

@@ -703,9 +703,22 @@ do
         return false;
     }
     
-    
-    
-        
+    function get_agent_rates($params=array())
+    {
+	$result = array(
+	    'Total'=>0, 
+	    'Rows'=>array()   
+	);
+	$tb_name = 'agent_rate_template';
+	$result['Total'] = $this->db->count_all_results($tb_name);
+	if (array_key_exists('limit', $params) and $params['limit']>0)
+	{
+	    $offset = isset($params['offset'])?$params['offset']:0;
+	    $this->db->limit($params['limit'], $offset);
+	}
+	$result['Rows'] = $this->db->get($tb_name)->result();
+	return $result;
+    }   
 
 }
 ?>

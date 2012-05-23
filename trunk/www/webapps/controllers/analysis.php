@@ -35,6 +35,11 @@ class Analysis extends MY_Controller
 	$this->_template('agent/view', $data);
     }
 
+    function assign_amount($id)
+    {
+	echo 'good';
+    }
+
     function trader()
     {
 	$this->_template('trader/list');

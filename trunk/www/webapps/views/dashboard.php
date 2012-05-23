@@ -36,6 +36,7 @@
 		<div class="node">
 		<?php if ($manager['role_type'] == 1):?>
 		    <a class="l-link" id="manager_list" href="<?php echo site_url('user/managers');?>">业务员列表</a>
+		    <a class="l-link" id="agent_rate_temp" href="<?php echo site_url('user/agent_rate_temp');?>">代理商费率模版</a>
 		<?php endif;?>
 		    <a class="l-link" id="user_info" href="<?php echo site_url('user/info');?>">个人信息</a>
 		    <a class="l-link" id="change_pwd" href="<?php echo site_url('user/change_pwd');?>">修改密码</a>
@@ -43,11 +44,16 @@
 	    </div>
 	</div>
 	<div position="center" id="framecenter">
-	    <div tabid="home" title="首页" style="height:300px;">
+	    <!--<div tabid="home" title="首页" style="height:300px;">
 		欢迎进入业务员管理系统
-	    </div>
+	    </div>-->
 	</div>
 	<!--<div position="right">right</div>-->
+	<script type="text/javascript">
+	$(function(){
+	    addTab('agent-list', '代理商列表', "<?php echo site_url('analysis/agent');?>");
+	});
+	</script>
     </div>
     <div id="footer">Copyright &copy;2012~2020  91消费宝  All right reversed.</div>
 </body>
