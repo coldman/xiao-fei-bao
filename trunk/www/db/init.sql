@@ -93,6 +93,7 @@ insert into kvke_agents (agent_id) values select user_id from kvke_users where i
 
 -- alter 用户表新增一列
 alter table kvke_users add manager_id int(11) unsigned not null default 0;
+alter table kvke_users add rate_template_name varchar(64) ;
 
 
 DROP PROCEDURE IF EXISTS proc_count_agent_amt;
