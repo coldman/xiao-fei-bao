@@ -8,14 +8,14 @@
 <script type="text/javascript">
 var grid = null;
 function edit_agent_rate(id) {
-    window.parent.addTab('edit-agent-rate', '编辑业务员', "<?php echo site_url('user/agent_rate_temp_edit');?>/"+id);
+    window.parent.addTab('edit-agent-rate', '编辑代理商模版', "<?php echo site_url('user/agent_rate_temp_edit');?>/"+id);
 }
 
 function del_agent_rate(id) {
-    var url = "<?php echo site_url('json/agent_rate_temp_del');?>/"+id;
+    var url = "<?php echo site_url('json/del_agent_rate');?>/"+id;
     $.getJSON(url, {}, function(data){
 	if (data.result) {
-	    $.ligerDialog.success("业务员删除成功！");
+	    $.ligerDialog.success("代理商费率模版删除成功！");
 	    window.location.reload();
 	}
     });
@@ -24,7 +24,7 @@ function del_agent_rate(id) {
 $(function(){
     $('#toolbar').ligerToolBar({items:[
 	{text:'增加', icon:'add', click:function(){
-	    window.parent.addTab('add-agent-rate', '添加业务员', "<?php echo site_url('user/agent_rate_temp_add');?>");
+	    window.parent.addTab('add-agent-rate', '添加代理商模版', "<?php echo site_url('user/agent_rate_temp_add');?>");
 	}}	
     ]});
     grid = $('#datagrid').ligerGrid({
