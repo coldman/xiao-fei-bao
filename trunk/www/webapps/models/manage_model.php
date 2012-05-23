@@ -184,7 +184,7 @@ class manage_model extends MY_Model
         //前半部分是自己的代理商   manage_id 返回在结果中
         
         
-        $sql = "select a.user_id,a.comp_name,a.real_name,a.province,a.city,a.district, c.id as manage_id,c.username as manage_name, if(c.role_type=1,c.id, if(a.manage_id=$manage_id, $manage_id, 0)) as m_id,
+        $sql = "select a.user_id,a.user_name,a.comp_name,a.real_name,a.province,a.city,a.district, c.id as manage_id,c.username as manage_name, if(c.role_type=1,c.id, if(a.manage_id=$manage_id, $manage_id, 0)) as m_id,
                   b.amount, b.step1, b.step2, b.step3, b.step4,
                   d.step1 as step1_plan,d.step2 as step2_plan,d.step3 as step3_plan,d.step4 as step4_plan 
                 from kvke_users a
