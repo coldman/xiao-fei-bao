@@ -241,7 +241,7 @@ class manage_model extends MY_Model
             }
 
             $sql = "select region_name as dis_name from kvke_region where region_id=?";
-            $temp = $this->db->query($sql,array($row->city))->row_array();
+            $temp = $this->db->query($sql,array($row->district))->row_array();
             $dis_name = '';
             if ($temp){
                 $dis_name = $temp['dis_name'];
