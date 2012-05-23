@@ -720,5 +720,38 @@ do
 	return $result;
     }   
 
+    function get_agent_rate_by_id($id)
+    {
+	$tb_name = 'agent_rate_template';
+	$this->db->where('id', $id);
+	$result = $this->db->get($tb_name)->row_array();
+	return $result;
+    }
+
+    function save_agent_rate($data)
+    {
+	$tb_name = 'agent_rate_template';
+	if (array_key_exists('id', $data) && $data['id'])
+	{
+	    $this->db->where('id', $data['id']);
+	    $this->db->update($tb_name, $data);
+	    $id = $data['id'];
+	}
+	else 
+	{
+	    $this->db->insert($tb_name, $data);
+	    $id = $this->db->insert_id();
+	}
+	return $id;
+    }
+
+    function del_agent_rate($id)
+    {
+	$tb_name = 'agent_rate_template';
+	$this->db->where('id', $id);
+	$this->db->delete($tb_name);
+	return true;
+    }
+
 }
 ?>

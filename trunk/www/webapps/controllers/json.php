@@ -116,6 +116,11 @@ class Json extends MY_Controller
 	echo json_encode($result);
     }
     
+    function del_agent_rate($id)
+    {
+	$this->manage_model->del_agent_rate($id);
+	echo json_encode(array('result'=>true));
+    }
 }
     
 

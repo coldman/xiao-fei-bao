@@ -139,17 +139,49 @@ class User extends MY_Controller
 
     function agent_rate_temp_add()
     {
-	echo 'add';
+	$submitted = $this->input->post('submitted');
+	if ($submitted)
+	{
+	    $save = array();
+	    foreach ($this->input->post() as $key=>$value)
+	    {
+		if ($key != 'submitted')
+		{
+		    $save[$key] = $value;
+		}
+	    }
+	    $id = $this->manage_model->save_agent_rate($save);
+	    if ($id) 
+	    {
+		$this->session->set_flashdata('msg', '代理商费率模版添加成功！');
+	    }
+	    redirect('user/agent_rate_temp_add');
+	}
+	$this->_template('agent/rate_temp_add');
     }
 
-    function agent_rate_temp_edit()
+    function agent_rate_temp_edit($id)
     {
-	echo 'edit';
-    }
-
-    function agent_rate_temp_del()
-    {
-	echo 'del';
+	$data['agent_rate'] = $this->manage_model->get_agent_rate_by_id($id);
+	$submitted = $this->input->post('submitted');
+	if ($submitted)
+	{
+	    $save = array();
+	    foreach ($this->input->post() as $key=>$value)
+	    {
+		if ($key != 'submitted')
+		{
+		    $save[$key] = $value;
+		}
+	    }
+	    $id = $this->manage_model->save_agent_rate($save);
+	    if ($id)
+	    {
+		$this->session->set_flashdata('msg', '代理商费率模版更新成功！');
+	    }
+	    redirect('user/agent_rate_temp_edit/'.$save['id']);
+	}
+	$this->_template('agent/rate_temp_edit', $data);
     }
 
 }
