@@ -506,6 +506,30 @@ class manage_model extends MY_Model
         $sql = "select step1, step2, step3, step4 from kvke_agents_plan where agent_id=$id";
         return $this->db->query($sql)->row_array();
     }
+
+    function save_agent_plan($data)
+    {
+	$tb_name = 'agents_plan';
+	$is_update = false;
+	if (array_key_exists('id', $data) && $data['id'])
+	{
+	    $this->db->where('id', $data['id']);
+	    $is_update = true;
+	}
+	if (array_key_exists('agent_id', $data) && $data['agent_id']) 
+	{
+	    $this->db->where('agent_id', $data['agent_id']);
+	    $is_update = true;
+	}
+	if ($is_update)
+	{
+	    $this->db->update($tb_name, $data);
+	}
+	else 
+	{
+	    $this->db->insert($tb_name, $data);
+	}
+    }
     
     /*
     * 获取未指派业务员的代理商列表
