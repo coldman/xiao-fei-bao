@@ -209,10 +209,11 @@ class manage_model extends MY_Model
         */
        
        
-       $rows_array = $this->db->query($sql)->result();
+        $rows_array = $this->db->query($sql)->result();
        
         foreach ($rows_array as $row)
         {
+            /*
             $array_plan = $this->get_agent_plan($row->user_id);
             $row->step1_plan = $array_plan['step1']/100.0;
             $row->step2_plan = $array_plan['step2']/100.0;
@@ -224,6 +225,7 @@ class manage_model extends MY_Model
             $row->step3 = $row->step3/100.00;
             $row->step4 = $row->step4/100.00;
             
+            */
             $sql = "select region_name as pro_name from kvke_region where region_id=?";
             $temp = $this->db->query($sql,array($row->province))->row_array();
             $pro_name = '';
@@ -256,55 +258,6 @@ class manage_model extends MY_Model
        return $result;
     }
     
-    
-    
-    /*
-    * 获取某个业务员名下的所有代理
-    */
-    /*
-    function get_agent_grid_data($params)
-    {
-        $result = array(
-            'Total'=>0, 
-            'Rows'=>array()
-        );
-        $tb_name = 'users';
-        if (array_key_exists('manage_id', $params))
-        {
-            $this->db->where('manage_id', $params['manage_id']);
-        }
-        if (array_key_exists('is_agent', $params))
-        {
-            $this->db->where('is_agent', $params['is_agent']);
-        }
-        $result['Total'] = $this->db->count_all_results($tb_name);
-        
-        if (array_key_exists('select', $params))
-        {
-            $this->db->select($params['select']);
-        }
-        if (array_key_exists('manage_id', $params))
-        {
-            $this->db->where('manage_id', $params['manage_id']);
-        }
-        if (array_key_exists('is_agent', $params))
-        {
-            $this->db->where('is_agent', $params['is_agent']);
-        }
-        if (array_key_exists('limit', $params))
-        {
-            $offset = isset($params['offset'])?$params['offset']:0;
-            $this->db->limit($params['limit'], $offset);
-        }
-        if (array_key_exists('sortname', $params))
-        {
-            $sortorder = isset($params['sortorder'])?$params['sortorder']:'desc';
-            $this->db->order_by($params['sortname'], $params['sortname']);
-        }
-        $result['Rows'] = $this->db->get($tb_name)->result();
-        return $result;
-    }
-    */
     
     /**
      * 获取某个代理
