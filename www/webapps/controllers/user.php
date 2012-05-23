@@ -132,8 +132,26 @@ class User extends MY_Controller
 	$this->_template('manager/edit', $data);
     }
 
+    function agent_rate_temp()
+    {
+	$this->_template('agent/rate_temp_list');
+    }
+
+    function agent_rate_temp_add()
+    {
+	echo 'add';
+    }
+
+    function agent_rate_temp_edit()
+    {
+	echo 'edit';
+    }
+
+    function agent_rate_temp_del()
+    {
+	echo 'del';
+    }
+
 }
-    
- 
 
 ?>

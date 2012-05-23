@@ -8,6 +8,10 @@ function view_agent(id) {
     window.parent.addTab('view-agent', '查看代理商', "<?php echo site_url('analysis/view_agent');?>/"+id);
 }
 
+function assign_amount(id) {
+    window.parent.addTab('assign-amount', '结算模版', "<?php echo site_url('analysis/assign_amount');?>/"+id);
+}
+
 function show_result(a, p) {
     var amount = 0;
     var plan   = 0;
@@ -66,8 +70,17 @@ $(function(){
 		}
 		if (show) {
 		    var v = '<span class="icon icon-view" onclick="view_agent('+value.user_id+');"></span>';
-		    return v;
 		}
+		else {
+		    var v = '';
+		}
+		if (role_type == 1) {
+		    var e = '<span class="icon icon-edit" onclick="assign_amount('+value.user_id+');" style="margin-left:10px;"></span>';
+		}
+		else {
+		    var e = '';
+		}
+		return v + e;
 	    }}
 	], 
 	dataAction:'server', 
