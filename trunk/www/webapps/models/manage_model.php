@@ -184,13 +184,16 @@ class manage_model extends MY_Model
         //前半部分是自己的代理商   manage_id 返回在结果中
         
         
-        $sql = "select a.user_id,a.user_name,a.comp_name,a.real_name,a.province,a.city,a.district, c.id as manage_id,c.username as manage_name, if(c.role_type=1,c.id, if(a.manage_id=$manage_id, $manage_id, 0)) as m_id,
+        $sql = "select a.user_id,a.user_name,a.comp_name,a.real_name,x.region_name as province_name,y.region_name as city_name,z.region_name as district_name, c.id as manage_id,c.username as manage_name, if(c.role_type=1,c.id, if(a.manage_id=$manage_id, $manage_id, 0)) as m_id,
                   b.amount, b.step1, b.step2, b.step3, b.step4,
                   d.step1 as step1_plan,d.step2 as step2_plan,d.step3 as step3_plan,d.step4 as step4_plan,c.username as manage_name
                 from kvke_users a
                 left join kvke_agents b on a.user_id=b.agent_id
                 left join kvke_manage_users c on a.manage_id=c.id
                 left join kvke_agents_plan d on a.user_id=d.agent_id
+                left join kvke_region x on a.province=x.region_id
+                left join kvke_region y on a.city=y.region_id
+                left join kvke_region z on a.district=z.region_id
                 where a.is_agent=1
                 order by m_id desc";
         //echo $sql;
@@ -208,12 +211,12 @@ class manage_model extends MY_Model
                  limit $limit offset $offset" ;
         */
        
-       
+        /*
         $rows_array = $this->db->query($sql)->result();
        
         foreach ($rows_array as $row)
         {
-            /*
+            
             $array_plan = $this->get_agent_plan($row->user_id);
             $row->step1_plan = $array_plan['step1']/100.0;
             $row->step2_plan = $array_plan['step2']/100.0;
@@ -225,7 +228,7 @@ class manage_model extends MY_Model
             $row->step3 = $row->step3/100.00;
             $row->step4 = $row->step4/100.00;
             
-            */
+            
             $sql = "select region_name as pro_name from kvke_region where region_id=?";
             $temp = $this->db->query($sql,array($row->province))->row_array();
             $pro_name = '';
@@ -253,8 +256,8 @@ class manage_model extends MY_Model
             
        } 
        $result['Rows'] = $rows_array;
-       
-       
+       */
+       $result['Rows'] = $this->db->query($sql)->result();
        return $result;
     }
     
@@ -545,6 +548,7 @@ class manage_model extends MY_Model
         $this->db->where(array('is_agent'=>1,'manage_id'=>0));
         $result['Total'] = $this->db->count_all_results($tb_name);
         
+        /*
         $this->db->select('user_id,user_name,real_name,province,city,district');
       
         $this->db->where(array('is_agent'=>1,'manage_id'=>0));  //为指派业务员的代理
@@ -579,7 +583,17 @@ class manage_model extends MY_Model
             
             
         } 
-        $result['Rows'] = $rows_array; 
+        */
+        
+        $sql = "select a.user_id,a.user_name,a.comp_name,a.real_name,x.region_name as province,y.region_name as city,z.region_name as district
+                  
+                from kvke_users a
+                left join kvke_region x on a.province=x.region_id
+                left join kvke_region y on a.city=y.region_id
+                left join kvke_region z on a.district=z.region_id
+                where a.is_agent=1 and a.manage_id=0
+                order by user_name";
+        $result['Rows'] = $this->db->query($sql)->result(); 
         
         return $result;
     }
@@ -612,7 +626,7 @@ class manage_model extends MY_Model
     {
         try{
             $this->db->where('agent_id', $params['agent_id']);
-            $this->db->update('agents_plan',$params['data']);
+            $this->db->update('agents_plan',$params);
             return true;
         }
         catch(Exception $e){
@@ -772,5 +786,29 @@ class manage_model extends MY_Model
         return $this->db->get($tbname)->result();
     }
 
+    function save_agent_user($data)
+    {
+	$tb_name = 'users';
+	if (array_key_exists('user_id', $data))
+	{
+	    $this->db->where('user_id', $data['user_id']);
+	    $this->db->update($tb_name, $data);
+	    $id = $data['user_id'];
+	}
+	else
+	{
+	    $this->db->insert($tb_name, $data);
+	    $id = $this->db->insert_id();
+	}
+	return $id;
+    }
+
+    function get_agent_user_by_id($id)
+    {
+	$tb_name = 'users';
+	$this->db->where('user_id', $id);
+	$result = $this->db->get($tb_name)->row_array();
+	return $result;
+    }
 }
 ?>

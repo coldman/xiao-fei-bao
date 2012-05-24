@@ -51,7 +51,7 @@
 	<!--<div position="right">right</div>-->
 	<script type="text/javascript">
 	$(function(){
-	    addTab('agent-list', '代理商列表', "<?php echo site_url('analysis/agent');?>");
+	    addTab('agent_list', '代理商列表', "<?php echo site_url('analysis/agent');?>");
 	});
 	</script>
     </div>

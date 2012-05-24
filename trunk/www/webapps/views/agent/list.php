@@ -34,9 +34,9 @@ $(function(){
     grid = $('#datagrid').ligerGrid({
 	checkbox: true, 
 	columns: [
-	    {display:'用户名', name:'user_name', align:'left', width:'100'}, 
-	    {display:'真实姓名', name:'real_name', align:'left', width:'60'}, 
-	    {display:'区域', name:'province_name', align:'left', width:'120', render:function(value,index){
+	    {display:'用户名', name:'user_name', align:'left', width:'100', frozen:true}, 
+	    {display:'真实姓名', name:'real_name', align:'left', width:'60', frozen:true}, 
+	    {display:'区域', name:'province_name', align:'left', width:'120', frozen: true, render:function(value,index){
 		var s = value.province_name + '-' + value.city_name + '-' + value.district_name;
 		return s;
 	    }},
