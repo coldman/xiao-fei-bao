@@ -28,7 +28,7 @@ create table `kvke_assess_agent` (
 );
 
 
---kvke_agents  自动执行统计表
+--kvke_agents  代理商账户表
 --drop table if exists `kvke_agents`;
 create table `kvke_agents`(
     `id` int(11) unsigned not null auto_increment,
@@ -96,66 +96,125 @@ alter table kvke_users add manager_id int(11) unsigned not null default 0;
 alter table kvke_users add rate_template_name varchar(64) ;
 
 
-DROP PROCEDURE IF EXISTS proc_count_agent_amt;
-CREATE PROCEDURE proc_count_agent_amt()
-BEGIN
-    declare amt_t1 type int;
-    declare iId int;
-    declare isExsits int;
-    declare cur_month_str varchar(8);
+-- 获取用户帐户资金信息
+DROP PROCEDURE IF EXISTS get_agent_account;
+CREATE PROCEDURE get_agent_account
+(
     
+)
+top: BEGIN
+
+    /**************************************************************************/
+
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
     
-    declare today date;
     declare stop int default 0;-- 这个用于处理游标到达最后一行的情况  
     declare cur cursor for select users_id from kvke_users where is_agent=1;  -- 声明游标 
     declare CONTINUE HANDLER FOR SQLSTATE '02000' SET stop=1; -- 声明游标的异常处理，设置一个终止标记
-
-    set today = current_date();
-    set isExsits = 0;
+    declare agentId,isExsits int;
+    declare cur_month_str varchar(8);
+    declare amount,step int;
+    declare today int ;
+    declare lastmonth_str varchar(6);
+    declare last23 varchar(8);
     
-    select date_format(now(),'%Y-%m') int cur_month_str;
+    
+    declare curmonth_str varchar(6);
+    declare curmon1 varchar(8);
+    declare curmon7 varchar(8);
+    declare curmon15 varchar(8);
+    declare v_step int;
+    
+    BEGIN
+        SET isExsits=0;
+        SET amount=0;
+        SET step=0;
+        SET v_step =0;
+    END;
+    
+    /**************************************************************************/
+    
+    select date_format(now(),'%Y-%m') into cur_month_str;  -- '2012-05'
+    -- select date_format(CURRENT_TIMESTAMP(),'%d') into today;  --'24'
+    select DAYOFMONTH(datetime) into today;  --24
+    select date_format(CURRENT_TIMESTAMP(), '%Y%m') into curmonth_str;
+    SET curmon1=CONCAT(curmonth_str, '1');  --当月1号
+    
+    
     
     open cur;
     -- 读取一行数据到变量   
-    fetch cur into iId;
-
+    fetch cur into agentId;
+    
     -- 这个就是判断是否游标已经到达了最后   
     while stop <> 1 do 
         
-        select count(1) into isExsits from kvke_agents where agent_id=iId;
+        select count(1) into isExsits from kvke_agents where agent_id=agentId;
         if isExsits == 0 then  -- 新增代理商  首先插入记录
-            insert into kvke_agents (agent_id,cur_month) values (iId, cur_month_str);
+            insert into kvke_agents (agent_id,cur_month) values (agentId, cur_month_str);
         end if;
     
         -- get yesterday amount
-        select sum(A.goods_amount) into amt 
-        from kvke_order_info as A LEFT  JOIN kvke_users as B on A.app_user_id=B.user_id 
-        where A.app_user_id>0  and from_unixtime(A.add_time) >= (today-1) 
-        and from_unixtime(A.add_time)<today and B.user_id=user_id;
+        select sum(goods_amount) into amount from kvke_order_info 
+        where app_user_id=agentId and app_user_id>0
+            and from_unixtime(A.add_time) >= (current_date()-1)
+            and from_unixtime(A.add_time) < current_date();
+        
+        if today==1 then  --统计上个月23号-月末
+            select date_format(DATE_SUB(CURRENT_TIMESTAMP(),INTERVAL 1 MONTH), '%Y%m') into lastmonth_str;
+            
+            SET last23=CONCAT(lastmonth_str, '23');
+            
+            
+            select sum(goods_amount) into v_step from kvke_order_info 
+            where app_user_id=agentId and app_user_id>0
+                and from_unixtime(A.add_time) >= STR_TO_DATE(last22 ,'%Y%m%d')
+                and from_unixtime(A.add_time) < STR_TO_DATE(curmon1,'%Y%m%d');
+            
+            update kvke_agents set step4=v_step where agent_id=agentId;
 
-
-        if 1号 then
-        step4=0;   --update
-        end if;
-
-        if 8号 then 
-        step1=0;   --insert
-        end if;
-
-        if 17号 then  --update
-        step2=0;
-        end if;
-
-        if 22号 then  --update
-        step3=0;
+        else if today==8 then   --统计当月1号-7号
+        
+            SET curmon8=CONCAT(curmonth_str, '8');
+            select sum(goods_amount) into v_step from kvke_order_info 
+            where app_user_id=agentId and app_user_id>0
+                and from_unixtime(A.add_time) >= STR_TO_DATE(curmon1 ,'%Y%m%d')
+                and from_unixtime(A.add_time) < STR_TO_DATE(curmon8,'%Y%m%d');
+            
+            insert into kvke_agents (agent_id,cur_month,step1) values (agentId,curmonth_str,v_step);
+            
+            
+        else if today==16 then  --update  统计8号-15号
+        
+            SET curmon16=CONCAT(curmonth_str, '16');
+            select sum(goods_amount) into v_step from kvke_order_info 
+            where app_user_id=agentId and app_user_id>0
+                and from_unixtime(A.add_time) >= STR_TO_DATE(curmon8 ,'%Y%m%d')
+                and from_unixtime(A.add_time) < STR_TO_DATE(curmon16,'%Y%m%d');
+            
+            update kvke_agents set step2=v_step where agent_id=agentId;
+      
+        else if today==22 then  --update 统计16号-23号
+        
+            SET curmon23=CONCAT(curmonth_str, '23');
+            select sum(goods_amount) into v_step from kvke_order_info 
+            where app_user_id=agentId and app_user_id>0
+                and from_unixtime(A.add_time) >= STR_TO_DATE(curmon16 ,'%Y%m%d')
+                and from_unixtime(A.add_time) < STR_TO_DATE(curmon23,'%Y%m%d');
+            
+            update kvke_agents set step2=v_step where agent_id=agentId;
+            
+        else
+            return;
         end if;
 
         -- 读取下一行的数据    
         fetch cur into iId;;
     end while;  -- 循环结束  
     close cur; -- 关闭游标
-  
-     
+    
+        
+    /**************************************************************************/ 
 END;
 
 

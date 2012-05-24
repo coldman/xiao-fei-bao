@@ -10,9 +10,9 @@ $(function(){
     grid = $('#datagrid').ligerGrid({
 	checkbox: true, 
 	columns: [
-	    {display:'用户名', name:'user_name', align:'left', width:'100'}, 
-	    {display:'真实姓名', name:'real_name', align:'left', width:'100'}, 
-	    {display:'区域', name:'area', align:'left', width:'150', render:function(value,index){
+	    {display:'用户名', name:'user_name', align:'left', width:'100', frozen: true}, 
+	    {display:'真实姓名', name:'real_name', align:'left', width:'100', frozen: true}, 
+	    {display:'区域', name:'area', align:'left', width:'150', frozen: true, render:function(value,index){
 		var s = value.province + '-' + value.city + '-' + value.district;
 		return s;
 	    }},

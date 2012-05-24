@@ -38,7 +38,28 @@ class Analysis extends MY_Controller
     function assign_amount($id)
     {
 	$data['agent_plan'] = $this->manage_model->get_agent_plan($id);
+	$data['agent']	    = $this->manage_model->get_agent_user_by_id($id);
 	$data['agent_id']   = $id;
+	$submitted = $this->input->post('submitted');
+	if ($submitted)
+	{
+	    $agent_id = $this->input->post('id');
+	    $rate_template_name = $this->input->post('rate');
+	    $update_data = array(
+		'agent_id'  => $agent_id, 
+		'step1'	    => $this->input->post('step1'), 
+		'step2'	    => $this->input->post('step2'), 
+		'step3'	    => $this->input->post('step3'), 
+		'step4'	    => $this->input->post('step4')
+	    );
+	    $this->manage_model->set_agent_plan($update_data);
+	    if ($rate_template_name)
+	    {
+		$this->manage_model->save_agent_user(array('user_id'=>$agent_id, 'rate_template_name'=>$rate_template_name));
+		echo $agent_id;
+	    }
+	    redirect('analysis/assign_amount/'.$agent_id);
+	}
 	$this->_template('agent/assign_amount', $data);
     }
 
