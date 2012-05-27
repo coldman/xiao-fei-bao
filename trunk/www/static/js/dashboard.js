@@ -34,7 +34,7 @@ $(function(){
     });
     var height = $('.l-layout-center').height();
     $('#navigation').ligerAccordion({height:height - 24, speed:null});
-    $('#framecenter').ligerTab({height: height});
+    $('#framecenter').ligerTab({height: height, onAfterSelectTabItem:function(tabid){tab.reload(tabid);}});
     tab = $('#framecenter').ligerGetTabManager();
 
     $('.l-link').click(function(){
