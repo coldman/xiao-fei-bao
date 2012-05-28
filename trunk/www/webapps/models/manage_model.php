@@ -195,7 +195,8 @@ class manage_model extends MY_Model
                 left join kvke_region y on a.city=y.region_id
                 left join kvke_region z on a.district=z.region_id
                 where a.is_agent=1
-                order by m_id desc";
+                order by m_id desc
+                limit $limit offset $offset";
         //echo $sql;
                 
         /*
