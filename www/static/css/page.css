@@ -43,3 +43,11 @@ table.info td {
 .rate_template .l-frozen .l-grid2 .l-grid-body {
     overflow-x:hidden;
 }
+
+.jstree-grid-header {
+    background:url(../img/gridalt.gif) repeat-x scroll left top #F1F1F1;
+    border-bottom:1px solid #D6D6D6;
+    height:20px; 
+    line-height:20px;
+    padding-left:4px;
+}
