@@ -10,8 +10,8 @@
 var manager = null;
 
 $(function(){
-    //var url = "<?php echo site_url('json/regions');?>";
-    var url = "<?php echo $media_root.'test.json';?>";
+    var url = "<?php echo site_url('json/regions');?>";
+    //var url = "<?php echo $media_root.'test.json';?>";
 
     $('#tree').bind("load_grid.jstree", function(){
 	$('span#status').text('加载');
@@ -24,8 +24,7 @@ $(function(){
 		cache: false, 
 		data: function(n) {
 		    return {
-			//"fid": n.region_id ? n.region_id : 0
-			"fid": n.attr ? n.attr("id") : 0
+			"fid": n.attr ? n.attr("region_id") : 1
 		    };
 		}
 	    }
@@ -33,7 +32,7 @@ $(function(){
 	grid: {
 	    columns: [
 		{width:300, header:"名称", title:"_DATA_"}, 
-		{cellClass:"icons", value:"enabled", width:80, header:"代理状态", title:"enabled", formatter:"<span class=\"icon icon-%s\">%s</span>"}
+		{cellClass:"icons", value:"enabled", width:80, header:"代理状态", title:"enabled", formatter:"<span class=\"icon icon-%s\"></span>"}
 		], 
 		resizable: true
 	}

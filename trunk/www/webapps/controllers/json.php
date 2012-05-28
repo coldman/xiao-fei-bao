@@ -98,9 +98,15 @@ class Json extends MY_Controller
     }
     
     // $flag   1-省 2-市 3-区
-    function regions($parent_id=1)
+    function regions()
     {
-        $ret = $this->manage_model->get_areas($parent_id);
+	$fid = $this->input->get("fid");
+	if (!$fid) 
+	{
+	    $fid = 1;
+	}
+        //$ret = $this->manage_model->get_areas($parent_id);
+	$ret = $this->manage_model->get_jstree_region_data($fid);
 	echo json_encode($ret);
     }
     
