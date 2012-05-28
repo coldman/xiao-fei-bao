@@ -78,6 +78,11 @@ class Analysis extends MY_Controller
     {
 	$this->_template('region');
     }
+
+    function agent_report()
+    {
+	echo '代理商结算报表';
+    }
 }
 
 ?>

@@ -8,8 +8,8 @@
 .jstree-default ins { background-image:url("d.png"); background-repeat:no-repeat; background-color:transparent; }
 .jstree-default li {background:url(dot.gif) repeat-y scroll 8px 0 transparent;}
 .jstree-default li.jstree-last { background:url(dot.gif) repeat-y scroll 8px 0 transparent;}
-.jstree-default .jstree-open > ins { background:url(fminus.gif) no-repeat scroll 2px center transparent;}
-.jstree-default .jstree-closed > ins { background:url(fplus.gif) no-repeat scroll 2px center transparent;}
+.jstree-default .jstree-open > ins { background:url(fminus.gif) no-repeat scroll 2px bottom transparent;}
+.jstree-default .jstree-closed > ins { background:url(fplus.gif) no-repeat scroll 2px bottom transparent;}
 .jstree-default .jstree-leaf > ins { background:url(li.gif) no-repeat scroll right center transparent;}
 
 .jstree-default .jstree-hovered { background:#e7f4f9; border:1px solid #d8f0fa; padding:0 2px 0 1px; }

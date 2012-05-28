@@ -32,6 +32,13 @@
 		    <a class="l-link" id="region_data" href="<?php echo site_url('analysis/region');?>">区域信息</a>
 		</div>
 	    </div>
+	    <?php if ($manager['role_type'] == 1):?>
+	    <div title="数据分析">
+		<div class="node">
+		    <a class="l-link" id="agent_report" href="<?php echo site_url('analysis/agent_report');?>">代理商结算报表</a>
+		</div>
+	    </div>
+	    <?php endif;?>
 	    <div title="系统设置">
 		<div class="node">
 		<?php if ($manager['role_type'] == 1):?>
