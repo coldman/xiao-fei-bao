@@ -8,7 +8,6 @@ function view_trader(id) {
 
 $(function(){
     grid = $('#datagrid').ligerGrid({
-	checkbox: true, 
 	columns: [
 	    {display:'用户名', name:'user_name', align:'left', width:'100', frozen: true}, 
 	    {display:'真实姓名', name:'real_name', align:'left', width:'100', frozen: true}, 
