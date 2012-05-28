@@ -26,3 +26,11 @@
 .icon-view {
     background:url(../img/icons/view.gif) no-repeat scroll center center transparent;
 }
+
+.icon-1 {
+    background:url(../img/icons/used.png) no-repeat scroll center center transparent;
+}
+
+.icon-0 {
+    background:url(../img/icons/unused.png) no-repeat scroll center center transparent;
+}

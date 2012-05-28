@@ -308,7 +308,60 @@ class manage_model extends MY_Model
     /*
     * 获取地区信息
     */
+    public function count_regions($fid=false)
+    {
+	$tb_name = 'region';
+	if ($fid) 
+	{
+	    $this->db->where('parent_id', $fid);
+	}
+	return $this->db->count_all_results($tb_name);
+    }
+
+    public function get_region_by_parent_id($fid=false)
+    {
+	$tb_name = 'region';
+	if ($fid == false)
+	{
+	    $fid = $this->get_min_column($tb_name, 'parent_id');
+	}
+	$this->db->from($tb_name);
+	$this->db->where('parent_id', $fid);
+	$this->db->order_by('region_name', 'asc');
+	return $this->db->get()->result();
+    }
     
+    public function get_jstree_region_data($fid)
+    {
+	$result	    = array();
+	$records    = $this->get_region_by_parent_id($fid);
+	foreach ($records as $record)
+	{
+	    $this->db->where('is_agent', 1);
+	    $this->db->where('province', $record->region_id);
+	    $this->db->or_where('city', $record->region_id);
+	    $this->db->or_where('district', $record->region_id);
+	    if ($this->db->count_all_results('users') > 0)
+	    {
+		$enabled = '1';
+	    }
+	    else 
+	    {
+		$enabled = '0';
+	    }
+	    $record->enabled = $enabled;
+	    if (($record->region_type==1) or ($record->region_type==2))
+	    {
+		$state = "closed";
+	    }
+	    else
+	    {
+		$state = "";
+	    }
+	    array_push($result, array("attr"=>$record, "data"=>$record->region_name, "state"=>$state));
+	}
+	return $result;
+    }
     
     public function get_areas($parent_id=1)
     {
