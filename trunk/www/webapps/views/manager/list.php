@@ -28,7 +28,6 @@ $(function(){
 	}}	
     ]});
     grid = $('#datagrid').ligerGrid({
-	checkbox: true, 
 	columns: [
 	    {display:'用户名', name:'username', align:'left', width:'100'}, 
 	    {display:'真实姓名', name:'realname', align:'left', width:'100'}, 

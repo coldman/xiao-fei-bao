@@ -28,7 +28,6 @@ $(function(){
 	}}	
     ]});
     grid = $('#datagrid').ligerGrid({
-	checkbox: true, 
 	columns: [
 	    {display:'模版名称', name:'name', align:'left', width:'100'}, 
 	    {display:'金额1', name:'amt1', align:'left', width:'100'}, 

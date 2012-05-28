@@ -81,7 +81,7 @@ class Analysis extends MY_Controller
 
     function agent_report()
     {
-	echo '代理商结算报表';
+	$this->_template('agent/report');
     }
 }
 
