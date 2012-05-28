@@ -197,7 +197,7 @@ class manage_model extends MY_Model
                 where a.is_agent=1
                 order by m_id desc
                 limit $limit offset $offset";
-        //echo $sql;
+     
                 
         /*
         $sql = "select A.*,M.step1,M.step2,M.step3,M.step4,M.amount
@@ -212,52 +212,7 @@ class manage_model extends MY_Model
                  limit $limit offset $offset" ;
         */
        
-        /*
-        $rows_array = $this->db->query($sql)->result();
-       
-        foreach ($rows_array as $row)
-        {
-            
-            $array_plan = $this->get_agent_plan($row->user_id);
-            $row->step1_plan = $array_plan['step1']/100.0;
-            $row->step2_plan = $array_plan['step2']/100.0;
-            $row->step3_plan = $array_plan['step3']/100.0;
-            $row->step4_plan = $array_plan['step4']/100.0;
-
-            $row->step1 = $row->step1/100.00;
-            $row->step2 = $row->step2/100.00;
-            $row->step3 = $row->step3/100.00;
-            $row->step4 = $row->step4/100.00;
-            
-            
-            $sql = "select region_name as pro_name from kvke_region where region_id=?";
-            $temp = $this->db->query($sql,array($row->province))->row_array();
-            $pro_name = '';
-            if ($temp){
-                $pro_name = $temp['pro_name'];
-            }
-
-            $sql = "select region_name as city_name from kvke_region where region_id=?";
-            $temp = $this->db->query($sql,array($row->city))->row_array();
-            $city_name = '';
-            if ($temp){
-                $city_name = $temp['city_name'];
-            }
-
-            $sql = "select region_name as dis_name from kvke_region where region_id=?";
-            $temp = $this->db->query($sql,array($row->district))->row_array();
-            $dis_name = '';
-            if ($temp){
-                $dis_name = $temp['dis_name'];
-            }
-
-            $row->province_name = $pro_name;
-            $row->city_name = $city_name;
-            $row->district_name = $dis_name;
-            
-       } 
-       $result['Rows'] = $rows_array;
-       */
+        
        $result['Rows'] = $this->db->query($sql)->result();
        return $result;
     }
