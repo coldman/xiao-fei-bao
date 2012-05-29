@@ -29,6 +29,9 @@
  *21.set_agent_plan             - 设置代理商额度
  *22.insert_agent_log           - 记录代理商日志
  *23.del_manager                  - 删除业务员
+ *24.get_agents_account         -获取代理商结算信息
+
+
 
  
  */
@@ -818,6 +821,49 @@ class manage_model extends MY_Model
 	$this->db->where('user_id', $id);
 	$result = $this->db->get($tb_name)->row_array();
 	return $result;
+    }
+    
+    function get_agents_account($params=array())
+    {
+        $result = array(
+            'Total'=>0, 
+            'Rows'=>array()
+        );
+        
+        $result['Total'] = $this->db->count_all_results('agents'); 
+        
+        $limit = 0;
+        $offset = 0;
+        $sortname = 'user_id';
+        $sortorder = 'asc';
+        if (array_key_exists('limit', $params))
+        {
+            $offset = isset($params['offset'])?(int)$params['offset']:0;
+            $limit = (int)$params['limit'];
+        }
+        
+        if (array_key_exists('sortname', $params))
+        {
+            $sortname = $params['sortname'];
+        }
+        
+        if (array_key_exists('sortorder', $params))
+        {
+            $sortorder = $params['sortorder'];
+        }
+        
+        $sql = "select b.user_name, b.real_name, x.region_name as province, 
+                    y.region_name as city, z.region_name as district, a.cur_month, 
+                    a.amount, a.settled_amount
+                from kvke_agents a
+                left join kvke_users b on a.agent_id=b.user_id
+                left join kvke_region x on b.province=x.region_id
+                left join kvke_region y on b.city=y.region_id
+                left join kvke_region z on b.district=z.region_id
+                order by b.$sortname, a.cur_month $sortorder
+                limit $limit offset $offset";
+        $result['Rows'] = $this->db->query($sql)->result();
+        return $result;
     }
 }
 ?>
