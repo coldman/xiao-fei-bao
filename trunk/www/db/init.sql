@@ -227,6 +227,87 @@ top: BEGIN
 /**************************************************************************/ 
 END
 
+
+-- 代理自动结算
+DROP PROCEDURE IF EXISTS proc_settle_agent;
+CREATE PROCEDURE proc_settle_agent()
+top: BEGIN
+    
+    DECLARE no_more_data                tinyint(1)  default 0;
+    DECLARE cur_get_undo_record_isopen  tinyint(1)  default 0;
+    DECLARE v_agentId  int;
+    DECLARE v_unsettle_amount int;  -- 未结算金额
+    DECLARE v_rate1,v_rate2,v_rate3 float;
+    DECLARE v_amt1,v_amt2,v_amt3 float;
+    DECLARE v_settled_amount,v_settle_time int;
+    
+    
+    DECLARE cur_get_undo_record cursor for select agent_id from kvke_agents where cur_month=date_format(CURRENT_TIMESTAMP(), '%Y%m');  -- 声明游标 
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET no_more_data = 1;
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+        IF (cur_get_undo_record_isopen<>0) THEN
+            CLOSE cur_get_undo_record;
+            SET cur_get_undo_record_isopen = 0;
+        END IF;
+    END;
+    
+    OPEN    cur_get_undo_record;
+    SET     cur_get_undo_record_isopen = 1;
+    REPEAT  -- 循环开始
+    
+    myloop: BEGIN
+        FETCH   cur_get_undo_record into v_agentId;
+        IF (!no_more_data) THEN
+            SET v_settled_amount=0;
+        
+            select amount, settle_time into v_unsettle_amount, v_settle_time from kvke_agents where agent_id=v_agentId;
+            if v_settle_time > 0 then      -- 已结算
+                LEAVE myloop; 
+            end if;
+            
+            select a.amt1,a.rate1,a.amt2,a.rate2,a.amt3,a.rate3 into v_amt1,v_rate1,v_amt2,v_rate2,v_amt3,v_rate3 
+                from kvke_agent_rate_template a, kvke_users b
+                where a.name=b.rate_template_name;
+            
+            -- 第一档
+            SET v_settled_amount = v_unsettle_amount * v_rate1;
+            if (v_unsettle_amount-v_amt1)<=0 then
+                update kvke_agents set settled_amount=v_settled_amount, settle_time=UNIX_TIMESTAMP(now())
+                    where agent_id=v_agentId;
+                LEAVE myloop; 
+            end if;
+            
+            -- 第二档
+            SET v_unsettle_amount = (v_unsettle_amount-v_amt1);
+            SET v_settled_amount = v_settled_amount + v_unsettle_amount * rate2;
+            if  (v_unsettle_amount-v_amt2)<=0 then
+                update kvke_agents set settled_amount=v_settled_amount, settle_time=UNIX_TIMESTAMP(now())
+                    where agent_id=v_agentId;
+                LEAVE myloop; 
+            end if;
+            
+            -- 第三档
+            SET v_unsettle_amount = (v_unsettle_amount-v_amt2);
+            SET v_settled_amount = v_settled_amount + v_unsettle_amount * rate3;
+            update kvke_agents set settled_amount=v_settled_amount, settle_time=UNIX_TIMESTAMP(now())
+                    where agent_id=v_agentId;
+            
+        
+        END IF;
+    END myloop;
+    
+    UNTIL no_more_data END REPEAT;-- 循环结束
+    CLOSE cur_get_undo_record;
+    SET cur_get_undo_record_isopen = 0;
+    
+
+END top
+
+
+
+
+/*******************************定时器*************************************/
 -- 查看是否开启定时器
 -- SHOW VARIABLES LIKE '%sche%';
 

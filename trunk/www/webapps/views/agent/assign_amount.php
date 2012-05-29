@@ -39,8 +39,18 @@ $(function(){
 </head>
 <body>
     <div class="agent_info" style="padding:20px;">
-	<form id="agent_info_form" name="agent_info_form" action="" method="post">
-	    <table cellpadding="0" cellspacing="0" class="l-table-edit">
+    <form id="agent_info_form" name="agent_info_form" action="" method="post">
+        <table cellpadding="0" cellspacing="0" class="l-table-edit">
+        <tr>
+            <td width="100"><b>用户名</b></td>
+            <td><b><?php echo isset($agent['user_name'])?$agent['user_name']:'';?></b></td>
+        </tr>
+        <tr>
+            <td><b>真实姓名</b></td>
+            <td><b><?php echo isset($agent['real_name'])?$agent['real_name']:'';?></b></td>
+        </tr>
+        
+        
 		<tr>
 		    <td align="right" class="l-table-edit-td">1号-7号</td>
 		    <td align="left" class="l-table-edit-td"><input type="text" name="step1" id="temp_step1" value="<?php echo $agent_plan['step1'];?>" ltype="text" /></td>

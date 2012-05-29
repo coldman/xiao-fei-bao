@@ -28,9 +28,9 @@
 }
 
 .icon-1 {
-    background:url(../img/icons/used.png) no-repeat scroll center center transparent;
+    background:url(../img/icons/yes.gif) no-repeat scroll center center transparent;
 }
 
 .icon-0 {
-    background:url(../img/icons/unused.png) no-repeat scroll center center transparent;
+    background:url(../img/icons/no.gif) no-repeat scroll center center transparent;
 }

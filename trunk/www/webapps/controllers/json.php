@@ -127,6 +127,17 @@ class Json extends MY_Controller
 	$this->manage_model->del_agent_rate($id);
 	echo json_encode(array('result'=>true));
     }
+    
+    function agents_account()
+    {
+        $params = $this->_params();
+       
+        $result = $this->manage_model->get_agents_account($params);
+        //print_r($result);
+        //return false;
+        echo json_encode($result);
+    }
+
 }
     
 
