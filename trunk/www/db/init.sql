@@ -106,7 +106,6 @@ top: BEGIN
     DECLARE cur_month_str varchar(8);
     DECLARE v_amount,v_step int;
     DECLARE today int ;
-
     DECLARE lastmonth_str varchar(6);
     DECLARE last23 varchar(8);
     DECLARE curmonth_str varchar(6);
@@ -114,12 +113,9 @@ top: BEGIN
     DECLARE curmon8 varchar(8);
     DECLARE curmon16 varchar(8);
     DECLARE curmon23 varchar(8);
-
     DECLARE no_more_data                tinyint(1)  default 0;
     DECLARE cur_get_undo_record_isopen  tinyint(1)  default 0;
-    
     DECLARE cur_get_undo_record cursor for select user_id from kvke_users where is_agent=1;  -- 声明游标 
-
     DECLARE CONTINUE HANDLER FOR NOT FOUND SET no_more_data = 1;
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
     BEGIN
@@ -129,47 +125,46 @@ top: BEGIN
         END IF;
     END;
     
-
     SET isExsits=0;
     SET v_amount=0;
     SET v_step =0;
-    SET curmon1=CONCAT(curmonth_str, '1');  -- 当月1号
-    
-    
     
     select date_format(now(),'%Y-%m') into cur_month_str;  -- '2012-05'
     select DAYOFMONTH(CURRENT_TIMESTAMP()) into today;  -- 24
     select date_format(CURRENT_TIMESTAMP(), '%Y%m') into curmonth_str;
     
+    SET curmon1=CONCAT(curmonth_str, '1');  -- 当月1号
     
-   
     OPEN    cur_get_undo_record;
     SET     cur_get_undo_record_isopen = 1;
     REPEAT  -- 循环开始
     
     FETCH   cur_get_undo_record into agentId;
-    
-    
-    
-    
     IF (!no_more_data) THEN
+
         SET v_amount = 0;
     
         select count(1) into isExsits from kvke_agents where agent_id=agentId;
         
-        if isExsits < 1 then  -- 新增代理商  首先插入记录
+        if isExsits < 1 then  -- 新增代理商(昨日新增)  首先插入记录
             insert into kvke_agents (agent_id,cur_month) values (agentId, cur_month_str);
         end if;
     
         -- get current month amount
         select sum(goods_amount) into v_amount from kvke_order_info 
         where app_user_id=agentId and app_user_id>0
-            and pay_time >= UNIX_TIMESTAMP(STR_TO_DATE(curmon1 ,'%Y%m%d'))
-            and pay_time < UNIX_TIMESTAMP(current_date());
-     
-        
-        
+             and pay_time >= UNIX_TIMESTAMP(STR_TO_DATE(curmon1 ,'%Y%m%d'))
+             and pay_time < UNIX_TIMESTAMP(current_date());
+    
+        -- 更新当月营业额
+        update kvke_agents set amount=v_amount, update_time=now() where agent_id=agentId;
+
+
         if today=1 then  -- 统计上个月23号-月末
+            -- 月初新增数据
+            insert into kvke_agents(agent_id,cur_month) select user_id, curmonth_str from kvke_users 
+                where is_agent=1 order by user_name;
+          
             select date_format(DATE_SUB(CURRENT_TIMESTAMP(),INTERVAL 1 MONTH), '%Y%m') into lastmonth_str;
             
             SET last23=CONCAT(lastmonth_str, '23');
