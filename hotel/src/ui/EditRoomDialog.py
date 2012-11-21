@@ -5,7 +5,7 @@ import wx
 import wx.lib.masked.numctrl
 import wx.lib.stattext
 
-from public import public
+import public
 
 def create(parent):
     return EditRoomDialog(parent)
@@ -123,11 +123,8 @@ class EditRoomDialog(wx.Dialog):
         print (no, rate, ensure, self.type, self.net)
         sql = """update room set amt_month=%s, amt_ensure=%s, type='%s', network=%s
                  where number=%s""" % (rate,ensure,type,network, self.roomid)
-        print sql
-        if public.dbopt(sql):
-            public.msgbox(self, u"客房[%s]编辑成功" % no, u"编辑客房")
-        else:
-            public.msgbox(self, u"编辑失败，请检查输入项", u"编辑客房")
+        retcode,retmsg = public.dbopt(sql)
+        public.msgbox(self, "%s[%s]" % (retmsg,no), u"提示")
         #self.Parent.loaddata()     
         #print self.Parent.loaddata()
         evt.Skip()

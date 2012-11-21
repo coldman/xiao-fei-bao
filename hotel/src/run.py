@@ -4,7 +4,8 @@ import wx
 import os
 from ui.MainFrame import MainFrame
 from ui.LoginDialog import LoginDialog
-from public import public
+from ui import public
+
 
 log = public.initlog("sys.log") 
 
@@ -17,7 +18,6 @@ class MySplashScreen(wx.SplashScreen):
                                  5000, None, -1)
         self.Bind(wx.EVT_CLOSE, self.OnClose)
         self.fc = wx.FutureCall(2000, self.ShowMain)
-
 
     def OnClose(self, evt):
         # Make sure the default handler runs too so this window gets

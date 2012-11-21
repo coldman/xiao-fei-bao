@@ -5,7 +5,7 @@ import wx
 import wx.lib.masked.numctrl
 import wx.lib.stattext
 
-from public import public
+import public
 
 def create(parent):
     return AddRoomDialog(parent)
@@ -119,21 +119,18 @@ class AddRoomDialog(wx.Dialog):
         ensure = self.numCtrl2.GetValue()
         
         if not no:
-            print u"房间号不能为空"
+            public.msgbox(self, u"房间号不能为空", u"错误")
             self.textCtrl1.SetFocus()
             return
         
         
         
         print (no, rate, ensure, self.type, self.net)
-        sql = """insert into room (number,type,amt_month,amt_ensure,network) 
-                values ('%s','%s','%d','%d',%d)""" % (no,self.type,rate,ensure,self.net)
-        print sql
-        if public.dbopt(sql):
-            public.msgbox(self, u"客房[%s]保存成功" % no, u"增加客房")
-        else:
-            public.msgbox(self, u"保存失败，请检查输入项", u"增加客房")
-        self.Parent.roomlist.reload()     
+        
+        retcode,retmsg = public.db_saveroom(no, rate, ensure, self.type, self.net)
+        public.msgbox(self, retmsg, u"提示")
+            
+        self.Parent.list.reload()     
         evt.Skip()
 
     def OnExit(self, evt):        

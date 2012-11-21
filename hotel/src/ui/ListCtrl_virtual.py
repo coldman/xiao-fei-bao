@@ -1,7 +1,5 @@
 #coding:utf-8
 import  wx
-import sys
-import  images
 
 musicdata = [
 (u"支出", u"100.00", u"张三", "1000", "aaa"),
