@@ -2,7 +2,7 @@
 #Boa:Dialog:Dialog1
 
 import wx
-from public import public
+import public
 
 class LoginDialog(wx.Dialog):
     def _init_ctrls(self, prnt, title):

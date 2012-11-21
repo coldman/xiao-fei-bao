@@ -12,18 +12,17 @@
 #----------------------------------------------------------------------------
 import wx
 import sys
+import time,datetime
 import wx.lib.mixins.listctrl  as  listmix
 
 #import RoomDialog
 
-from public import public
+import public
 from EditRoomDialog import EditRoomDialog
 from BookDialog import BookDialog
 
 
 #---------------------------------------------------------------------------
-
-col_list = [u"房号", u"户型", u"状态", u"月租金", u"住户姓名"]
 
 #musicdata = {}
 #musicdata = {
@@ -45,7 +44,7 @@ class TestListCtrl(wx.ListCtrl, listmix.ListCtrlAutoWidthMixin):
         listmix.ListCtrlAutoWidthMixin.__init__(self)
 
 
-class TestListCtrlPanel(wx.Panel, listmix.ColumnSorterMixin):
+class RoomListCtrlPanel(wx.Panel, listmix.ColumnSorterMixin):
     def __init__(self, parent):
         wx.Panel.__init__(self, parent, -1, style=wx.WANTS_CHARS)
 
@@ -80,14 +79,13 @@ class TestListCtrlPanel(wx.Panel, listmix.ColumnSorterMixin):
                                  #| wx.LC_EDIT_LABELS
                                  #| wx.LC_SORT_ASCENDING
                                  #| wx.LC_NO_HEADER
-                                 #| wx.LC_VRULES
-                                 #| wx.LC_HRULES
-                                 #| wx.LC_SINGLE_SEL
+                                 | wx.LC_VRULES
+                                 | wx.LC_HRULES
+                                 | wx.LC_SINGLE_SEL
                                  )
         
         self.list.SetImageList(self.il, wx.IMAGE_LIST_SMALL)
         sizer.Add(self.list, 1, wx.EXPAND)
-
         self.PopulateList()
 
         # Now that the list exists we can init the other base class,
@@ -101,7 +99,7 @@ class TestListCtrlPanel(wx.Panel, listmix.ColumnSorterMixin):
         
         self.itemDataMap = musicdata
         
-        listmix.ColumnSorterMixin.__init__(self, len(col_list))
+        listmix.ColumnSorterMixin.__init__(self, len(public.ROOM_LIST))
         #self.SortListItems(0, True)
 
         self.SetSizer(sizer)
@@ -111,7 +109,7 @@ class TestListCtrlPanel(wx.Panel, listmix.ColumnSorterMixin):
         self.Bind(wx.EVT_LIST_ITEM_DESELECTED, self.OnItemDeselected, self.list)
         self.Bind(wx.EVT_LIST_ITEM_ACTIVATED, self.OnItemActivated, self.list)
         self.Bind(wx.EVT_LIST_DELETE_ITEM, self.OnItemDelete, self.list)
-        #self.Bind(wx.EVT_LIST_COL_CLICK, self.OnColClick, self.list)
+        self.Bind(wx.EVT_LIST_COL_CLICK, self.OnColClick, self.list)
         self.Bind(wx.EVT_LIST_COL_RIGHT_CLICK, self.OnColRightClick, self.list)
         self.Bind(wx.EVT_LIST_COL_BEGIN_DRAG, self.OnColBeginDrag, self.list)
         #self.Bind(wx.EVT_LIST_COL_DRAGGING, self.OnColDragging, self.list)
@@ -132,7 +130,7 @@ class TestListCtrlPanel(wx.Panel, listmix.ColumnSorterMixin):
         wx.SystemOptions.SetOptionInt("mac.listctrl.always_use_generic", not event.IsChecked())
         wx.GetApp().GetTopWindow().LoadDemo("ListCtrl")
 
-    def reload(self, roomstatus=-1, num=""):
+    def reload(self, roomstatus="", num=""):
         """
     	roomstatus 房间状态
     	num string  房号
@@ -146,8 +144,8 @@ class TestListCtrlPanel(wx.Panel, listmix.ColumnSorterMixin):
         self.loaddata(musicdata)
     
     def PopulateList(self):
-        for i in range(len(col_list)):
-            self.list.InsertColumn(i, col_list[i])
+        for i in range(len(public.ROOM_LIST)):
+            self.list.InsertColumn(i, public.ROOM_LIST[i])
         
         self.reload()
 
@@ -156,17 +154,24 @@ class TestListCtrlPanel(wx.Panel, listmix.ColumnSorterMixin):
         # clear item frist
         self.list.DeleteAllItems()
         items = musicdata.items()
-
+        
         for key, data in items:
             d0 = "%s" % data[0]
             d1 = "%s" % data[1]
             d2 = public.ROOM_STATUS[data[2]]
             d3 = "%s" % data[3]
             d4 = ""
+            d5 = ""
             if data[4]:
                 d4 = data[4]
             
-            
+            if data[5]:
+                
+                m_array = data[5].split("-")
+                data1 = datetime.date(int(m_array[0]), int(m_array[1]), 
+									int(m_array[2]))
+                itl = (datetime.date.today() - data1).days
+                d5 = "%s(%s)" % (str(itl).ljust(3), data[5]) 
             
             index = self.list.InsertImageStringItem(sys.maxint, d0, self.idx1)
             #print key,data, index
@@ -174,6 +179,7 @@ class TestListCtrlPanel(wx.Panel, listmix.ColumnSorterMixin):
             self.list.SetStringItem(index, 2, d2)
             self.list.SetStringItem(index, 3, d3)
             self.list.SetStringItem(index, 4, d4)
+            self.list.SetStringItem(index, 5, d5)
             self.list.SetItemData(index, key)
             
             if data[2] == 1: #使用中            
@@ -188,14 +194,15 @@ class TestListCtrlPanel(wx.Panel, listmix.ColumnSorterMixin):
                 item.SetBackgroundColour("green")
                 self.list.SetItem(item)
 
-        self.list.SetColumnWidth(0, 100)
-        self.list.SetColumnWidth(1, 120)
-        self.list.SetColumnWidth(2, 100)
-        self.list.SetColumnWidth(3, 200)
-        self.list.SetColumnWidth(4, wx.LIST_AUTOSIZE)
+        self.list.SetColumnWidth(0, 80)
+        self.list.SetColumnWidth(1, 80)
+        self.list.SetColumnWidth(2, 80)
+        self.list.SetColumnWidth(3, 80)
+        self.list.SetColumnWidth(4, 80)
+        self.list.SetColumnWidth(5, wx.LIST_AUTOSIZE)
 
         # show how to select an item
-        self.list.SetItemState(5, wx.LIST_STATE_SELECTED, wx.LIST_STATE_SELECTED)
+        self.list.SetItemState(6, wx.LIST_STATE_SELECTED, wx.LIST_STATE_SELECTED)
 
         # show how to change the colour of a couple items
         
@@ -255,7 +262,7 @@ class TestListCtrlPanel(wx.Panel, listmix.ColumnSorterMixin):
 
 
     def OnItemDeselected(self, evt):
-        item = evt.GetItem()
+        #item = evt.GetItem()
         print("OnItemDeselected: %d" % evt.m_itemIndex)
 
         # Show how to reselect something we don't want deselected
@@ -401,12 +408,9 @@ class TestListCtrlPanel(wx.Panel, listmix.ColumnSorterMixin):
         sql = "delete from room where number=%s" % roomid
         print sql
         
-        if public.dbopt(sql):
-            public.msgbox(self, u"删除客房[%s]成功" % roomid, u"删除客房")
-            self.list.DeleteItem(self.currentItem)
-        else:
-            public.msgbox(self, u"删除失败，请检查输入项", u"删除客房")
-        
+        retcode,retmsg = public.dbopt(sql)
+        public.msgbox(self, "%s[%s]" % (retmsg,roomid), u"提示")
+        self.list.DeleteItem(self.currentItem)
 
     #===========================================================================
     # OnPopupSeven：预留

@@ -2,7 +2,7 @@
 #Boa:Dialog:Dialog1
 import os
 import wx
-from public import public
+import public
 
 def create(parent):
     return BookDialog(parent)
@@ -58,7 +58,7 @@ class BookDialog(wx.Dialog):
         self.st_idtype= wx.StaticText(label=u'证件类型',
               parent=self, pos=wx.Point(32, 88), size=wx.Size(48, 14), style=0)
 
-        self.cb_idtype= wx.ComboBox(choices=[u'身份证', u'军官证', u'驾驶证'], 
+        self.cb_idtype= wx.ComboBox(choices=public.ID_TYPES, 
 			  parent=self, pos=wx.Point(96, 88),
               size=wx.Size(138, 22), style=0)
         self.cb_idtype.SetSelection(0)
@@ -74,6 +74,7 @@ class BookDialog(wx.Dialog):
 
         self.tc_addr = wx.TextCtrl(parent=self, pos=(96, 128), size=(340, 34),
               style=wx.TE_MULTILINE|wx.TE_AUTO_SCROLL|wx.TE_LEFT, value=u'拱墅区') 
+        self.status_cb.SetSelection(0)
 
         self.staticBox3 = wx.StaticBox(label=u'费用信息', parent=self, 
 			  pos=wx.Point(16, 248), size=wx.Size(696, 120), style=0)
