@@ -1,8 +1,7 @@
 #coding:utf-8
-#Boa:Dialog:Dialog1
+
 import os
 import wx
-import wx.lib.buttons
 
 def create(parent):
     return RoomDialog(parent)
@@ -188,18 +187,18 @@ class RoomDialog(wx.Dialog):
         print ('EvtRadioBox: %d\n' % event.GetInt())
 
     def OnBookBtn(self, evt):
-        evt.skip()
+        #evt.skip()
+        pass
 
     def OnCloseBtn(self, evt):
         self.Destroy()
-        evt.skip()
+        #evt.skip()
+        #pass
 
 if __name__ == '__main__':
-    os.chdir(r"F:\workspace\hotel\src")
+    os.chdir(r"F:\google\trunk\hotel\src")
     app = wx.PySimpleApp()
     dlg = create(None)
-    try:
-        dlg.ShowModal()
-    finally:
-        dlg.Destroy()
+    
+    dlg.ShowModal()
     app.MainLoop()

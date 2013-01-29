@@ -13,7 +13,8 @@ import AddRoomDialog
 
 import public
 import DetailPanel
-from src.ui.AddGuestDialog import AddGuestDialog
+#from src.ui.AddGuestDialog import AddGuestDialog
+from AddGuestDialog import AddGuestDialog
 
 
 colourList = [ "Aquamarine", "Black", "Blue", "Blue Violet", "Brown", "Cadet Blue",
