@@ -74,7 +74,7 @@ class BookDialog(wx.Dialog):
 
         self.tc_addr = wx.TextCtrl(parent=self, pos=(96, 128), size=(340, 34),
               style=wx.TE_MULTILINE|wx.TE_AUTO_SCROLL|wx.TE_LEFT, value=u'拱墅区') 
-        self.status_cb.SetSelection(0)
+        #self.status_cb.SetSelection(0)
 
         self.staticBox3 = wx.StaticBox(label=u'费用信息', parent=self, 
 			  pos=wx.Point(16, 248), size=wx.Size(696, 120), style=0)
